@@ -4,8 +4,10 @@ import { router } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+export type HobeeNavKey = "index" | "discover" | "shop" | "orders" | "account";
+
 type NavItem = {
-  key: "index" | "discover" | "shop" | "orders" | "account";
+  key: HobeeNavKey;
   icon: keyof typeof MaterialIcons.glyphMap;
   center?: boolean;
 };
@@ -18,27 +20,26 @@ const NAV_ITEMS: NavItem[] = [
   { key: "account", icon: "person-outline" },
 ];
 
-export function FloatingTabBar({ state, navigation }: BottomTabBarProps) {
+export function FloatingBottomNav({ activeKey, onNavigate }: { activeKey: HobeeNavKey; onNavigate?: (key: HobeeNavKey) => void }) {
   const insets = useSafeAreaInsets();
-  const currentRoute = state.routes[state.index]?.name;
-
-  const navigate = (key: NavItem["key"]) => {
+  const navigate = (key: HobeeNavKey) => {
+    if (onNavigate) {
+      onNavigate(key);
+      return;
+    }
     if (key === "orders") {
       router.push("/orders");
       return;
     }
-
-    const route = state.routes.find((item) => item.name === key);
-    if (!route) return;
-    const event = navigation.emit({ type: "tabPress", target: route.key, canPreventDefault: true });
-    if (!event.defaultPrevented) navigation.navigate(key);
+    if (key === "index") router.replace("/(tabs)");
+    else router.replace(`/(tabs)/${key}`);
   };
 
   return (
     <View pointerEvents="box-none" style={[styles.container, { bottom: Math.max(insets.bottom, 12) }]}>
       <View style={styles.bar}>
         {NAV_ITEMS.map((item) => {
-          const isActive = currentRoute === item.key;
+          const isActive = activeKey === item.key;
           if (item.center) {
             return (
               <Pressable
@@ -68,6 +69,20 @@ export function FloatingTabBar({ state, navigation }: BottomTabBarProps) {
       </View>
     </View>
   );
+}
+
+export function FloatingTabBar({ state, navigation }: BottomTabBarProps) {
+  const currentRoute = state.routes[state.index]?.name as HobeeNavKey;
+  return <FloatingBottomNav activeKey={currentRoute} onNavigate={(key) => {
+    if (key === "orders") {
+      router.push("/orders");
+      return;
+    }
+    const route = state.routes.find((item) => item.name === key);
+    if (!route) return;
+    const event = navigation.emit({ type: "tabPress", target: route.key, canPreventDefault: true });
+    if (!event.defaultPrevented) navigation.navigate(key);
+  }} />;
 }
 
 const styles = StyleSheet.create({

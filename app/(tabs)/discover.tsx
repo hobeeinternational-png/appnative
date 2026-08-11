@@ -1,59 +1,37 @@
-import { FlatList, Image, Pressable, StyleSheet, Text, View } from "react-native";
-import { router, type Href } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
+import { router, type Href } from "expo-router";
+import { useMemo, useState } from "react";
+import { FlatList, ImageBackground, Pressable, StyleSheet, Text, View } from "react-native";
 
-import { ScreenHeader } from "@/components/hobee/screen-header";
+import { HOBEE } from "@/components/hobee/design-tokens";
+import { AppHeader, CommunityCard, SearchBar, SectionHeader, ServiceTile, TripCard } from "@/components/hobee/shared-ui";
 import { ScreenContainer } from "@/components/screen-container";
+import { discoverCommunities, discoverFood, discoverPlaces, discoverServices, discoverTopics, discoverTrips, featuredDiscovery } from "@/lib/discover-data";
 import { hobeeStories } from "@/lib/hobee-data";
 
+type Section = "Trip" | "Place" | "Food" | "Service" | "Story" | "Community" | "Opportunity";
+const ALL: Section[] = ["Trip", "Place", "Food", "Service", "Story", "Community", "Opportunity"];
+
 export default function DiscoverScreen() {
-  return (
-    <ScreenContainer className="px-5" safeAreaClassName="pt-3">
-      <FlatList
-        data={hobeeStories}
-        keyExtractor={(story) => story.id}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.content}
-        ListHeaderComponent={
-          <>
-            <ScreenHeader title="ค้นพบ" subtitle="เรื่องราวที่พาคุณเข้าใกล้ผู้คนและท้องถิ่น" />
-            <View className="mb-5 rounded-2xl bg-[#F5EBCF] p-4">
-              <View className="flex-row gap-3">
-                <View className="h-10 w-10 items-center justify-center rounded-xl bg-primary">
-                  <MaterialIcons name="auto-stories" size={22} color="#FFFFFF" />
-                </View>
-                <View className="flex-1">
-                  <Text className="font-bold text-foreground">มากกว่าการซื้อสินค้า</Text>
-                  <Text className="mt-1 text-sm leading-5 text-muted">ทุกเรื่องราวคัดสรรเพื่อเชื่อมคุณกับต้นทางของของดีและชุมชน</Text>
-                </View>
-              </View>
-            </View>
-          </>
-        }
-        renderItem={({ item }) => (
-          <Pressable accessibilityRole="button" accessibilityLabel={`อ่านเรื่องราว ${item.title}`} onPress={() => router.push({ pathname: "/story/[id]", params: { id: item.id } } as Href)} style={({ pressed }) => [styles.story, pressed && styles.pressed]}>
-            <Image source={{ uri: item.image }} className="h-48 w-full bg-[#EEE6D6]" resizeMode="cover" />
-            <View className="gap-1.5 p-4">
-              <View className="flex-row items-center justify-between">
-                <Text className="text-[10px] font-bold tracking-[1.1px] text-primary">{item.label}</Text>
-                <Text className="text-xs text-muted">{item.readTime}</Text>
-              </View>
-              <Text className="text-lg font-black leading-6 text-foreground">{item.title}</Text>
-              <Text className="text-sm leading-5 text-muted">{item.description}</Text>
-              <View className="mt-2 flex-row items-center gap-1">
-                <Text className="text-sm font-bold text-primary">อ่านเรื่องราว</Text>
-                <MaterialIcons name="arrow-forward" size={17} color="#C98716" />
-              </View>
-            </View>
-          </Pressable>
-        )}
-      />
-    </ScreenContainer>
-  );
+  const [topic, setTopic] = useState<(typeof discoverTopics)[number]>("ทั้งหมด");
+  const sections = useMemo(() => topic === "ทั้งหมด" ? ALL : ALL.filter((item) => item === topic), [topic]);
+  const openStory = (id: string) => router.push({ pathname: "/story/[id]", params: { id } } as Href);
+  return <ScreenContainer containerClassName="bg-[#F8F7F5]" safeAreaClassName="pt-2" edges={["top", "left", "right"]}><FlatList data={sections} keyExtractor={(item) => item} showsVerticalScrollIndicator={false} contentContainerStyle={styles.content} ListHeaderComponent={<><AppHeader /><SearchBar onPress={() => router.push("/(tabs)/shop")} placeholder="ค้นหาทริป สถานที่ หรือเรื่องราว" /><SectionHeader title="ค้นพบ" /><FlatList horizontal data={discoverTopics} keyExtractor={(item) => item} showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips} renderItem={({ item }) => { const active = item === topic; return <Pressable onPress={() => setTopic(item)} style={({ pressed }) => [styles.chip, active && styles.chipActive, pressed && styles.pressed]}><Text style={styles.chipText}>{item}</Text></Pressable>; }} />{topic === "ทั้งหมด" ? <Featured onPress={() => openStory(featuredDiscovery.storyId)} /> : null}</>} renderItem={({ item }) => <DiscoverSection kind={item} openStory={openStory} />} /></ScreenContainer>;
+}
+
+function Featured({ onPress }: { onPress: () => void }) { return <Pressable onPress={onPress} style={({ pressed }) => [styles.featured, pressed && styles.pressed]}><ImageBackground source={{ uri: featuredDiscovery.image }} style={styles.featuredImage} imageStyle={styles.featuredRadius}><View style={styles.featuredOverlay}><View style={styles.featuredBadge}><Text style={styles.featuredBadgeText}>{featuredDiscovery.badge}</Text></View><Text style={styles.featuredTitle}>{featuredDiscovery.title}</Text><Text style={styles.featuredDescription}>{featuredDiscovery.description}</Text><View style={styles.featuredAction}><Text style={styles.featuredActionText}>เริ่มออกสำรวจ</Text><MaterialIcons name="arrow-forward" size={21} color={HOBEE.colors.ink} /></View></View></ImageBackground></Pressable>; }
+
+function DiscoverSection({ kind, openStory }: { kind: Section; openStory: (id: string) => void }) {
+  const rail = (title: string, data: typeof discoverTrips) => <><SectionHeader title={title} onPress={() => undefined} /><FlatList horizontal data={data} keyExtractor={(item) => item.id} showsHorizontalScrollIndicator={false} contentContainerStyle={styles.rail} renderItem={({ item }) => <View style={styles.railCard}><TripCard {...item} onPress={() => openStory(item.storyId)} /></View>} /></>;
+  if (kind === "Trip") return rail("ทริปน่าสนใจ", discoverTrips);
+  if (kind === "Place") return rail("สถานที่น่าแวะ", discoverPlaces);
+  if (kind === "Food") return rail("กินดีแบบท้องถิ่น", discoverFood);
+  if (kind === "Service") return <><SectionHeader title="บริการ & โอกาส" onPress={() => undefined} /><View style={styles.grid}>{discoverServices.map((item) => <ServiceTile key={item.id} {...item} onPress={() => openStory(item.storyId)} />)}</View></>;
+  if (kind === "Story") return <><SectionHeader title="Story ที่คัดสรร" onPress={() => undefined} /><FlatList horizontal data={hobeeStories} keyExtractor={(item) => item.id} showsHorizontalScrollIndicator={false} contentContainerStyle={styles.rail} renderItem={({ item }) => <View style={styles.railCard}><TripCard image={item.image} badge={item.label} title={item.title} detail={item.readTime} onPress={() => openStory(item.id)} /></View>} /></>;
+  if (kind === "Community") return <><SectionHeader title="Story & Community" onPress={() => undefined} /><View style={styles.grid}>{discoverCommunities.map((item) => <CommunityCard key={item.id} {...item} onPress={() => openStory(item.storyId)} />)}</View></>;
+  return <><SectionHeader title="HOBEE Ecosystem" /><Pressable onPress={() => router.push("/(tabs)/shop")} style={({ pressed }) => [styles.opportunity, pressed && styles.pressed]}><View style={styles.oppBadge}><MaterialIcons name="auto-awesome" size={16} color="#D8B65B" /><Text style={styles.oppBadgeText}>OPPORTUNITY</Text></View><Text style={styles.oppTitle}>เปลี่ยนความถนัด{`\n`}เป็นโอกาสของคุณ</Text><Text style={styles.oppCopy}>เชื่อมต่อผู้คน ชุมชน และบริการท้องถิ่นด้วยพื้นที่เติบโตร่วมกันของ HOBEE</Text><View style={styles.oppAction}><Text style={styles.oppActionText}>ดูโอกาสทั้งหมด</Text><MaterialIcons name="arrow-forward" size={22} color={HOBEE.colors.ink} /></View></Pressable></>;
 }
 
 const styles = StyleSheet.create({
-  content: { gap: 16, paddingBottom: 32 },
-  story: { overflow: "hidden", borderWidth: 1, borderColor: "#E8E0D0", borderRadius: 20, backgroundColor: "#FFFFFF" },
-  pressed: { opacity: 0.78, transform: [{ scale: 0.987 }] },
+  content: { paddingHorizontal: 20, paddingBottom: 162, backgroundColor: HOBEE.colors.canvas }, chips: { gap: 9, paddingBottom: 8, paddingRight: 20 }, chip: { borderWidth: 1, borderColor: HOBEE.colors.border, borderRadius: 999, backgroundColor: HOBEE.colors.surface, paddingHorizontal: 15, paddingVertical: 10 }, chipActive: { borderColor: HOBEE.colors.gold, backgroundColor: HOBEE.colors.gold }, chipText: { color: HOBEE.colors.ink, fontSize: 14, fontWeight: "800" }, featured: { height: 300, overflow: "hidden", marginTop: 16, borderRadius: 26, backgroundColor: "#282622" }, featuredImage: { flex: 1, justifyContent: "flex-end" }, featuredRadius: { borderRadius: 26 }, featuredOverlay: { flex: 1, justifyContent: "flex-end", padding: 22, backgroundColor: "rgba(24,22,18,0.48)" }, featuredBadge: { alignSelf: "flex-start", borderRadius: 18, backgroundColor: HOBEE.colors.gold, paddingHorizontal: 13, paddingVertical: 7 }, featuredBadgeText: { color: HOBEE.colors.ink, fontSize: 12, fontWeight: "900" }, featuredTitle: { marginTop: 14, color: "#FFFFFF", fontSize: 29, fontWeight: "900", lineHeight: 35 }, featuredDescription: { marginTop: 7, color: "#F2EFEB", fontSize: 14, fontWeight: "600", lineHeight: 20 }, featuredAction: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 9, marginTop: 16, borderRadius: 20, backgroundColor: HOBEE.colors.gold, paddingHorizontal: 17, paddingVertical: 11 }, featuredActionText: { color: HOBEE.colors.ink, fontSize: 15, fontWeight: "900" }, rail: { gap: 13, paddingRight: 20 }, railCard: { width: 198 }, grid: { flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", rowGap: 12 }, opportunity: { overflow: "hidden", borderRadius: 26, backgroundColor: "#242320", padding: 23 }, oppBadge: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 7, borderWidth: 1, borderColor: "#806A39", borderRadius: 18, backgroundColor: "rgba(213,174,74,0.12)", paddingHorizontal: 13, paddingVertical: 8 }, oppBadgeText: { color: "#D8B65B", fontSize: 13, fontWeight: "900" }, oppTitle: { marginTop: 18, color: "#FFFFFF", fontSize: 28, fontWeight: "900", lineHeight: 35 }, oppCopy: { marginTop: 11, color: "#D4D0CB", fontSize: 15, fontWeight: "600", lineHeight: 22 }, oppAction: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 11, marginTop: 21, borderRadius: 20, backgroundColor: HOBEE.colors.gold, paddingVertical: 15 }, oppActionText: { color: HOBEE.colors.ink, fontSize: 16, fontWeight: "900" }, pressed: { opacity: 0.8, transform: [{ scale: 0.98 }] },
 });
