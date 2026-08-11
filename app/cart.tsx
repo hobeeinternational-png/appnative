@@ -1,88 +1,20 @@
-import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { router, type Href } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 
+import { HOBEE } from "@/components/hobee/design-tokens";
+import { BackHeader, StickyBottomCTA, SummaryRow } from "@/components/hobee/commerce-ui";
+import { EmptyState } from "@/components/hobee/shared-ui";
+import { QuantityStepper } from "@/components/hobee/quantity-stepper";
 import { ScreenContainer } from "@/components/screen-container";
 import { useCart } from "@/contexts/cart-context";
 import { formatThaiBaht } from "@/lib/hobee-data";
-import { QuantityStepper } from "@/components/hobee/quantity-stepper";
 
 export default function CartScreen() {
   const { items, itemCount, subtotal, hydrated, updateQuantity } = useCart();
-
-  if (!hydrated) {
-    return (
-      <ScreenContainer edges={["top", "bottom", "left", "right"]} className="items-center justify-center px-6">
-        <Text className="text-sm text-muted">กำลังเตรียมตะกร้าของคุณ…</Text>
-      </ScreenContainer>
-    );
-  }
-
-  if (items.length > 0) {
-    return (
-      <ScreenContainer edges={["top", "bottom", "left", "right"]} className="px-5" safeAreaClassName="pt-3">
-        <View className="mb-5 flex-row items-center gap-3">
-          <Pressable accessibilityRole="button" accessibilityLabel="ย้อนกลับ" onPress={() => router.back()} style={({ pressed }) => [styles.back, pressed && styles.pressed]}>
-            <MaterialIcons name="arrow-back" size={22} color="#17352A" />
-          </Pressable>
-          <View>
-            <Text className="text-2xl font-black text-foreground">ตะกร้าของคุณ</Text>
-            <Text className="mt-0.5 text-sm text-muted">{itemCount} ชิ้น</Text>
-          </View>
-        </View>
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.cartContent}>
-          {items.map((item) => (
-            <View key={item.product.id} className="flex-row gap-3 rounded-2xl border border-border bg-surface p-3">
-              <Image source={{ uri: item.product.image }} className="h-20 w-20 rounded-xl bg-[#EEE6D6]" />
-              <View className="flex-1 justify-between">
-                <View>
-                  <Text numberOfLines={2} className="font-bold leading-5 text-foreground">{item.product.shortName}</Text>
-                  <Text className="mt-1 text-sm font-black text-foreground">{formatThaiBaht(item.product.price)}</Text>
-                </View>
-                <View className="flex-row items-center justify-between">
-                  <Text className="text-xs text-muted">จาก {item.product.shopName}</Text>
-                  <QuantityStepper value={item.quantity} onChange={(quantity) => updateQuantity(item.product.id, quantity)} min={0} max={item.product.stock} size="compact" />
-                </View>
-              </View>
-            </View>
-          ))}
-        </ScrollView>
-        <View className="border-t border-border pb-3 pt-4">
-          <View className="mb-3 flex-row items-center justify-between">
-            <Text className="text-sm text-muted">ยอดรวมสินค้า</Text>
-            <Text className="text-xl font-black text-foreground">{formatThaiBaht(subtotal)}</Text>
-          </View>
-          <Pressable accessibilityRole="button" onPress={() => router.push("/checkout" as Href)} style={({ pressed }) => [styles.checkoutButton, pressed && styles.pressed]}>
-            <Text className="text-base font-black text-white">ดำเนินการสั่งซื้อ</Text>
-            <MaterialIcons name="arrow-forward" size={20} color="#FFFFFF" />
-          </Pressable>
-          <Text className="mt-2 text-center text-[11px] leading-4 text-muted">ดูสถานะความพร้อมของคำสั่งซื้อก่อนเปิดรับชำระเงินจริง</Text>
-        </View>
-      </ScreenContainer>
-    );
-  }
-
-  return (
-    <ScreenContainer edges={["top", "bottom", "left", "right"]} className="items-center justify-center px-6">
-      <View className="w-full max-w-sm items-center rounded-[28px] border border-border bg-surface px-6 py-9">
-        <View className="h-16 w-16 items-center justify-center rounded-3xl bg-[#F5EBCF]">
-          <MaterialIcons name="shopping-bag" size={32} color="#C98716" />
-        </View>
-        <Text className="mt-5 text-xl font-black text-foreground">ตะกร้าของคุณยังว่าง</Text>
-        <Text className="mt-2 text-center text-sm leading-6 text-muted">เลือกสินค้า HOBEE ที่คุณชอบ แล้วกลับมาสรุปคำสั่งซื้อได้ที่นี่</Text>
-        <Pressable accessibilityRole="button" onPress={() => router.replace("/(tabs)/shop")} style={({ pressed }) => [styles.button, pressed && styles.pressed]}>
-          <Text className="font-black text-white">เลือกชมสินค้า</Text>
-          <MaterialIcons name="arrow-forward" size={18} color="#FFFFFF" />
-        </Pressable>
-      </View>
-    </ScreenContainer>
-  );
+  if (!hydrated) return <ScreenContainer edges={["top", "bottom", "left", "right"]} className="items-center justify-center"><ActivityIndicator color={HOBEE.colors.gold} size="large" /><Text className="mt-4 text-sm text-muted">กำลังเตรียมตะกร้าของคุณ…</Text></ScreenContainer>;
+  if (!items.length) return <ScreenContainer edges={["top", "bottom", "left", "right"]} className="items-center justify-center px-6" containerClassName="bg-[#F8F7F5]"><EmptyState title="ตะกร้าของคุณยังว่าง" description="เลือกสินค้า HOBEE ที่คุณชอบ แล้วกลับมาสรุปคำสั่งซื้อได้ที่นี่" onAction={() => router.replace("/(tabs)/shop")} actionLabel="เลือกชมสินค้า" /></ScreenContainer>;
+  return <View style={styles.root}><ScreenContainer edges={["top", "left", "right"]} containerClassName="bg-[#F8F7F5]" className="px-5" safeAreaClassName="pt-3"><BackHeader title="ตะกร้าของคุณ" subtitle={`${itemCount} ชิ้นพร้อมสั่งซื้อ`} onBack={() => router.back()} /><ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>{items.map((item) => { const unavailable = item.product.stock <= 0; return <View key={item.product.id} style={[styles.item, unavailable && styles.itemUnavailable]}><Image source={{ uri: item.product.image }} style={styles.itemImage} /><View style={styles.itemBody}><View><View style={styles.itemTitleRow}><Text numberOfLines={2} style={styles.itemTitle}>{item.product.shortName}</Text><Pressable accessibilityRole="button" accessibilityLabel="ลบสินค้า" onPress={() => updateQuantity(item.product.id, 0)} style={({ pressed }) => [styles.remove, pressed && styles.pressed]}><MaterialIcons name="close" size={19} color={HOBEE.colors.muted} /></Pressable></View><Text style={styles.itemOrigin}>จาก {item.product.shopName}</Text><Text style={styles.itemPrice}>{formatThaiBaht(item.product.price)}</Text>{unavailable ? <Text style={styles.outOfStock}>สินค้าหมดชั่วคราว กรุณาลบออกจากตะกร้า</Text> : null}</View><View style={styles.itemControl}><Text style={styles.stock}>{unavailable ? "ไม่พร้อมส่ง" : `เหลือ ${item.product.stock} ชิ้น`}</Text><QuantityStepper value={item.quantity} onChange={(quantity) => updateQuantity(item.product.id, quantity)} min={0} max={item.product.stock} size="compact" /></View></View></View>})}<View style={styles.summary}><SummaryRow label="ยอดรวมสินค้า" value={formatThaiBaht(subtotal)} /><SummaryRow label="ส่วนลด / คูปอง" value="เลือกในขั้นตอนถัดไป" muted /><SummaryRow label="ค่าจัดส่ง" value="คำนวณเมื่อยืนยันที่อยู่" muted /><View style={styles.summaryDivider} /><SummaryRow label="ยอดรวมโดยประมาณ" value={formatThaiBaht(subtotal)} emphasis /></View><Text style={styles.note}>ยอดชำระจริงจะได้รับการตรวจสอบราคาและสต็อกอีกครั้งจากระบบเมื่อสร้างคำสั่งซื้อ</Text></ScrollView></ScreenContainer><StickyBottomCTA primaryLabel="ดำเนินการชำระเงิน" onPrimary={() => router.push("/checkout" as Href)} context={<View style={styles.stickyContext}><Text style={styles.stickyLabel}>ยอดรวมสินค้า</Text><Text style={styles.stickyPrice}>{formatThaiBaht(subtotal)}</Text></View>} /></View>;
 }
 
-const styles = StyleSheet.create({
-  button: { marginTop: 24, flexDirection: "row", alignItems: "center", gap: 8, borderRadius: 999, backgroundColor: "#17352A", paddingHorizontal: 18, paddingVertical: 12 },
-  back: { height: 42, width: 42, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "#E8E0D0", borderRadius: 21, backgroundColor: "#FFFFFF" },
-  cartContent: { gap: 12, paddingBottom: 20 },
-  checkoutButton: { height: 52, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 9, borderRadius: 16, backgroundColor: "#17352A" },
-  pressed: { opacity: 0.76, transform: [{ scale: 0.98 }] },
-});
+const styles = StyleSheet.create({ root: { flex: 1, backgroundColor: HOBEE.colors.canvas }, content: { gap: 12, paddingBottom: 145 }, item: { flexDirection: "row", gap: 12, borderRadius: 22, borderWidth: 1, borderColor: HOBEE.colors.border, backgroundColor: HOBEE.colors.surface, padding: 12, ...HOBEE.shadow }, itemUnavailable: { borderColor: "#E5ACA3", backgroundColor: "#FFF8F6" }, itemImage: { width: 91, height: 91, borderRadius: 17, backgroundColor: "#E8E4DE" }, itemBody: { flex: 1, justifyContent: "space-between" }, itemTitleRow: { flexDirection: "row", gap: 6 }, itemTitle: { flex: 1, color: HOBEE.colors.ink, fontSize: 15, fontWeight: "900", lineHeight: 20 }, remove: { width: 25, height: 25, alignItems: "center", justifyContent: "center", borderRadius: 13, backgroundColor: "#F4F1ED" }, itemOrigin: { marginTop: 3, color: HOBEE.colors.muted, fontSize: 11, fontWeight: "600" }, itemPrice: { marginTop: 6, color: HOBEE.colors.ink, fontSize: 16, fontWeight: "900" }, outOfStock: { marginTop: 4, color: "#B65045", fontSize: 11, fontWeight: "800" }, itemControl: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 7 }, stock: { color: HOBEE.colors.muted, fontSize: 11, fontWeight: "700" }, summary: { marginTop: 12, borderRadius: 22, borderWidth: 1, borderColor: HOBEE.colors.border, backgroundColor: HOBEE.colors.surface, padding: 16 }, summaryDivider: { height: 1, marginTop: 13, backgroundColor: HOBEE.colors.border }, note: { marginTop: 4, color: HOBEE.colors.muted, fontSize: 12, lineHeight: 18, textAlign: "center" }, stickyContext: { flexDirection: "row", justifyContent: "space-between", alignItems: "baseline" }, stickyLabel: { color: HOBEE.colors.muted, fontSize: 13, fontWeight: "700" }, stickyPrice: { color: HOBEE.colors.ink, fontSize: 20, fontWeight: "900" }, pressed: { opacity: 0.72, transform: [{ scale: 0.97 }] } });

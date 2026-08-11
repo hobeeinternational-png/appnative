@@ -1,84 +1,26 @@
-import { useMemo, useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useMemo, useState } from "react";
 
-import { PrimaryButton } from "@/components/hobee/primary-button";
+import { HOBEE } from "@/components/hobee/design-tokens";
+import { BackHeader, InfoRow, StickyBottomCTA, SummaryRow } from "@/components/hobee/commerce-ui";
 import { ScreenContainer } from "@/components/screen-container";
+import { useAddresses } from "@/hooks/use-addresses";
 import { useCart } from "@/contexts/cart-context";
 import { useSupabaseAuth } from "@/contexts/supabase-auth-context";
 import { useToast } from "@/contexts/toast-context";
-import { useAddresses } from "@/hooks/use-addresses";
 import { formatShippingAddress } from "@/lib/addresses";
 import { hobeeApi } from "@/lib/hobee-api";
 import { formatThaiBaht } from "@/lib/hobee-data";
 
 export default function CheckoutScreen() {
-  const { addressId } = useLocalSearchParams<{ addressId?: string }>();
-  const { items, subtotal, clearCart } = useCart();
-  const { user } = useSupabaseAuth();
-  const { addresses, loading } = useAddresses();
-  const { showToast } = useToast();
-  const [submitting, setSubmitting] = useState(false);
-  const selectedAddress = useMemo(
-    () => addresses.find((address) => address.id === addressId) ?? addresses.find((address) => address.is_default) ?? null,
-    [addressId, addresses],
-  );
-
-  const submitOrder = async () => {
-    if (!user) { router.push("/auth"); return; }
-    if (!selectedAddress) { router.push("/checkout/address"); return; }
-    if (!items.length) { showToast("ตะกร้าสินค้าว่างอยู่", "error"); return; }
-    if (!hobeeApi.isConfigured()) { showToast("ยังไม่ได้ตั้งค่า Vercel API สำหรับสร้างคำสั่งซื้อ", "info"); return; }
-    setSubmitting(true);
-    try {
-      const response = await hobeeApi.createOrder({
-        addressId: selectedAddress.id,
-        items: items.map((item) => ({ productId: item.product.id, quantity: item.quantity })),
-      });
-      clearCart();
-      showToast(`สร้างคำสั่งซื้อ ${response.order.order_number} แล้ว`);
-      router.replace({ pathname: "/payment/[orderId]", params: { orderId: response.order.id } });
-    } catch (error) {
-      showToast(error instanceof Error ? error.message : "ไม่สามารถสร้างคำสั่งซื้อได้", "error");
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  return (
-    <ScreenContainer edges={["top", "bottom", "left", "right"]} className="px-5" safeAreaClassName="pt-3">
-      <View className="mb-5 flex-row items-center gap-3">
-        <Pressable accessibilityRole="button" onPress={() => router.back()} style={({ pressed }) => [styles.back, pressed && styles.pressed]}><MaterialIcons name="arrow-back" size={22} color="#17352A" /></Pressable>
-        <View><Text className="text-2xl font-black text-foreground">สรุปคำสั่งซื้อ</Text><Text className="mt-0.5 text-sm text-muted">ตรวจสอบสินค้าและที่อยู่จัดส่ง</Text></View>
-      </View>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
-        <StepIndicator step={selectedAddress ? 2 : 1} />
-        <Text className="mt-6 text-base font-black text-foreground">ที่อยู่จัดส่ง</Text>
-        {loading ? (
-          <View className="mt-3 items-center rounded-2xl border border-border bg-surface p-5"><ActivityIndicator color="#C98716" /></View>
-        ) : selectedAddress ? (
-          <View className="mt-3 rounded-2xl border border-border bg-surface p-4">
-            <View className="flex-row gap-3"><View className="h-10 w-10 items-center justify-center rounded-xl bg-[#F5EBCF]"><MaterialIcons name="location-on" size={21} color="#17352A" /></View><View className="flex-1"><Text className="font-black text-foreground">{selectedAddress.recipient_name} · {selectedAddress.phone}</Text><Text className="mt-1 text-sm leading-5 text-muted">{formatShippingAddress(selectedAddress)}</Text></View></View>
-            <Pressable onPress={() => router.push("/checkout/address")} style={({ pressed }) => [styles.changeAddress, pressed && styles.pressed]}><Text className="text-sm font-bold text-primary">เปลี่ยน/เพิ่มที่อยู่</Text><MaterialIcons name="chevron-right" size={18} color="#C98716" /></Pressable>
-          </View>
-        ) : (
-          <Pressable onPress={() => router.push("/checkout/address")} style={({ pressed }) => [styles.addAddress, pressed && styles.pressed]}><MaterialIcons name="add-location-alt" size={22} color="#C98716" /><View className="flex-1"><Text className="font-black text-foreground">เพิ่มที่อยู่จัดส่ง</Text><Text className="mt-0.5 text-sm text-muted">จำเป็นก่อนสร้างคำสั่งซื้อ</Text></View><MaterialIcons name="chevron-right" size={22} color="#17352A" /></Pressable>
-        )}
-        <Text className="mt-6 text-base font-black text-foreground">รายการสินค้า</Text>
-        <View className="mt-3 overflow-hidden rounded-2xl border border-border bg-surface">
-          {items.map((item, index) => <View key={item.product.id} className={`flex-row items-center justify-between gap-3 p-4 ${index < items.length - 1 ? "border-b border-border" : ""}`}><View className="flex-1"><Text numberOfLines={2} className="font-bold text-foreground">{item.product.shortName}</Text><Text className="mt-1 text-xs text-muted">{item.quantity} × {formatThaiBaht(item.product.price)}</Text></View><Text className="font-black text-foreground">{formatThaiBaht(item.product.price * item.quantity)}</Text></View>)}
-          {!items.length ? <Text className="p-4 text-sm text-muted">ยังไม่มีสินค้าในตะกร้า</Text> : null}
-        </View>
-        <View className="mt-5 rounded-2xl bg-[#17352A] p-5"><Text className="text-sm text-white/70">ยอดรวมสินค้า</Text><Text className="mt-1 text-3xl font-black text-white">{formatThaiBaht(subtotal)}</Text><Text className="mt-2 text-xs leading-5 text-white/65">ยอดชำระจริงจะคำนวณใหม่จากราคาและสต็อกในระบบเมื่อสร้างคำสั่งซื้อ</Text></View>
-        <PrimaryButton label={user ? "สร้างคำสั่งซื้อ" : "เข้าสู่ระบบเพื่อสั่งซื้อ"} icon="arrow-forward" loading={submitting} disabled={!items.length} onPress={() => void submitOrder()} style={styles.button} />
-      </ScrollView>
-    </ScreenContainer>
-  );
+  const { addressId } = useLocalSearchParams<{ addressId?: string }>(); const { items, subtotal, clearCart } = useCart(); const { user } = useSupabaseAuth(); const { addresses, loading } = useAddresses(); const { showToast } = useToast(); const [submitting, setSubmitting] = useState(false);
+  const selectedAddress = useMemo(() => addresses.find((address) => address.id === addressId) ?? addresses.find((address) => address.is_default) ?? null, [addressId, addresses]);
+  const submitOrder = async () => { if (!user) { router.push("/auth"); return; } if (!selectedAddress) { router.push("/checkout/address"); return; } if (!items.length) { showToast("ตะกร้าสินค้าว่างอยู่", "error"); return; } if (!hobeeApi.isConfigured()) { showToast("ยังไม่ได้ตั้งค่า Vercel API สำหรับสร้างคำสั่งซื้อ", "info"); return; } setSubmitting(true); try { const response = await hobeeApi.createOrder({ addressId: selectedAddress.id, items: items.map((item) => ({ productId: item.product.id, quantity: item.quantity })) }); clearCart(); showToast(`สร้างคำสั่งซื้อ ${response.order.order_number} แล้ว`); router.replace({ pathname: "/payment/[orderId]", params: { orderId: response.order.id } }); } catch (error) { showToast(error instanceof Error ? error.message : "ไม่สามารถสร้างคำสั่งซื้อได้", "error"); } finally { setSubmitting(false); } };
+  return <View style={styles.root}><ScreenContainer edges={["top", "left", "right"]} containerClassName="bg-[#F8F7F5]" className="px-5" safeAreaClassName="pt-3"><BackHeader title="สรุปคำสั่งซื้อ" subtitle="ตรวจสอบข้อมูลก่อนยืนยัน" onBack={() => router.back()} /><ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}><View style={styles.progress}><Step index={1} label="สินค้า" active /><View style={styles.progressLine} /><Step index={2} label="จัดส่ง" active={Boolean(selectedAddress)} /><View style={styles.progressLine} /><Step index={3} label="ชำระเงิน" active={false} /></View><Section title="ที่อยู่จัดส่ง"><View style={styles.panel}>{loading ? <ActivityIndicator color={HOBEE.colors.gold} /> : selectedAddress ? <InfoRow icon="location-on" label={`${selectedAddress.recipient_name} · ${selectedAddress.phone}`} value={formatShippingAddress(selectedAddress)} onPress={() => router.push("/checkout/address")} /> : <Pressable onPress={() => router.push("/checkout/address")} style={({ pressed }) => [styles.addAddress, pressed && styles.pressed]}><MaterialIcons name="add-location-alt" size={23} color={HOBEE.colors.goldDark} /><View style={{ flex: 1 }}><Text style={styles.addTitle}>เพิ่มที่อยู่จัดส่ง</Text><Text style={styles.addDetail}>จำเป็นก่อนสร้างคำสั่งซื้อ</Text></View><MaterialIcons name="chevron-right" size={23} color={HOBEE.colors.muted} /></Pressable>}</View></Section><Section title="สินค้าในคำสั่งซื้อ"><View style={styles.panel}>{items.map((item, index) => <View key={item.product.id} style={[styles.orderItem, index < items.length - 1 && styles.orderItemBorder]}><View style={{ flex: 1 }}><Text numberOfLines={2} style={styles.itemTitle}>{item.product.shortName}</Text><Text style={styles.itemDetail}>{item.quantity} × {formatThaiBaht(item.product.price)}</Text></View><Text style={styles.itemTotal}>{formatThaiBaht(item.product.price * item.quantity)}</Text></View>)}{!items.length ? <Text style={styles.itemDetail}>ยังไม่มีสินค้าในตะกร้า</Text> : null}</View></Section><Section title="การจัดส่งและสิทธิพิเศษ"><View style={styles.panel}><InfoRow icon="local-shipping" label="วิธีจัดส่ง" value="จัดส่งมาตรฐาน · คำนวณหลังยืนยันที่อยู่" /><InfoRow icon="confirmation-number" label="คูปอง / ส่วนลด" value="เลือกสิทธิ์ที่ใช้ได้ในขั้นตอนต่อไป" /><InfoRow icon="stars" label="HOBEE Points" value="คะแนนจะสะสมเมื่อคำสั่งซื้อได้รับการยืนยัน" /></View></Section><Section title="วิธีชำระเงิน"><View style={styles.panel}><InfoRow icon="payments" label="เลือกช่องทางชำระเงิน" value="PromptPay หรือบัตรผ่านผู้ให้บริการที่ปลอดภัย" /></View></Section><Section title="สรุปยอด"><View style={styles.summary}><SummaryRow label="ยอดรวมสินค้า" value={formatThaiBaht(subtotal)} /><SummaryRow label="ส่วนลด" value="คำนวณเมื่อสร้างคำสั่งซื้อ" muted /><SummaryRow label="ค่าจัดส่ง" value="คำนวณเมื่อสร้างคำสั่งซื้อ" muted /><View style={styles.divider} /><SummaryRow label="ยอดรวมโดยประมาณ" value={formatThaiBaht(subtotal)} emphasis /><Text style={styles.serverNote}>ยอดเงินจริงและสต็อกจะได้รับการตรวจสอบโดย Order API ฝั่ง server ก่อนเริ่มการชำระเงิน</Text></View></Section></ScrollView></ScreenContainer><StickyBottomCTA primaryLabel={user ? "ยืนยันคำสั่งซื้อ" : "เข้าสู่ระบบเพื่อสั่งซื้อ"} primaryDisabled={!items.length || submitting} onPrimary={() => void submitOrder()} context={<View style={styles.stickyContext}><Text style={styles.stickyLabel}>ยอดรวมโดยประมาณ</Text><Text style={styles.stickyPrice}>{formatThaiBaht(subtotal)}</Text></View>} /></View>;
 }
 
-function StepIndicator({ step }: { step: number }) {
-  return <View className="rounded-2xl border border-border bg-surface p-4"><Text className="text-sm font-black text-foreground">ขั้นตอนคำสั่งซื้อ</Text><View className="mt-4 flex-row">{["สินค้า", "จัดส่ง", "ชำระเงิน"].map((title, index) => <View key={title} className="flex-1 items-center"><View className={`h-8 w-8 items-center justify-center rounded-full ${index + 1 <= step ? "bg-primary" : "bg-[#F3F0E8]"}`}><Text className={`text-xs font-black ${index + 1 <= step ? "text-white" : "text-muted"}`}>{index + 1}</Text></View><Text className={`mt-2 text-xs font-bold ${index + 1 <= step ? "text-foreground" : "text-muted"}`}>{title}</Text></View>)}</View></View>;
-}
-
-const styles = StyleSheet.create({ content: { paddingBottom: 28 }, back: { height: 42, width: 42, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "#E8E0D0", borderRadius: 21, backgroundColor: "#FFFFFF" }, addAddress: { flexDirection: "row", alignItems: "center", gap: 12, marginTop: 12, borderWidth: 1, borderStyle: "dashed", borderColor: "#C98716", borderRadius: 16, backgroundColor: "#FFF9ED", padding: 16 }, changeAddress: { flexDirection: "row", alignSelf: "flex-start", alignItems: "center", marginTop: 14 }, button: { marginTop: 18 }, pressed: { opacity: 0.72, transform: [{ scale: 0.98 }] } });
+function Section({ title, children }: { title: string; children: React.ReactNode }) { return <View style={styles.section}><Text style={styles.sectionTitle}>{title}</Text>{children}</View>; }
+function Step({ index, label, active }: { index: number; label: string; active: boolean }) { return <View style={styles.step}><View style={[styles.stepDot, active && styles.stepDotActive]}><Text style={[styles.stepText, active && styles.stepTextActive]}>{index}</Text></View><Text style={[styles.stepLabel, active && styles.stepLabelActive]}>{label}</Text></View>; }
+const styles = StyleSheet.create({ root: { flex: 1, backgroundColor: HOBEE.colors.canvas }, content: { paddingBottom: 146 }, progress: { flexDirection: "row", alignItems: "flex-start", justifyContent: "space-between", borderRadius: 21, borderWidth: 1, borderColor: HOBEE.colors.border, backgroundColor: HOBEE.colors.surface, paddingHorizontal: 15, paddingVertical: 13 }, step: { alignItems: "center" }, stepDot: { width: 29, height: 29, alignItems: "center", justifyContent: "center", borderRadius: 15, backgroundColor: "#ECE8E2" }, stepDotActive: { backgroundColor: HOBEE.colors.gold }, stepText: { color: HOBEE.colors.muted, fontSize: 12, fontWeight: "900" }, stepTextActive: { color: HOBEE.colors.ink }, stepLabel: { marginTop: 5, color: HOBEE.colors.muted, fontSize: 11, fontWeight: "700" }, stepLabelActive: { color: HOBEE.colors.ink }, progressLine: { height: 1, flex: 1, marginTop: 14, marginHorizontal: 6, backgroundColor: HOBEE.colors.border }, section: { marginTop: 24 }, sectionTitle: { marginBottom: 10, color: HOBEE.colors.ink, fontSize: 18, fontWeight: "900" }, panel: { borderRadius: 22, borderWidth: 1, borderColor: HOBEE.colors.border, backgroundColor: HOBEE.colors.surface, paddingHorizontal: 14 }, addAddress: { minHeight: 74, flexDirection: "row", alignItems: "center", gap: 12, paddingVertical: 13 }, addTitle: { color: HOBEE.colors.ink, fontSize: 15, fontWeight: "900" }, addDetail: { marginTop: 3, color: HOBEE.colors.muted, fontSize: 12, fontWeight: "600" }, orderItem: { flexDirection: "row", alignItems: "center", gap: 10, paddingVertical: 14 }, orderItemBorder: { borderBottomWidth: 1, borderBottomColor: HOBEE.colors.border }, itemTitle: { color: HOBEE.colors.ink, fontSize: 14, fontWeight: "900" }, itemDetail: { marginTop: 4, color: HOBEE.colors.muted, fontSize: 12, fontWeight: "600" }, itemTotal: { color: HOBEE.colors.ink, fontSize: 14, fontWeight: "900" }, summary: { borderRadius: 22, backgroundColor: HOBEE.colors.nav, padding: 17 }, divider: { height: 1, marginTop: 13, backgroundColor: "rgba(255,255,255,0.16)" }, serverNote: { marginTop: 13, color: "#D8D4CF", fontSize: 11, lineHeight: 16 }, stickyContext: { flexDirection: "row", justifyContent: "space-between", alignItems: "baseline" }, stickyLabel: { color: HOBEE.colors.muted, fontSize: 13, fontWeight: "700" }, stickyPrice: { color: HOBEE.colors.ink, fontSize: 20, fontWeight: "900" }, pressed: { opacity: 0.8, transform: [{ scale: 0.98 }] } });

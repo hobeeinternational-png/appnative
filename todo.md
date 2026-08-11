@@ -74,3 +74,7 @@
 - [x] Rebuild Shop ด้วย header, search, chips, product grid และ states ที่ใช้ design system กลาง
 - [x] Rebuild Discover แบบ section-based exploration โดยแยก mock data layer จาก UI
 - [x] ตรวจ navigation consistency, safe area, route และ visual regression ของ Home, Shop, Discover
+- [x] Audit และขยาย shared components สำหรับ Product, Cart, Checkout, Payment, Orders, Account และ Rewards
+- [x] Rebuild Product Detail, Cart, Checkout และ Payment presentation layer โดยคง business logic เดิม
+- [x] Rebuild Orders, Order Detail, Account และ Rewards ให้ใช้ HOBEE design system กลาง
+- [x] ตรวจ customer journey, sticky CTA, safe area, route และ regression ของทุกหน้าหลัก
