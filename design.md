@@ -32,6 +32,32 @@ The application is designed for a 9:16 portrait screen and comfortable one-hande
 
 The core navigation uses four persistent tabs: **Home**, **Shop**, **Discover**, and **Account**. Cart is available from a compact, visible header control on shopping surfaces and opens as a dedicated screen. Product details and checkout are pushed screens, keeping the tab state intact. Authentication and payment choices use native modal sheets where appropriate.
 
+## Home Visual Rebuild — Reference-Led Specification
+
+The Home presentation is refactored to closely follow the supplied mobile reference screens while preserving the existing catalogue, story, cart, authentication, payment, and route logic. The screen uses a warm off-white canvas, a compact brand header, a large rounded search pill, an eight-item two-by-four category grid, a dark editorial ecosystem hero, and vertical discovery sections. Layout dimensions are optimized for portrait, one-handed use; all actionable cards retain their existing destination routes.
+
+| Element | Reference-led implementation |
+|---|---|
+| Header | Dark-and-gold circular H mark, bold HOBEE wordmark, Chiang Mai location pill, cart, notification and avatar controls on one clean row. |
+| Search | Full-width pale search pill with magnifier, the Thai reference placeholder, and a microphone icon. |
+| Category grid | Eight equally sized white tiles in two rows of four; pastel icon wells and concise labels for Travel, Shop, Products, Services, Restaurants, Learning, Opportunity, and Community. |
+| Hero | Large 24px-radius image card, dark overlay, gold badge, high-contrast title, supporting copy, gold CTA, and pagination indicators. |
+| Sections | Gold vertical accent, bold section heading, “ดูทั้งหมด” and chevron; two-column content cards with soft border and elevation. |
+| Floating navigation | Dark wide pill floating above the bottom safe area, five visual positions, no labels except the raised gold “HOBEE” centre button, and an active gold Home indicator. Existing Home, Shop, Discover, and Account routes remain available. |
+
+### Reference-led Tokens
+
+| Role | Value |
+|---|---:|
+| Home background | `#F8F7F5` |
+| Primary ink | `#211F1D` |
+| Secondary copy | `#8D8882` |
+| Soft border | `#E8E4DE` |
+| HOBEE gold | `#D2A33D` |
+| Floating navigation | `#292725` |
+| Standard card radius | `24px` |
+| Page side padding | `20px` |
+
 ## Color Choices
 
 | Token | Light mode | Dark mode | Role |
@@ -61,4 +87,3 @@ The core navigation uses four persistent tabs: **Home**, **Shop**, **Discover**,
 The submitted web project is a React/Vite client with an Express backend, Firebase/Firestore persistence, Firebase Authentication, ThaiBulkSMS OTP handling, order/payment routes, and optional Gemini-powered services. Browser-only APIs such as `localStorage`, `window`, `document`, popup authentication, browser routing, canvas processing, and PWA installation must not be copied directly into the app. Their native equivalents will be Expo Router, SecureStore or AsyncStorage, native Firebase sign-in flows, ImagePicker/ImageManipulator, push notifications, and platform-specific sharing.
 
 The existing web backend should remain the system of record. The mobile app will receive only a configurable HTTPS API base URL and native tokens will be transmitted using the `Authorization: Bearer <token>` convention already used by protected web endpoints. No production credential from the supplied source archive will be embedded in the application.
-

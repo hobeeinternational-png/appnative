@@ -66,3 +66,6 @@
 - [x] แยก address formatter ออกจาก Supabase client และทำให้ tests/addresses.test.ts ผ่าน
 - [x] ตรวจ Supabase Security Advisor หลังเพิ่ม payment, notification, shipping, loyalty และ review tables
 - [x] ลดขนาด assets ไอคอนจาก 1920px เหลือ 1024px เพื่อรองรับ checkpoint
+- [x] ปรับหน้า Home ให้ pixel-close ตามภาพอ้างอิง โดยคง data flow, routes และ business logic เดิม
+- [x] สร้าง floating bottom navigation แบบ pill พร้อมปุ่ม HOBEE ตรงกลางตามภาพอ้างอิง
+- [x] ตรวจ visual ของ Home บน mobile portrait และทดสอบ TypeScript หลัง UI refactor
