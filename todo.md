@@ -69,3 +69,8 @@
 - [x] ปรับหน้า Home ให้ pixel-close ตามภาพอ้างอิง โดยคง data flow, routes และ business logic เดิม
 - [x] สร้าง floating bottom navigation แบบ pill พร้อมปุ่ม HOBEE ตรงกลางตามภาพอ้างอิง
 - [x] ตรวจ visual ของ Home บน mobile portrait และทดสอบ TypeScript หลัง UI refactor
+- [ ] Freeze design tokens จาก Home checkpoint 27e2ac51 และรวมไว้เป็น shared source เดียว
+- [ ] Refactor shared Home components โดยไม่ทำให้ visual baseline ของ Home เปลี่ยน
+- [ ] Rebuild Shop ด้วย header, search, chips, product grid และ states ที่ใช้ design system กลาง
+- [ ] Rebuild Discover แบบ section-based exploration โดยแยก mock data layer จาก UI
+- [ ] ตรวจ navigation consistency, safe area, route และ visual regression ของ Home, Shop, Discover

@@ -2,8 +2,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { Image, ImageBackground, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
+import { AppHeader, CategoryTile as SharedCategoryTile, CommunityCard as SharedCommunityCard, ProductCard as SharedProductCard, SearchBar as SharedSearchBar, SectionHeader as SharedSectionHeader, ServiceTile as SharedServiceTile, TripCard as SharedTripCard } from "@/components/hobee/shared-ui";
 import { ScreenContainer } from "@/components/screen-container";
-import { useCart } from "@/contexts/cart-context";
 import { useCatalog } from "@/hooks/use-catalog";
 import { formatThaiBaht, hobeeStories, type HobeeProduct } from "@/lib/hobee-data";
 
@@ -34,39 +34,38 @@ const COMMUNITY_ITEMS = [
 
 export default function HomeScreen() {
   const { products } = useCatalog();
-  const { itemCount } = useCart();
 
   return (
     <ScreenContainer containerClassName="bg-[#F8F7F5]" safeAreaClassName="pt-2" edges={["top", "left", "right"]}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
-        <HomeHeader itemCount={itemCount} />
-        <SearchBar />
+        <AppHeader />
+        <SharedSearchBar onPress={() => router.push("/(tabs)/shop")} />
 
         <View style={styles.categoryGrid}>
-          {CATEGORY_ITEMS.map((item) => <CategoryTile key={item.label} {...item} />)}
+          {CATEGORY_ITEMS.map((item) => <SharedCategoryTile key={item.label} label={item.label} icon={item.icon} tone={item.tone} onPress={() => router.push(item.route)} />)}
         </View>
 
         <EcosystemHero />
 
-        <SectionHeader title="สำหรับคุณ" onPress={() => router.push("/(tabs)/shop")} />
+        <SharedSectionHeader title="สำหรับคุณ" onPress={() => router.push("/(tabs)/shop")} />
         <View style={styles.grid}>
-          {products.slice(0, 4).map((product) => <CommerceCard key={product.id} product={product} />)}
+          {products.slice(0, 4).map((product) => <SharedProductCard key={product.id} product={product} />)}
         </View>
 
-        <SectionHeader title="ทริปน่าสนใจ" onPress={() => router.push("/(tabs)/discover")} />
+        <SharedSectionHeader title="ทริปน่าสนใจ" onPress={() => router.push("/(tabs)/discover")} />
         <View style={styles.grid}>
-          <TravelCard image={hobeeStories[2].image} badge="ทริปแนะนำ" title="เที่ยวชิล เชียงใหม่ 3 วัน 2 คืน" price="฿ 4,900" />
-          <TravelCard image={hobeeStories[1].image} badge="ใกล้คุณ" title="คาเฟ่วิวทุ่งนา บรรยากาศดี" price="฿ 320" />
+          <SharedTripCard image={hobeeStories[2].image} badge="ทริปแนะนำ" title="เที่ยวชิล เชียงใหม่ 3 วัน 2 คืน" price="฿ 4,900" onPress={() => router.push("/(tabs)/discover")} />
+          <SharedTripCard image={hobeeStories[1].image} badge="ใกล้คุณ" title="คาเฟ่วิวทุ่งนา บรรยากาศดี" price="฿ 320" onPress={() => router.push("/(tabs)/discover")} />
         </View>
 
-        <SectionHeader title="บริการ & โอกาส" onPress={() => router.push("/(tabs)/discover")} />
+        <SharedSectionHeader title="บริการ & โอกาส" onPress={() => router.push("/(tabs)/discover")} />
         <View style={styles.serviceGrid}>
-          {SERVICE_ITEMS.map((item) => <ServiceTile key={item.label} {...item} />)}
+          {SERVICE_ITEMS.map((item) => <SharedServiceTile key={item.label} label={item.label} icon={item.icon} tone={item.tone} onPress={() => router.push("/(tabs)/discover")} />)}
         </View>
 
-        <SectionHeader title="Story & Community" onPress={() => router.push("/(tabs)/discover")} />
+        <SharedSectionHeader title="Story & Community" onPress={() => router.push("/(tabs)/discover")} />
         <View style={styles.grid}>
-          {COMMUNITY_ITEMS.map((item) => <CommunityCard key={item.name} {...item} />)}
+          {COMMUNITY_ITEMS.map((item) => <SharedCommunityCard key={item.name} {...item} onPress={() => router.push("/(tabs)/discover")} />)}
         </View>
 
         <DarkEcosystemCard />
