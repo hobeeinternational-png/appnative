@@ -1,0 +1,108 @@
+openapi: 3.1.0
+info:
+  title: HOBEE Commerce API
+  version: 0.1.0
+  description: Server-only API for authenticated order creation and payment orchestration.
+servers:
+  - url: https://{deployment-host}
+    variables:
+      deployment-host:
+        default: hobee-backend.vercel.app
+paths:
+  /api/orders:
+    post:
+      summary: Create a pending order from current server-side product prices and stock.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderRequest'
+      responses:
+        '201':
+          description: Pending order created.
+        '400':
+          description: Invalid item, quantity, delivery address, or stock state.
+        '401':
+          description: Missing or invalid Supabase bearer token.
+  /api/payments/intent:
+    post:
+      summary: Create a pending payment record for an owned pending order.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePaymentIntentRequest'
+      responses:
+        '201':
+          description: Payment intent record created. A provider integration can add redirect or client-secret details later.
+        '401':
+          description: Missing or invalid Supabase bearer token.
+        '404':
+          description: Owned pending order not found.
+  /api/payments/webhook:
+    post:
+      summary: Receive a signed payment provider event and transition payment/order states idempotently.
+      security:
+        - webhookSignature: []
+      responses:
+        '200':
+          description: Event processed or previously processed.
+        '400':
+          description: Unsupported event payload.
+        '401':
+          description: Invalid webhook signature.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Supabase JWT
+    webhookSignature:
+      type: apiKey
+      in: header
+      name: x-hobee-webhook-signature
+  schemas:
+    CreateOrderRequest:
+      type: object
+      additionalProperties: false
+      required: [addressId, items]
+      properties:
+        addressId:
+          type: string
+          format: uuid
+        items:
+          type: array
+          minItems: 1
+          maxItems: 50
+          items:
+            type: object
+            additionalProperties: false
+            required: [productId, quantity]
+            properties:
+              productId:
+                type: string
+                format: uuid
+              variantId:
+                type: string
+                format: uuid
+              quantity:
+                type: integer
+                minimum: 1
+                maximum: 99
+    CreatePaymentIntentRequest:
+      type: object
+      additionalProperties: false
+      required: [orderId, provider]
+      properties:
+        orderId:
+          type: string
+          format: uuid
+        provider:
+          type: string
+          enum: [manual, bank_transfer, payment_gateway]

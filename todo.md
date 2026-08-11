@@ -1,0 +1,68 @@
+# Project TODO
+
+- [x] วิเคราะห์โครงสร้างเว็บไซต์ HOBEE และกำหนด MVP สำหรับแอปมือถือ
+- [x] สร้างแผนออกแบบมือถือและโดเมนโมเดลสำหรับ HOBEE Mobile
+- [x] กำหนดธีม HOBEE สำหรับหน้าจอมือถือ
+- [x] ปรับข้อมูลแบรนด์ใน Expo configuration
+- [x] สร้างไอคอนแอป HOBEE สำหรับ iOS และ Android
+- [x] สร้าง navigation แบบแท็บ Home, Shop, Discover และ Account
+- [x] เพิ่มเมนูภาษาไทยและอังกฤษ พร้อมจดจำภาษาที่เลือกในเครื่อง
+- [x] พัฒนาหน้า Home จากข้อมูลผลิตภัณฑ์และคอนเทนต์ของ HOBEE
+- [x] พัฒนาหน้า Shop และ Product Detail พร้อมค้นหา
+- [x] สร้าง Cart context พร้อมบันทึกตะกร้าลงในเครื่อง
+- [x] พัฒนาหน้า Cart และจุดเริ่มต้น Checkout
+- [x] สร้าง API client ที่รองรับ HTTPS, token และข้อผิดพลาด
+- [x] สร้างโครงสร้าง session ที่ใช้ SecureStore สำหรับ native app
+- [x] พัฒนาหน้า Account และสถานะผู้ใช้ที่ยังไม่ได้เข้าสู่ระบบ
+- [ ] เชื่อม Firebase Authentication แบบ native หลังได้รับค่า config ที่เหมาะสม
+- [ ] ตรวจสอบสัญญา API และเปิดใช้ checkout/order แบบ end-to-end
+- [ ] เพิ่มการแจ้งเตือนบนมือถือหลังระบบ backend รองรับ token สำหรับ Expo push notifications
+- [x] เขียน unit tests สำหรับตรรกะ cart และการแปลงข้อมูลแค็ตตาล็อก
+- [x] ตรวจ TypeScript, Expo configuration และ unit test ของ cart
+- [ ] ทดสอบด้วย Expo Go บนอุปกรณ์ iOS และ Android จริง
+- [x] เชื่อมแค็ตตาล็อกจาก API แบบ optional โดยมีข้อมูลในเครื่องเป็น fallback
+- [x] สร้างหน้า Checkout ที่สื่อสารสถานะการเชื่อมต่อก่อนเปิดรับชำระเงินจริง
+- [x] ปรับขนาดและย้ายไฟล์ไอคอนผ่าน File Storage เพื่อเปิดทางให้บันทึก checkpoint ในภายหลัง
+- [x] ปรับ design system และองค์ประกอบ interaction ให้สอดคล้องกับ iOS และ Android
+- [x] เพิ่ม UX การค้นหา กรองสินค้า และสถานะ loading/empty/error ของหน้าร้านค้า
+- [x] เพิ่ม feedback หลังเพิ่มสินค้าและลดขั้นตอนเข้าถึงตะกร้า
+- [x] ปรับ Cart และ Checkout ให้มองเห็นยอดรวม สถานะ และขั้นตอนถัดไปชัดเจน
+- [x] ปรับ Account flow และจุดเข้าสู่ระบบให้เชื่อมต่อกับร้านค้าอย่างต่อเนื่อง
+- [x] ตรวจสอบ UX หลักด้วย unit tests และ TypeScript
+- [x] สำรวจ Supabase project และ Vercel project ที่เชื่อมต่อได้
+- [x] ออกแบบ Supabase schema สำหรับสินค้า ร้านค้า โปรไฟล์ ที่อยู่ ตะกร้า และคำสั่งซื้อ
+- [x] กำหนด Row Level Security และสิทธิ์ผู้ใช้/ผู้ดูแลใน Supabase
+- [x] ย้ายข้อมูลสินค้าเริ่มต้นจากเว็บไซต์ HOBEE ไปยัง Supabase
+- [x] เชื่อม mobile catalogue ให้ดึงสินค้าที่เผยแพร่แล้วจาก Supabase ก่อนใช้ข้อมูล fallback
+- [x] สร้าง Vercel API สำหรับคำสั่งซื้อ การชำระเงิน และ webhook ที่ไม่เปิดเผย secret ในแอป
+- [ ] Deploy Vercel backend starter พร้อม health endpoint สำหรับยืนยัน domain และ runtime
+- [ ] แก้สิทธิ์/การแสดงผล Vercel project ที่ connector ยังไม่สามารถตรวจสอบ deployment preview ได้
+- [x] กำหนด OpenAPI contract สำหรับ create order, payment intent และ payment webhook
+- [x] พัฒนา Vercel server utilities สำหรับตรวจ Supabase bearer token และ server-only Supabase secret
+- [x] พัฒนา API สร้างคำสั่งซื้อจากราคา/สต็อกจาก Supabase ไม่รับยอดรวมจาก mobile client
+- [x] พัฒนา Payment intent และ webhook endpoint แบบ provider-agnostic โดยยังไม่เรียกเก็บเงินจริง
+- [x] เขียน tests สำหรับ validation, server configuration และ webhook signature ของ Vercel API
+- [x] ออกแบบ payment provider abstraction สำหรับ PromptPay QR และบัตรเครดิตแบบ tokenized
+- [x] เพิ่ม sandbox adapter สำหรับทดสอบ payment intent โดยไม่เรียกเก็บเงินจริง
+- [x] เพิ่ม Opn Payments adapter สำหรับ PromptPay QR และบัตรแบบ tokenized โดยรอ sandbox credentials เพื่อทดสอบจริง
+- [x] เชื่อม provider action, redirect response และ Opn webhook verification เข้ากับ Payment Intent API
+- [ ] ทดสอบ PromptPay และบัตรเครดิตบน provider sandbox ก่อนเปิดใช้งานจริง
+- [x] สร้างหน้าเลือกและเพิ่มที่อยู่จัดส่งสำหรับ checkout
+- [x] เชื่อม Cart กับ Order API และแสดงผลการสร้างคำสั่งซื้อแบบปลอดภัย
+- [x] สร้างหน้าแสดง PromptPay QR, payment action และ deep-link callback สำหรับการชำระเงิน
+- [x] สร้างหน้า My Orders และรายละเอียดคำสั่งซื้อพร้อม timeline สถานะ
+- [x] สร้าง Admin Center สำหรับจัดการราคา สต็อก สถานะสินค้า และสถานะคำสั่งซื้อผ่าน role admin
+- [x] เพิ่ม native push token registration, Android order channel และ deep-link handling สำหรับเหตุการณ์คำสั่งซื้อ
+- [x] เพิ่ม Vercel utility ส่ง Expo push notification หลัง payment webhook โดยไม่ทำให้ธุรกรรมล้มเหลวเมื่อ push ส่งไม่สำเร็จ
+- [x] สร้าง shipment schema, manual fulfilment API, tracking record และ notification flow; รอ SHIPPOP merchant credentials เพื่อเปิด provider จริง
+- [x] สร้าง schema และ UX สำหรับคูปอง คะแนนสะสม และสินค้าชื่นชอบ
+- [x] สร้าง UX รีวิวแบบ moderation และคำแนะนำสินค้าจากหมวดเดียวกัน โดยใช้ schema product_reviews เดิมใน Supabase
+- [ ] ตรวจสอบ authorization, RLS, webhook replay และ payment security แบบ end-to-end
+- [ ] ทดสอบ native checkout/payment flow บน iOS และ Android development build
+- [x] เชื่อม Supabase Auth แบบ Magic Link และ catalogue data layer เข้ากับ HOBEE Mobile
+- [ ] ตั้งค่า Supabase Auth Redirect URL `manushobeemobile://auth/callback` สำหรับ HOBEE development/release build
+- [x] ตรวจสอบสิทธิ์ โปรเจกต์ และ deployment ที่เข้าถึงได้ก่อนเปลี่ยนแปลง Supabase หรือ Vercel
+- [x] สร้าง migration โครงข้อมูลเริ่มต้นบน Supabase project HOBEE PLATFORM1 ที่ยังว่าง
+- [x] แยก address formatter ออกจาก Supabase client และทำให้ tests/addresses.test.ts ผ่าน
+- [x] ตรวจ Supabase Security Advisor หลังเพิ่ม payment, notification, shipping, loyalty และ review tables
+- [x] ลดขนาด assets ไอคอนจาก 1920px เหลือ 1024px เพื่อรองรับ checkpoint

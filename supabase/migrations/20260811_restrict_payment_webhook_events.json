@@ -1,0 +1,1 @@
+{"project_id":"iwzxlsweuyuoqdslkblw","name":"restrict_payment_webhook_events","query":"create policy payment_webhook_events_service_role_only on public.payment_webhook_events for all to service_role using (true) with check (true);"}

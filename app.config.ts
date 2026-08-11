@@ -28,11 +28,11 @@ const schemeFromBundleId = `manus${timestamp}`;
 
 const env = {
   // App branding - update these values directly (do not use env vars)
-  appName: "HOBEE Mobile",
+  appName: "HOBEE",
   appSlug: "hobee-mobile",
   // S3 URL of the app logo - set this to the URL returned by generate_image when creating custom logo
   // Leave empty to use the default icon from assets/images/icon.png
-  logoUrl: "",
+  logoUrl: "/manus-storage/hobee-mobile-icon_09f8da48.png",
   scheme: schemeFromBundleId,
   iosBundleId: bundleId,
   androidPackage: bundleId,
@@ -86,6 +86,21 @@ const config: ExpoConfig = {
   },
   plugins: [
     "expo-router",
+    [
+      "expo-notifications",
+      {
+        icon: "./assets/images/android-icon-monochrome.png",
+        color: "#C98716",
+        defaultChannel: "orders",
+      },
+    ],
+    [
+      "expo-secure-store",
+      {
+        configureAndroidBackup: true,
+        faceIDPermission: "Allow $(PRODUCT_NAME) to access Face ID for secure HOBEE account access.",
+      },
+    ],
     [
       "expo-audio",
       {

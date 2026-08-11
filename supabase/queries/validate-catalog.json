@@ -1,0 +1,1 @@
+{"project_id":"iwzxlsweuyuoqdslkblw","query":"select p.slug, p.name, p.price, p.stock_quantity, p.status, s.name as shop_name from public.products p join public.shops s on s.id = p.shop_id where p.status = 'published' order by p.created_at desc limit 10;"}
