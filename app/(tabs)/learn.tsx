@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { Image, ImageBackground, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { ScreenContainer } from "@/components/screen-container";
+import { HOBEE } from "@/components/hobee/design-tokens";
 import { coursesForWorld, formatCourseDuration, learningCourses, learningWorlds, levelLabel, type LearningCourse, type LearningWorld } from "@/lib/learning-data";
 
 const FEATURED_IDS: Record<LearningWorld, string> = {
@@ -18,8 +19,8 @@ export default function LearningScreen() {
   const continueCourse = worldCourses[0];
 
   return (
-    <ScreenContainer edges={["top", "left", "right"]} containerClassName="bg-[#0C0D0D]" safeAreaClassName="bg-[#0C0D0D]">
-      <View style={styles.screen}>
+    <ScreenContainer edges={["top", "left", "right"]} containerClassName="bg-[#0C0A09]" safeAreaClassName="bg-[#0C0A09]">
+      <View style={[styles.screen, { backgroundColor: HOBEE.colors.darkBase }]}>
         <LearningHeader />
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.worldTabs}>
@@ -56,9 +57,9 @@ export default function LearningScreen() {
 
 function LearningHeader() {
   return (
-    <View style={styles.header}>
+    <View style={[styles.header, { borderBottomColor: HOBEE.colors.darkBorder }]}>
       <Pressable accessibilityRole="button" accessibilityLabel="กลับหน้าหลัก HOBEE" onPress={() => router.replace("/(tabs)")} style={({ pressed }) => [styles.brand, pressed && styles.pressed]}>
-        <View style={styles.brandMark}><MaterialIcons name="auto-awesome" size={20} color="#E0B642" /></View>
+        <View style={[styles.brandMark, { borderColor: HOBEE.colors.gold, backgroundColor: HOBEE.colors.darkCard }]}><MaterialIcons name="auto-awesome" size={20} color={HOBEE.colors.gold} /></View>
         <Text style={styles.wordmark}>HOBEE</Text><Text style={styles.learningLabel}>LEARNING</Text>
       </Pressable>
       <View style={styles.headerActions}>
@@ -78,15 +79,15 @@ function FeaturedCourse({ course }: { course: LearningCourse }) {
           <View style={styles.badgeRow}><Text style={styles.brandBadge}>HOBEE ACADEMY</Text><Text style={styles.rankBadge}>✣ คอร์สแนะนำอันดับ 1</Text></View>
           <Text style={styles.featuredTitle}>{course.title}</Text>
           <View style={styles.metaRow}><Text style={styles.rating}>★ {course.rating.toFixed(1)}</Text><Text style={styles.meta}>({course.ratingsCount} รีวิว)</Text><Text style={styles.meta}>◷ {formatCourseDuration(course.durationMinutes)}</Text></View>
-          <View style={styles.certified}><MaterialIcons name="verified-user" size={14} color="#52C994" /><Text style={styles.certifiedText}>มีประกาศนียบัตร</Text></View>
-          <View style={styles.actionRow}><View style={styles.primaryAction}><MaterialIcons name="play-arrow" size={21} color="#171412" /><Text style={styles.primaryActionText}>เริ่มเข้าสู่บทเรียน</Text></View><View style={styles.detailAction}><MaterialIcons name="info-outline" size={20} color="#F5F3EE" /><Text style={styles.detailActionText}>ดูรายละเอียด</Text></View><View style={styles.addAction}><MaterialIcons name="add" size={24} color="#F5F3EE" /></View></View>
+          <View style={styles.certified}><MaterialIcons name="verified-user" size={14} color={HOBEE.colors.success} /><Text style={styles.certifiedText}>มีประกาศนียบัตร</Text></View>
+          <View style={styles.actionRow}><View style={[styles.primaryAction, { backgroundColor: HOBEE.colors.gold, borderRadius: HOBEE.radius.small }]}><MaterialIcons name="play-arrow" size={21} color={HOBEE.colors.darkBase} /><Text style={[styles.primaryActionText, { color: HOBEE.colors.darkBase }]}>เริ่มเข้าสู่บทเรียน</Text></View><View style={styles.detailAction}><MaterialIcons name="info-outline" size={20} color="#F5F3EE" /><Text style={styles.detailActionText}>ดูรายละเอียด</Text></View><View style={styles.addAction}><MaterialIcons name="add" size={24} color="#F5F3EE" /></View></View>
         </View>
       </ImageBackground>
     </Pressable>
   );
 }
 
-function SectionTitle({ title, eyebrow }: { title: string; eyebrow: string }) { return <View style={styles.sectionHeading}><Text style={styles.sectionTitle}>{title}</Text><Text style={styles.eyebrow}>{eyebrow}</Text></View>; }
+function SectionTitle({ title, eyebrow }: { title: string; eyebrow: string }) { return <View style={styles.sectionHeading}><Text style={[styles.sectionTitle, { fontSize: HOBEE.type.h2 }]}>{title}</Text><Text style={[styles.eyebrow, { color: HOBEE.colors.gold }]}>{eyebrow}</Text></View>; }
 
 function CourseRail({ courses, showProgress = false, rank = false }: { courses: LearningCourse[]; showProgress?: boolean; rank?: boolean }) {
   return <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.rail}>{courses.map((course, index) => <CourseTile key={`${course.id}-${index}`} course={course} progress={showProgress ? Math.max(22, 68 - index * 12) : undefined} rank={rank ? index + 1 : undefined} />)}</ScrollView>;
@@ -96,8 +97,8 @@ function CourseTile({ course, progress, rank }: { course: LearningCourse; progre
   return <Pressable accessibilityRole="button" accessibilityLabel={`เปิดคอร์ส ${course.title}`} onPress={() => router.push({ pathname: "/learning/[id]", params: { id: course.id } } as never)} style={({ pressed }) => [styles.courseTile, pressed && styles.pressed]}>
     {rank ? <Text style={styles.rankNumber}>{rank}</Text> : null}
     <Image source={course.image} resizeMode="cover" style={styles.courseImage} />
-    {course.isNew ? <View style={styles.newBadge}><Text style={styles.newBadgeText}>NEW</Text></View> : null}
-    {progress ? <View style={styles.progressTrack}><View style={[styles.progressFill, { width: `${progress}%` }]} /></View> : null}
+    {course.isNew ? <View style={[styles.newBadge, { backgroundColor: HOBEE.colors.error }]}><Text style={styles.newBadgeText}>NEW</Text></View> : null}
+    {progress ? <View style={styles.progressTrack}><View style={[styles.progressFill, { width: `${progress}%`, backgroundColor: HOBEE.colors.error }]} /></View> : null}
     <Text numberOfLines={2} style={styles.courseTitle}>{course.title}</Text><Text style={styles.courseMeta}>{levelLabel(course.level)} • {course.episodesCount} บทเรียน</Text>
   </Pressable>;
 }
