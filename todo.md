@@ -90,3 +90,4 @@
 - [x] เพิ่ม automated validation สำหรับ Magic Link redirect, deep links และ Expo development-build configuration
 - [x] ตรวจและปรับ UX fallback ของ push permission, payment pending/failure และ checkout ที่ไม่เรียก provider
 - [x] อัปเดต readiness evidence สำหรับงานที่ทำได้โดยไม่ต้องใช้ Vercel หรือ provider credential
+- [x] เพิ่ม top safe-area spacing ของ header เพื่อไม่ให้ข้อมูลถูกบังบน iOS และ Android

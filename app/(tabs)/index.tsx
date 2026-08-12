@@ -36,7 +36,7 @@ export default function HomeScreen() {
   const { products } = useCatalog();
 
   return (
-    <ScreenContainer containerClassName="bg-[#F8F7F5]" safeAreaClassName="pt-2" edges={["top", "left", "right"]}>
+    <ScreenContainer containerClassName="bg-[#F8F7F5]" safeAreaClassName="pt-5" edges={["top", "left", "right"]}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
         <AppHeader />
         <SharedSearchBar onPress={() => router.push("/(tabs)/shop")} />
