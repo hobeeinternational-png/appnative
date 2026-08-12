@@ -132,3 +132,4 @@
 - [x] กู้ development server และยืนยันว่า HOBEE preview กลับมาตอบสนอง
 - [x] ตรวจ Metro bundler logs หลังการกู้คืน และจัดประเภท error/warning ที่ยังค้าง
 - [x] แก้ Metro/preview restart loop และยืนยัน development runtime เสถียร
+- [x] เชื่อมปุ่มหมวดร้านอาหารบนหน้า Home ไปยัง Food Discovery Hub

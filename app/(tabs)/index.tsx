@@ -12,7 +12,7 @@ const CATEGORY_ITEMS = [
   { label: "ร้านค้า", icon: "storefront", tone: "#FFF2D8", route: "/(tabs)/shop" },
   { label: "สินค้า", icon: "inventory-2", tone: "#D9FAF1", route: "/(tabs)/shop" },
   { label: "บริการ", icon: "business-center", tone: "#E0F2FE", route: "/(tabs)/discover" },
-  { label: "ร้านอาหาร", icon: "restaurant", tone: "#FFF1DE", route: "/(tabs)/shop" },
+  { label: "ร้านอาหาร", icon: "restaurant", tone: "#FFF1DE", route: "/travel/food" },
   { label: "เรียนรู้", icon: "school", tone: "#E6F0FF", route: "/(tabs)/discover" },
   { label: "Opportunity", icon: "trending-up", tone: "#FFF5CC", route: "/(tabs)/discover" },
   { label: "Community", icon: "groups", tone: "#F1E8FF", route: "/(tabs)/discover" },
