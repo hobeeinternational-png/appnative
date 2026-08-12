@@ -10,7 +10,7 @@ describe("top header safe area", () => {
     for (const screen of screens) {
       const source = readFileSync(resolve(root, screen), "utf8");
       expect(source).toContain('safeAreaClassName="pt-7"');
-      expect(source).toContain('<AppHeader />');
+      expect(source).toContain('<AppHeader');
     }
   });
 });

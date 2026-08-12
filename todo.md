@@ -93,3 +93,7 @@
 - [x] เพิ่ม top safe-area spacing ของ header เพื่อไม่ให้ข้อมูลถูกบังบน iOS และ Android
 - [x] เพิ่ม top inset ของ header อีกระดับให้พ้น Dynamic Island บนอุปกรณ์จริง
 - [x] ปรับ top inset ของ header เป็นระดับกลางตามผลทดสอบบนเครื่องจริง
+- [x] Audit catalogue metadata และ requirements ของ Shop reference ก่อน rebuild
+- [x] Rebuild Shop header, category rail, quick filters, community hero และ discovery controls
+- [x] เพิ่ม community origin rail, trust value grid และ impact module โดยใช้ข้อมูลจริงหรือ empty state
+- [x] ตรวจ Shop visual hierarchy, product/favorite routes, safe area และ test regressions
