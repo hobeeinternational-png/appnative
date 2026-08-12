@@ -97,3 +97,6 @@
 - [x] Rebuild Shop header, category rail, quick filters, community hero และ discovery controls
 - [x] เพิ่ม community origin rail, trust value grid และ impact module โดยใช้ข้อมูลจริงหรือ empty state
 - [x] ตรวจ Shop visual hierarchy, product/favorite routes, safe area และ test regressions
+- [x] เพิ่ม loading skeleton motion สำหรับ product catalogue
+- [x] เพิ่ม quick-add animation และ feedback สำหรับการเพิ่มสินค้าลงตะกร้า
+- [x] ตรวจ regression ของ catalogue, cart และ motion feedback
