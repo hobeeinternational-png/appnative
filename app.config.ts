@@ -64,7 +64,7 @@ const config: ExpoConfig = {
     edgeToEdgeEnabled: true,
     predictiveBackGestureEnabled: false,
     package: env.androidPackage,
-    permissions: ["POST_NOTIFICATIONS"],
+    permissions: ["POST_NOTIFICATIONS", "ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"],
     intentFilters: [
       {
         action: "VIEW",
@@ -89,6 +89,12 @@ const config: ExpoConfig = {
     "expo-asset",
     "expo-font",
     "expo-web-browser",
+    [
+      "expo-location",
+      {
+        locationWhenInUsePermission: "Allow $(PRODUCT_NAME) to use your location to show nearby HOBEE places and open navigation.",
+      },
+    ],
     [
       "expo-notifications",
       {
