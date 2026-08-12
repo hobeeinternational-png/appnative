@@ -106,3 +106,10 @@
 - [x] เพิ่ม shadow/blur elevation ให้ fixed Header/Search ตาม scroll offset
 - [x] ผูก scroll state จาก Home, Shop และ Discover เข้ากับ shared app shell
 - [x] ตรวจ scroll elevation regression และ performance ของแท็บหลัก
+- [x] Audit Travel specification, existing routes และ Supabase readiness
+- [x] กำหนด Travel domain models, data source boundary และ navigation flow
+- [x] สร้าง Travel Home และ Local Life Hub จาก HOBEE design system
+- [x] สร้าง Travel Listing Detail สำหรับ trip และ accommodation
+- [x] สร้าง five-step booking journey และ digital voucher presentation
+- [x] วาง operator workspace, share/referral, maps boundary และ privacy safeguards
+- [x] เพิ่ม travel route tests และตรวจ native UX ก่อนบันทึก checkpoint

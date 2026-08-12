@@ -8,7 +8,7 @@ import { useCatalog } from "@/hooks/use-catalog";
 import { formatThaiBaht, hobeeStories, type HobeeProduct } from "@/lib/hobee-data";
 
 const CATEGORY_ITEMS = [
-  { label: "ท่องเที่ยว", icon: "luggage", tone: "#FFF1C8", route: "/(tabs)/discover" },
+  { label: "ท่องเที่ยว", icon: "luggage", tone: "#FFF1C8", route: "/travel" },
   { label: "ร้านค้า", icon: "storefront", tone: "#FFF2D8", route: "/(tabs)/shop" },
   { label: "สินค้า", icon: "inventory-2", tone: "#D9FAF1", route: "/(tabs)/shop" },
   { label: "บริการ", icon: "business-center", tone: "#E0F2FE", route: "/(tabs)/discover" },
