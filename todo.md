@@ -135,3 +135,4 @@
 - [x] เชื่อมปุ่มหมวดร้านอาหารบนหน้า Home ไปยัง Food Discovery Hub
 - [x] สร้าง HOBEE Learning Academy แบบ Netflix-style ตามภาพและสเปกที่แนบ
 - [x] นำ HOBEE Corporate Identity Design System ไปใช้กับ tokens กลางและ shared UI
+- [x] นำ Travel Navigation Architecture ระดับ L1–L4 ไปใช้กับ Explore และ Travel ecosystem
