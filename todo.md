@@ -124,3 +124,8 @@
 - [x] สร้าง Restaurant Detail, menu customization และ combo builder preview
 - [x] ขยาย pre-order preview สำหรับ guest count, special instructions และ queue ticket boundary
 - [x] เพิ่ม restaurant route/calculation tests และตรวจ native UX ก่อนบันทึก checkpoint
+- [x] Audit floating navigation, tab routes และ gesture capability ปัจจุบัน
+- [x] สร้าง nav mode state machine, persistence และ edge-snap geometry
+- [x] สร้าง Normal/Floating bottom navigation พร้อม collapse/expand animation
+- [x] เพิ่ม double-tap, drag edge snap, state persistence และ quick menu feedback
+- [x] ตรวจ navigation routes, safe area, gestures และ persistence regressions
