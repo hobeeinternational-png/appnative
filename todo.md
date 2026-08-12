@@ -78,3 +78,8 @@
 - [x] Rebuild Product Detail, Cart, Checkout และ Payment presentation layer โดยคง business logic เดิม
 - [x] Rebuild Orders, Order Detail, Account และ Rewards ให้ใช้ HOBEE design system กลาง
 - [x] ตรวจ customer journey, sticky CTA, safe area, route และ regression ของทุกหน้าหลัก
+- [x] สร้าง Favorites screen จาก Supabase favorites data layer เดิมและเชื่อม Account โดยตรง
+- [x] เชื่อม Rewards history กับ loyalty_transactions และสถานะคูปองจริงโดยไม่สร้างข้อมูลจำลอง
+- [x] Audit deployment readiness ของ Vercel, Magic Link, Opn, SHIPPOP และ Expo push
+- [ ] ตรวจ Expo development build configuration สำหรับ iOS และ Android โดยคง identifiers เดิม
+- [ ] ทำ secret scan, security review, final tests และสร้าง Production Readiness Matrix
