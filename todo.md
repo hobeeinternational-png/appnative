@@ -92,3 +92,4 @@
 - [x] อัปเดต readiness evidence สำหรับงานที่ทำได้โดยไม่ต้องใช้ Vercel หรือ provider credential
 - [x] เพิ่ม top safe-area spacing ของ header เพื่อไม่ให้ข้อมูลถูกบังบน iOS และ Android
 - [x] เพิ่ม top inset ของ header อีกระดับให้พ้น Dynamic Island บนอุปกรณ์จริง
+- [x] ปรับ top inset ของ header เป็นระดับกลางตามผลทดสอบบนเครื่องจริง

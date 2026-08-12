@@ -9,7 +9,7 @@ describe("top header safe area", () => {
   it("reserves additional top spacing on all screens that render AppHeader", () => {
     for (const screen of screens) {
       const source = readFileSync(resolve(root, screen), "utf8");
-      expect(source).toContain('safeAreaClassName="pt-10"');
+      expect(source).toContain('safeAreaClassName="pt-7"');
       expect(source).toContain('<AppHeader />');
     }
   });
