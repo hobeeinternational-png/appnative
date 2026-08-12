@@ -113,3 +113,8 @@
 - [x] สร้าง five-step booking journey และ digital voucher presentation
 - [x] วาง operator workspace, share/referral, maps boundary และ privacy safeguards
 - [x] เพิ่ม travel route tests และตรวจ native UX ก่อนบันทึก checkpoint
+- [x] Audit Province Local Discovery specification และ Travel preview data readiness
+- [x] ขยาย province listings, day plans และ pre-order food domain models
+- [x] สร้าง map/list/day-planner views พร้อม category และ quick filters
+- [x] สร้าง pre-order food preview, save/share plan และ queue preview
+- [x] เพิ่ม province route tests, integration boundaries และ privacy documentation

@@ -1,0 +1,44 @@
+import type { MaterialIcons } from "@expo/vector-icons";
+
+export type LocalCategory = "all" | "restaurant" | "cafe" | "hotel" | "attraction" | "service" | "trip";
+export type LocalViewMode = "map" | "list" | "planner";
+export type LocalProvinceId = "narathiwat" | "yala" | "satun" | "pattani" | "songkhla";
+
+export type Province = { id: LocalProvinceId; name: string; tagline: string; districts: string[]; heroImage: string };
+export type LocalMenuItem = { id: string; name: string; price: number; description: string; image?: string };
+export type ProvinceListing = { id: string; provinceId: LocalProvinceId; district: string; title: string; category: Exclude<LocalCategory, "all">; highlight: string; operatingHours: string; priceFrom: number; rating: number; reviewsCount: number; coordinates: { lat: number; lng: number }; image: string; isOpenNow: boolean; preorderSupported: boolean; halalSupported: boolean; familyFriendly: boolean; featuredMenu?: LocalMenuItem[] };
+export type DayPlan = { id: string; provinceId: LocalProvinceId; title: string; tagline: string; duration: string; highlights: string[]; stops: { time: string; title: string; detail: string; category: Exclude<LocalCategory, "all">; district: string; listingId: string }[] };
+
+export const localCategories: { id: LocalCategory; label: string; icon: keyof typeof MaterialIcons.glyphMap; color: string }[] = [
+  { id: "all", label: "ทั้งหมด", icon: "apps", color: "#087B6E" }, { id: "restaurant", label: "อาหารท้องถิ่น", icon: "restaurant", color: "#E8784C" }, { id: "cafe", label: "คาเฟ่ & ชาชัก", icon: "local-cafe", color: "#C38957" }, { id: "hotel", label: "ที่พักท้องถิ่น", icon: "hotel", color: "#278E75" }, { id: "attraction", label: "ที่เที่ยว", icon: "forest", color: "#4B8BD0" }, { id: "service", label: "บริการเดินทาง", icon: "directions-car", color: "#7F69C4" }, { id: "trip", label: "แพ็กเกจทริป", icon: "backpack", color: "#C88B29" },
+];
+
+export const localQuickFilters = [
+  { id: "open", label: "เปิดอยู่ตอนนี้", icon: "schedule" }, { id: "preorder", label: "สั่งล่วงหน้า", icon: "restaurant-menu" }, { id: "halal", label: "Halal", icon: "verified" }, { id: "family", label: "ครอบครัว", icon: "family-restroom" },
+] as const;
+
+export const provinces: Province[] = [
+  { id: "narathiwat", name: "นราธิวาส", tagline: "รสชาติชายแดนใต้และวิถีชุมชน", districts: ["อ.เมือง", "อ.แว้ง", "อ.ตากใบ"], heroImage: "https://images.unsplash.com/photo-1489493585363-d694e7a1035e?auto=format&fit=crop&q=85&w=1200" },
+  { id: "yala", name: "ยะลา / เบตง", tagline: "หมอกเช้า ป่าลึก และเมืองใต้สุด", districts: ["อ.เบตง", "อ.เมือง", "อ.ยะหา"], heroImage: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&q=85&w=1200" },
+  { id: "satun", name: "สตูล", tagline: "ทะเลอันดามันและหมู่เกาะ", districts: ["อ.เมือง", "อ.ละงู", "อ.ควนโดน"], heroImage: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=85&w=1200" },
+  { id: "pattani", name: "ปัตตานี", tagline: "เมืองเก่า ริมน้ำ และมรดกอาหาร", districts: ["อ.เมือง", "อ.สายบุรี", "อ.ยะรัง"], heroImage: "https://images.unsplash.com/photo-1483058712412-4245e9b90334?auto=format&fit=crop&q=85&w=1200" },
+  { id: "songkhla", name: "สงขลา", tagline: "ทะเลสาบ วิถีเมืองเก่า และอาหารใต้", districts: ["อ.เมือง", "อ.หาดใหญ่", "อ.สิงหนคร"], heroImage: "https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?auto=format&fit=crop&q=85&w=1200" },
+];
+
+export const provinceListings: ProvinceListing[] = [
+  { id: "narathiwat-rice-bowl", provinceId: "narathiwat", district: "อ.แว้ง", title: "ครัวข้าวยำวิถีวัง", category: "restaurant", highlight: "ข้าวยำมันแกงปลาโอและชาชัก", operatingHours: "08:00 - 16:00", priceFrom: 55, rating: 4.8, reviewsCount: 38, coordinates: { lat: 6.248, lng: 101.925 }, image: "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&q=85&w=900", isOpenNow: true, preorderSupported: true, halalSupported: true, familyFriendly: true, featuredMenu: [{ id: "rice-yam", name: "ข้าวยำมันแกงปลาโอ", price: 55, description: "ผักสดและน้ำบูดู", image: "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&q=85&w=300" }, { id: "tea", name: "ชาชักเย็นฟองนุ่ม", price: 35, description: "ชาใต้ชงสด", image: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&q=85&w=300" }, { id: "roti", name: "โรตีกรอบ", price: 30, description: "ทำใหม่ตามออเดอร์" }] },
+  { id: "narathiwat-hala-bala", provinceId: "narathiwat", district: "อ.แว้ง", title: "เส้นทางป่าฮาลา-บาลา", category: "attraction", highlight: "เดินป่าดงดิบกับไกด์ชุมชน", operatingHours: "08:30 - 17:30", priceFrom: 450, rating: 4.9, reviewsCount: 24, coordinates: { lat: 5.941, lng: 101.887 }, image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&q=85&w=900", isOpenNow: true, preorderSupported: false, halalSupported: false, familyFriendly: false },
+  { id: "yala-betong-tea", provinceId: "yala", district: "อ.เบตง", title: "บ้านชาชักเบตง", category: "cafe", highlight: "ชาชักและโรตีสูตรเมืองใต้", operatingHours: "09:00 - 20:00", priceFrom: 35, rating: 4.7, reviewsCount: 41, coordinates: { lat: 5.999, lng: 101.254 }, image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=85&w=900", isOpenNow: true, preorderSupported: true, halalSupported: true, familyFriendly: true, featuredMenu: [{ id: "betong-tea", name: "ชาชักเบตง", price: 35, description: "ชาเข้มและฟองนุ่ม" }, { id: "butter-roti", name: "โรตีเนยนม", price: 40, description: "เสิร์ฟร้อน" }] },
+  { id: "yala-homestay", provinceId: "yala", district: "อ.เบตง", title: "โฮมสเตย์เรือนไม้ริมน้ำ", category: "hotel", highlight: "พักสโลว์ไลฟ์และอาหารเช้าท้องถิ่น", operatingHours: "เช็คอิน 14:00", priceFrom: 1290, rating: 4.8, reviewsCount: 17, coordinates: { lat: 5.95, lng: 101.19 }, image: "https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&q=85&w=900", isOpenNow: true, preorderSupported: false, halalSupported: true, familyFriendly: true },
+  { id: "satun-koh-tarang", provinceId: "satun", district: "อ.ละงู", title: "ล่องเรือกอและสตูล", category: "service", highlight: "เรือชุมชนและไกด์ท้องถิ่น", operatingHours: "08:00 - 17:00", priceFrom: 650, rating: 4.8, reviewsCount: 33, coordinates: { lat: 6.905, lng: 99.806 }, image: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&q=85&w=900", isOpenNow: true, preorderSupported: true, halalSupported: false, familyFriendly: true },
+  { id: "satun-island-day", provinceId: "satun", district: "อ.ละงู", title: "ทริปเกาะและวิถีชุมชน 1 วัน", category: "trip", highlight: "ทะเล อาหาร และชุมชนประมง", operatingHours: "08:00 - 16:30", priceFrom: 1490, rating: 4.9, reviewsCount: 28, coordinates: { lat: 6.811, lng: 99.78 }, image: "https://images.unsplash.com/photo-1530789253388-582c481c54b0?auto=format&fit=crop&q=85&w=900", isOpenNow: true, preorderSupported: false, halalSupported: true, familyFriendly: true },
+];
+
+export const dayPlans: DayPlan[] = [
+  { id: "narathiwat-malay-food", provinceId: "narathiwat", title: "ทริปกินสายมลายู & เมนูฮาลาล", tagline: "รสชาติท้องถิ่นแบบไม่เร่งรีบ", duration: "08:00 - 15:00 น.", highlights: ["ข้าวยำ", "ชาชัก", "ตลาดชุมชน"], stops: [{ time: "08:00", title: "เริ่มต้นด้วยข้าวยำ", detail: "รับอาหารที่สั่งล่วงหน้า", category: "restaurant", district: "อ.แว้ง", listingId: "narathiwat-rice-bowl" }, { time: "11:00", title: "เดินวิถีชุมชน", detail: "เลือกซื้อผลิตภัณฑ์ท้องถิ่น", category: "attraction", district: "อ.แว้ง", listingId: "narathiwat-hala-bala" }, { time: "13:30", title: "พักชาชัก", detail: "เวลาสำหรับพักและแชร์แผน", category: "cafe", district: "อ.แว้ง", listingId: "narathiwat-rice-bowl" }] },
+  { id: "yala-forest-river", provinceId: "yala", title: "ป่าดงดิบ & สโลว์ไลฟ์เบตง", tagline: "หมอกเช้า ธรรมชาติ และบ้านไม้", duration: "08:30 - 17:30 น.", highlights: ["ธรรมชาติ", "ชาชัก", "โฮมสเตย์"], stops: [{ time: "08:30", title: "เริ่มเส้นทางธรรมชาติ", detail: "ตรวจสภาพอากาศกับไกด์ก่อนเดินทาง", category: "attraction", district: "อ.เบตง", listingId: "narathiwat-hala-bala" }, { time: "12:00", title: "พักอาหารกลางวัน", detail: "จองเมนูล่วงหน้าได้", category: "cafe", district: "อ.เบตง", listingId: "yala-betong-tea" }, { time: "16:00", title: "เช็คอินโฮมสเตย์", detail: "พักผ่อนและชมวิถีริมน้ำ", category: "hotel", district: "อ.เบตง", listingId: "yala-homestay" }] },
+];
+
+export function listingsForProvince(provinceId: LocalProvinceId, category: LocalCategory, activeFilters: string[]) {
+  return provinceListings.filter((listing) => listing.provinceId === provinceId && (category === "all" || listing.category === category) && (!activeFilters.includes("open") || listing.isOpenNow) && (!activeFilters.includes("preorder") || listing.preorderSupported) && (!activeFilters.includes("halal") || listing.halalSupported) && (!activeFilters.includes("family") || listing.familyFriendly));
+}
