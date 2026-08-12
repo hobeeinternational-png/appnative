@@ -1,5 +1,5 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import { router } from "expo-router";
+import { router, type Href } from "expo-router";
 import { Image, ImageBackground, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { AppHeader, CategoryTile as SharedCategoryTile, CommunityCard as SharedCommunityCard, FixedAppShell, ProductCard as SharedProductCard, SearchBar as SharedSearchBar, SectionHeader as SharedSectionHeader, ServiceTile as SharedServiceTile, TripCard as SharedTripCard, useHeaderElevation } from "@/components/hobee/shared-ui";
@@ -13,7 +13,7 @@ const CATEGORY_ITEMS = [
   { label: "สินค้า", icon: "inventory-2", tone: "#D9FAF1", route: "/(tabs)/shop" },
   { label: "บริการ", icon: "business-center", tone: "#E0F2FE", route: "/(tabs)/discover" },
   { label: "ร้านอาหาร", icon: "restaurant", tone: "#FFF1DE", route: "/travel/food" },
-  { label: "เรียนรู้", icon: "school", tone: "#E6F0FF", route: "/(tabs)/discover" },
+  { label: "เรียนรู้", icon: "school", tone: "#E6F0FF", route: "/learn" },
   { label: "Opportunity", icon: "trending-up", tone: "#FFF5CC", route: "/(tabs)/discover" },
   { label: "Community", icon: "groups", tone: "#F1E8FF", route: "/(tabs)/discover" },
 ] as const;
@@ -42,7 +42,7 @@ export default function HomeScreen() {
       <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false} onScroll={onScroll} scrollEventThrottle={16} contentContainerStyle={styles.content}>
 
         <View style={styles.categoryGrid}>
-          {CATEGORY_ITEMS.map((item) => <SharedCategoryTile key={item.label} label={item.label} icon={item.icon} tone={item.tone} onPress={() => router.push(item.route)} />)}
+          {CATEGORY_ITEMS.map((item) => <SharedCategoryTile key={item.label} label={item.label} icon={item.icon} tone={item.tone} onPress={() => router.push(item.route as Href)} />)}
         </View>
 
         <EcosystemHero />
@@ -115,7 +115,7 @@ function SearchBar() {
 
 function CategoryTile({ label, icon, tone, route }: (typeof CATEGORY_ITEMS)[number]) {
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={`เปิดหมวด ${label}`} onPress={() => router.push(route)} style={({ pressed }) => [styles.categoryTile, pressed && styles.pressed]}>
+    <Pressable accessibilityRole="button" accessibilityLabel={`เปิดหมวด ${label}`} onPress={() => router.push(route as Href)} style={({ pressed }) => [styles.categoryTile, pressed && styles.pressed]}>
       <View style={[styles.categoryIcon, { backgroundColor: tone }]}><MaterialIcons name={icon} size={30} color="#1F8D70" /></View>
       <Text numberOfLines={1} style={styles.categoryLabel}>{label}</Text>
     </Pressable>

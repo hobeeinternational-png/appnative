@@ -133,3 +133,4 @@
 - [x] ตรวจ Metro bundler logs หลังการกู้คืน และจัดประเภท error/warning ที่ยังค้าง
 - [x] แก้ Metro/preview restart loop และยืนยัน development runtime เสถียร
 - [x] เชื่อมปุ่มหมวดร้านอาหารบนหน้า Home ไปยัง Food Discovery Hub
+- [x] สร้าง HOBEE Learning Academy แบบ Netflix-style ตามภาพและสเปกที่แนบ
