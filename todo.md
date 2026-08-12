@@ -83,3 +83,10 @@
 - [x] Audit deployment readiness ของ Vercel, Magic Link, Opn, SHIPPOP และ Expo push
 - [x] ตรวจ Expo development build configuration สำหรับ iOS และ Android โดยคง identifiers เดิม
 - [x] ทำ secret scan, security review, final tests และสร้าง Production Readiness Matrix
+- [ ] สร้างหรือเชื่อม Vercel backend project และกำหนด server-only environment variables
+- [ ] ตั้งค่า Supabase Magic Link redirect URL และตรวจ callback configuration
+- [ ] สร้าง iOS และ Android development builds สำหรับ native QA
+- [ ] ทดสอบ Opn sandbox, push notification และ deep links บนอุปกรณ์จริง
+- [x] เพิ่ม automated validation สำหรับ Magic Link redirect, deep links และ Expo development-build configuration
+- [x] ตรวจและปรับ UX fallback ของ push permission, payment pending/failure และ checkout ที่ไม่เรียก provider
+- [x] อัปเดต readiness evidence สำหรับงานที่ทำได้โดยไม่ต้องใช้ Vercel หรือ provider credential

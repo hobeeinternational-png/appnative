@@ -5,6 +5,7 @@ import { router } from "expo-router";
 
 import { ScreenContainer } from "@/components/screen-container";
 import { useSupabaseAuth } from "@/contexts/supabase-auth-context";
+import { isMagicLinkCallback } from "@/lib/deep-links";
 
 export default function AuthCallbackScreen() {
   const url = Linking.useURL();
@@ -13,6 +14,7 @@ export default function AuthCallbackScreen() {
 
   useEffect(() => {
     if (!url) return;
+    if (!isMagicLinkCallback(url)) { setMessage("ลิงก์เข้าสู่ระบบไม่ถูกต้อง กรุณากลับไปขอลิงก์ใหม่อีกครั้ง"); return; }
     void completeMagicLink(url)
       .then(() => router.replace("/(tabs)/account"))
       .catch(() => setMessage("ลิงก์เข้าสู่ระบบไม่ถูกต้องหรือหมดอายุ กรุณาขอลิงก์ใหม่อีกครั้ง"));
@@ -27,4 +29,3 @@ export default function AuthCallbackScreen() {
     </ScreenContainer>
   );
 }
-
