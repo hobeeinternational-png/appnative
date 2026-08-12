@@ -118,3 +118,9 @@
 - [x] สร้าง map/list/day-planner views พร้อม category และ quick filters
 - [x] สร้าง pre-order food preview, save/share plan และ queue preview
 - [x] เพิ่ม province route tests, integration boundaries และ privacy documentation
+- [x] Audit Restaurant time-aware specification และ Local Pre-order preview ปัจจุบัน
+- [x] ขยาย restaurant, time-slot menu, combo และ pre-order domain models
+- [x] สร้าง Time-Aware Food Discovery Hub พร้อม quick filters และ restaurant cards
+- [x] สร้าง Restaurant Detail, menu customization และ combo builder preview
+- [x] ขยาย pre-order preview สำหรับ guest count, special instructions และ queue ticket boundary
+- [x] เพิ่ม restaurant route/calculation tests และตรวจ native UX ก่อนบันทึก checkpoint
