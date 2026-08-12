@@ -2,7 +2,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { Image, ImageBackground, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
-import { AppHeader, CategoryTile as SharedCategoryTile, CommunityCard as SharedCommunityCard, ProductCard as SharedProductCard, SearchBar as SharedSearchBar, SectionHeader as SharedSectionHeader, ServiceTile as SharedServiceTile, TripCard as SharedTripCard } from "@/components/hobee/shared-ui";
+import { AppHeader, CategoryTile as SharedCategoryTile, CommunityCard as SharedCommunityCard, FixedAppShell, ProductCard as SharedProductCard, SearchBar as SharedSearchBar, SectionHeader as SharedSectionHeader, ServiceTile as SharedServiceTile, TripCard as SharedTripCard } from "@/components/hobee/shared-ui";
 import { ScreenContainer } from "@/components/screen-container";
 import { useCatalog } from "@/hooks/use-catalog";
 import { formatThaiBaht, hobeeStories, type HobeeProduct } from "@/lib/hobee-data";
@@ -37,9 +37,8 @@ export default function HomeScreen() {
 
   return (
     <ScreenContainer containerClassName="bg-[#F8F7F5]" safeAreaClassName="pt-7" edges={["top", "left", "right"]}>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
-        <AppHeader />
-        <SharedSearchBar onPress={() => router.push("/(tabs)/shop")} />
+      <FixedAppShell header={<AppHeader />} search={<SharedSearchBar onPress={() => router.push("/(tabs)/shop")} />}>
+      <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
 
         <View style={styles.categoryGrid}>
           {CATEGORY_ITEMS.map((item) => <SharedCategoryTile key={item.label} label={item.label} icon={item.icon} tone={item.tone} onPress={() => router.push(item.route)} />)}
@@ -70,6 +69,7 @@ export default function HomeScreen() {
 
         <DarkEcosystemCard />
       </ScrollView>
+      </FixedAppShell>
     </ScreenContainer>
   );
 }
@@ -201,6 +201,7 @@ function DarkEcosystemCard() {
 }
 
 const styles = StyleSheet.create({
+  scroll: { flex: 1 },
   content: { paddingHorizontal: 20, paddingBottom: 162, backgroundColor: "#F8F7F5" },
   header: { minHeight: 70, flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   brand: { flexDirection: "row", alignItems: "center", gap: 6 },
