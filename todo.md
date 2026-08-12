@@ -129,3 +129,6 @@
 - [x] สร้าง Normal/Floating bottom navigation พร้อม collapse/expand animation
 - [x] เพิ่ม double-tap, drag edge snap, state persistence และ quick menu feedback
 - [x] ตรวจ navigation routes, safe area, gestures และ persistence regressions
+- [x] กู้ development server และยืนยันว่า HOBEE preview กลับมาตอบสนอง
+- [x] ตรวจ Metro bundler logs หลังการกู้คืน และจัดประเภท error/warning ที่ยังค้าง
+- [x] แก้ Metro/preview restart loop และยืนยัน development runtime เสถียร
