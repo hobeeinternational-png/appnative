@@ -103,3 +103,6 @@
 - [x] สร้าง fixed app shell สำหรับ Top Header และ Search Bar ที่รองรับ safe area
 - [x] ย้าย content scroll ของ Home, Shop และ Discover ให้เลื่อนใต้ fixed app shell
 - [x] ตรวจ header/search sticky behavior, content offset และ catalogue route regressions
+- [x] เพิ่ม shadow/blur elevation ให้ fixed Header/Search ตาม scroll offset
+- [x] ผูก scroll state จาก Home, Shop และ Discover เข้ากับ shared app shell
+- [x] ตรวจ scroll elevation regression และ performance ของแท็บหลัก

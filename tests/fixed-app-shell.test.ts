@@ -15,4 +15,18 @@ describe("fixed top app shell", () => {
       expect(source).toContain("style={styles.scroll}");
     }
   });
+
+  it("elevates the shared app shell only from each tab's vertical scroll offset", () => {
+    const sharedUi = readFileSync(resolve(root, "components/hobee/shared-ui.tsx"), "utf8");
+    expect(sharedUi).toContain("export function useHeaderElevation");
+    expect(sharedUi).toContain("fixedTopShellElevated");
+    expect(sharedUi).toContain("contentOffset.y > threshold");
+    for (const screen of screens) {
+      const source = readFileSync(resolve(root, screen), "utf8");
+      expect(source).toContain("useHeaderElevation()");
+      expect(source).toContain("elevated={elevated}");
+      expect(source).toContain("onScroll={onScroll}");
+      expect(source).toContain("scrollEventThrottle={16}");
+    }
+  });
 });

@@ -2,7 +2,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { Image, ImageBackground, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
-import { AppHeader, CategoryTile as SharedCategoryTile, CommunityCard as SharedCommunityCard, FixedAppShell, ProductCard as SharedProductCard, SearchBar as SharedSearchBar, SectionHeader as SharedSectionHeader, ServiceTile as SharedServiceTile, TripCard as SharedTripCard } from "@/components/hobee/shared-ui";
+import { AppHeader, CategoryTile as SharedCategoryTile, CommunityCard as SharedCommunityCard, FixedAppShell, ProductCard as SharedProductCard, SearchBar as SharedSearchBar, SectionHeader as SharedSectionHeader, ServiceTile as SharedServiceTile, TripCard as SharedTripCard, useHeaderElevation } from "@/components/hobee/shared-ui";
 import { ScreenContainer } from "@/components/screen-container";
 import { useCatalog } from "@/hooks/use-catalog";
 import { formatThaiBaht, hobeeStories, type HobeeProduct } from "@/lib/hobee-data";
@@ -34,11 +34,12 @@ const COMMUNITY_ITEMS = [
 
 export default function HomeScreen() {
   const { products } = useCatalog();
+  const { elevated, onScroll } = useHeaderElevation();
 
   return (
     <ScreenContainer containerClassName="bg-[#F8F7F5]" safeAreaClassName="pt-7" edges={["top", "left", "right"]}>
-      <FixedAppShell header={<AppHeader />} search={<SharedSearchBar onPress={() => router.push("/(tabs)/shop")} />}>
-      <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
+      <FixedAppShell elevated={elevated} header={<AppHeader />} search={<SharedSearchBar onPress={() => router.push("/(tabs)/shop")} />}>
+      <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false} onScroll={onScroll} scrollEventThrottle={16} contentContainerStyle={styles.content}>
 
         <View style={styles.categoryGrid}>
           {CATEGORY_ITEMS.map((item) => <SharedCategoryTile key={item.label} label={item.label} icon={item.icon} tone={item.tone} onPress={() => router.push(item.route)} />)}
