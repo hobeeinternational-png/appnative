@@ -16,8 +16,22 @@
 | Push | **NOT TESTED ON DEVICE** | Native permission, token storage, Android channel and deep-link code exist; needs device build. |
 | Magic Link | **NOT TESTED ON DEVICE** | Scheme/callback screen exist; Supabase redirect and device cold-start/foreground tests remain. |
 | Security | **PASS** | No source credential literal in last secret scan; server-only env contract, RLS and webhook safeguards reviewed. |
-| iOS build | **BLOCKED** | Requires EAS/Apple signing plus real device. |
-| Android build | **BLOCKED** | Requires EAS/Android signing plus real device. |
+| iOS build | **READY BUT REQUIRES CREDENTIAL** | `expo-dev-client`, config plugins และ EAS profile พร้อม; ต้องใช้ EAS/Apple signing และอุปกรณ์จริง. |
+| Android build | **READY BUT REQUIRES CREDENTIAL** | `expo-dev-client`, config plugins และ EAS profile พร้อม; ต้องใช้ EAS/Android signing และอุปกรณ์จริง. |
+
+The root React Navigation packages are intentionally excluded from Expo's automatic version replacement because the installed versions are peer-compatible with the Expo Router dependency tree; this prevents duplicate native modules during build validation.
+
+## Final source validation
+
+| Check | Result |
+|---|---|
+| TypeScript | Passed: `pnpm exec tsc --noEmit` |
+| Automated tests | Passed: 15 tests; 1 intentional skip |
+| Supabase live catalogue test | Passed in the automated suite |
+| Expo public config | Passed: `npx expo config --type public --json` |
+| Expo dependency health | Passed: `npx expo-doctor` returned 18/18 checks |
+| Secret-pattern scan | Passed: no credential literal found in mobile or backend source |
+| Physical device / provider sandbox | Not performed; see owner actions and device QA playbook |
 
 ## Exact owner actions
 
