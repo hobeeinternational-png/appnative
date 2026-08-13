@@ -1,6 +1,5 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { BlurView } from "expo-blur";
 import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { router } from "expo-router";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -25,6 +24,8 @@ const FLOAT_SIZE = FLOATING_NAV_CONFIG.floatSize;
 
 function GlassSurface({ children, style }: { children: React.ReactNode; style: StyleProp<ViewStyle> }) {
   if (Platform.OS === "web") return <View style={style}>{children}</View>;
+  // Keep expo-blur out of Metro's web module evaluation; native resolves it only when rendered.
+  const { BlurView } = require("expo-blur") as typeof import("expo-blur");
   return <BlurView intensity={28} tint="dark" experimentalBlurMethod={Platform.OS === "android" ? "dimezisBlurView" : "none"} style={style}>{children}</BlurView>;
 }
 

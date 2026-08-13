@@ -35,7 +35,7 @@ export default function HomeScreen() {
   const { products } = useCatalog();
   const { elevated, onScroll } = useHeaderElevation();
 
-  return <ScreenContainer containerClassName="bg-[#F6F6F4]" safeAreaClassName="pt-7" edges={["top", "left", "right"]}>
+  return <ScreenContainer containerClassName="bg-[#F6F6F4]" safeAreaClassName="pt-0" edges={["top", "left", "right"]}>
     <FixedAppShell elevated={elevated} header={<View style={styles.headerSpacer} />} search={<HomeSearchActions />}>
       <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false} onScroll={onScroll} scrollEventThrottle={16} contentContainerStyle={styles.content}>
         <CategoryRail />

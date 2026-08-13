@@ -148,3 +148,5 @@
 - [x] ปรับ FloatingBottomNav ให้บางและโปร่งใสแบบ glass ตามแนว Instagram โดยคง Assistive Mode เดิม
 - [x] คืนปุ่มกลาง HOBEE ให้เป็นวงกลมเด่นบน Thin Glass Navigation
 - [x] ปรับ spacing ของ 4 ปุ่มรอบ HOBEE ให้กระชับและสมดุลบน Thin Glass Navigation
+- [x] ปรับ top search bar, Travel header และ status bar ให้พอดีจอและอ่านชัด
+- [x] ปรับ top search bar, Travel header และ status bar ให้พอดีจอและอ่านชัด

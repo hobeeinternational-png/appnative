@@ -47,8 +47,8 @@ export default function RootLayout() {
   }, []);
 
   const handleSafeAreaUpdate = useCallback((metrics: Metrics) => {
-    setInsets(metrics.insets);
-    setFrame(metrics.frame);
+    setInsets((current) => current.top === metrics.insets.top && current.right === metrics.insets.right && current.bottom === metrics.insets.bottom && current.left === metrics.insets.left ? current : metrics.insets);
+    setFrame((current) => current.x === metrics.frame.x && current.y === metrics.frame.y && current.width === metrics.frame.width && current.height === metrics.frame.height ? current : metrics.frame);
   }, []);
 
   useEffect(() => {
@@ -102,7 +102,7 @@ export default function RootLayout() {
                   <Stack.Screen name="(tabs)" />
                   <Stack.Screen name="oauth/callback" />
                 </Stack>
-                <StatusBar style="auto" />
+                <StatusBar style="dark" translucent backgroundColor="#F6F6F4" />
                   </CartProvider>
                 </ToastProvider>
               </NotificationBootstrap>
