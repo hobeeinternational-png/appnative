@@ -142,3 +142,5 @@
 - [x] ปรับหน้า Home เป็น Discovery Feed ตามภาพอ้างอิง โดยคงเนื้อหา หมวดหมู่ routes และ data flow เดิม
 - [x] เพิ่ม Recently Viewed จากการเข้าชมจริงของสินค้า ทริป และ content แล้วแสดงบน Home
 - [x] กู้ development preview ที่ไม่แสดงผลและยืนยันว่า HOBEE render ได้
+- [x] ตรวจระบบ Admin/การจัดการสินค้าและสรุป URL หลังบ้านสำหรับ HOBEE
+- [x] สร้าง HOBEE Admin Web Portal สำหรับ desktop product, inventory และ order operations โดยใช้ Supabase role/RLS เดิม
