@@ -153,3 +153,5 @@
 - [x] เชื่อม HOBEE Mobile และส่ง source code เวอร์ชันปัจจุบันขึ้น GitHub repository ที่ผู้ใช้ระบุ
 - [x] นำ HOBEE database schema, RLS และ storage migrations ขึ้น Supabase project ที่ผู้ใช้ระบุ
 - [x] ตั้งค่า Supabase URL และ publishable key ของ project ใหม่ใน mobile client
+- [x] เชื่อม Admin Portal สำหรับจัดการสินค้าเข้ากับ Vercel backend ใน source code โดยใช้ Supabase authorization เดิม
+- [ ] Deploy Vercel backend และกำหนด EXPO_PUBLIC_HOBEE_API_BASE_URL เพื่อเปิดใช้ Admin API บน production

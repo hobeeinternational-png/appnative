@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { getServerConfig } from "../vercel-backend/lib/env.js";
 import { ApiError } from "../vercel-backend/lib/http.js";
-import { createOrderSchema, parseSchema } from "../vercel-backend/lib/schemas.js";
+import { createAdminProductSchema, createOrderSchema, parseSchema } from "../vercel-backend/lib/schemas.js";
 import { signWebhookPayload, verifyWebhookSignature } from "../vercel-backend/lib/webhook.js";
 import { createMockPaymentProvider } from "../vercel-backend/lib/payment-providers/mock.js";
 import { createOpnPaymentProvider } from "../vercel-backend/lib/payment-providers/opn.js";
@@ -31,6 +31,24 @@ describe("HOBEE Vercel API utilities", () => {
       expect(error).toBeInstanceOf(ApiError);
       expect((error as ApiError).code).toBe("validation_error");
     }
+  });
+
+  it("validates an admin product payload without accepting arbitrary fields", () => {
+    const input = parseSchema(createAdminProductSchema, {
+      shopId: productId,
+      categoryId: addressId,
+      name: "สินค้าทดสอบ HOBEE",
+      slug: "hobee-test-product",
+      price: 199,
+      stockQuantity: 12,
+      status: "draft",
+    });
+    expect(input.slug).toBe("hobee-test-product");
+
+    expect(() => parseSchema(createAdminProductSchema, {
+      ...input,
+      serviceRoleKey: "must-never-be-client-input",
+    })).toThrow(ApiError);
   });
 
   it("verifies only an unchanged HMAC webhook payload", () => {

@@ -21,3 +21,16 @@ export async function requireAuthenticatedUser(request, config, client = createP
   return { user: data.user, token };
 }
 
+export async function requireAdminUser(request, config) {
+  const { user } = await requireAuthenticatedUser(request, config);
+  const service = createServiceSupabaseClient(config);
+  const { data, error } = await service
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", user.id)
+    .eq("role", "admin")
+    .maybeSingle();
+  if (error) throw new ApiError(500, "admin_role_check_failed", "ไม่สามารถตรวจสอบสิทธิ์ผู้ดูแลได้");
+  if (!data) throw new ApiError(403, "admin_required", "ต้องเป็นผู้ดูแลระบบ HOBEE เท่านั้น");
+  return { user, service };
+}

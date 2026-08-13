@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase";
+import { hobeeApi } from "@/lib/hobee-api";
 import { slugifyProductName, validateAdminProductInput } from "./admin-product-validation";
 
 export { slugifyProductName, validateAdminProductInput } from "./admin-product-validation";
@@ -46,8 +47,14 @@ export async function createAdminProduct(input: AdminProductCreateInput, images:
     if (image.fileSize && image.fileSize > 5 * 1024 * 1024) throw new Error("รูปภาพแต่ละรูปต้องมีขนาดไม่เกิน 5 MB");
     if (image.mimeType && !["image/jpeg", "image/png", "image/webp"].includes(image.mimeType)) throw new Error("รองรับเฉพาะ JPG, PNG และ WebP");
   }
-  const { data: product, error: productError } = await supabase.from("products").insert({ ...input, category_id: input.category_id || null, description: input.description || null, sku: input.sku || null, origin: input.origin || null }).select("id").single();
-  if (productError || !product) throw productError ?? new Error("สร้างสินค้าไม่สำเร็จ");
+  const viaApi = hobeeApi.isConfigured();
+  const product = viaApi
+    ? (await hobeeApi.createAdminProduct({ shopId: input.shop_id, categoryId: input.category_id || null, name: input.name, slug: input.slug, description: input.description || null, price: input.price, stockQuantity: input.stock_quantity, sku: input.sku || null, origin: input.origin || null, status: input.status })).product
+    : await (async () => {
+      const { data, error } = await supabase.from("products").insert({ ...input, category_id: input.category_id || null, description: input.description || null, sku: input.sku || null, origin: input.origin || null }).select("id").single();
+      if (error || !data) throw error ?? new Error("สร้างสินค้าไม่สำเร็จ");
+      return data;
+    })();
   const records: { product_id: string; storage_path: string; alt_text: string | null; sort_order: number }[] = [];
   for (const [index, image] of images.entries()) {
     const response = await fetch(image.uri);
@@ -72,6 +79,10 @@ export async function getAdminProduct(id: string) {
 }
 
 export async function updateAdminProduct(id: string, payload: { price: number; stock_quantity: number; status: "draft" | "published" | "archived"; description?: string | null }) {
+  if (hobeeApi.isConfigured()) {
+    await hobeeApi.updateAdminProduct(id, { price: payload.price, stockQuantity: payload.stock_quantity, status: payload.status, ...(payload.description !== undefined ? { description: payload.description } : {}) });
+    return;
+  }
   const { error } = await supabase.from("products").update(payload).eq("id", id);
   if (error) throw error;
 }

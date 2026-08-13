@@ -45,6 +45,7 @@ export type CreateOrderInput = { addressId: string; items: Array<{ productId: st
 export type CreatedOrder = { order: { id: string; order_number: string; total: number; status: string; payment_status: string } };
 export type PaymentAction = { type: "promptpay_qr"; qrImageUrl?: string; qrPayload?: string; expiresAt?: string | null; testMode?: boolean } | { type: "redirect"; url: string; testMode?: boolean } | { type: "card_token_required"; message?: string; testMode?: boolean } | { type: "await_confirmation"; testMode?: boolean };
 export type CreatedPaymentIntent = { payment: { id: string; provider_reference: string; status: string }; action: PaymentAction };
+export type AdminProductApiInput = { shopId: string; categoryId?: string | null; name: string; slug: string; description?: string | null; price: number; stockQuantity: number; sku?: string | null; origin?: string | null; status: "draft" | "published" | "archived" };
 
 export const hobeeApi = {
   isConfigured: hasConfiguredApiBaseUrl,
@@ -53,4 +54,6 @@ export const hobeeApi = {
   orders: () => request<{ items: Record<string, unknown>[] }>("/api/orders?limit=25"),
   createOrder: (input: CreateOrderInput) => request<CreatedOrder>("/api/orders", { method: "POST", body: JSON.stringify(input) }),
   createPaymentIntent: (input: { orderId: string; method: "mock_promptpay" | "mock_card" | "opn_promptpay" | "opn_card"; cardToken?: string }) => request<CreatedPaymentIntent>("/api/payments/intent", { method: "POST", body: JSON.stringify(input) }),
+  createAdminProduct: (input: AdminProductApiInput) => request<{ product: { id: string } }>("/api/admin/products", { method: "POST", body: JSON.stringify(input) }),
+  updateAdminProduct: (id: string, input: Pick<AdminProductApiInput, "price" | "stockQuantity" | "status"> & { description?: string | null }) => request<{ product: { id: string } }>(`/api/admin/products/${id}`, { method: "PUT", body: JSON.stringify(input) }),
 };
