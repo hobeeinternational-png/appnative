@@ -15,6 +15,7 @@ import { useToast } from "@/contexts/toast-context";
 import { useCatalog } from "@/hooks/use-catalog";
 import { useFavorites } from "@/hooks/use-favorites";
 import { formatThaiBaht, hobeeProducts } from "@/lib/hobee-data";
+import { recordRecentlyViewed } from "@/lib/recently-viewed";
 import { listProductReviews, submitProductReview, type ProductReview } from "@/lib/reviews";
 
 export default function ProductDetailScreen() {
@@ -24,6 +25,7 @@ export default function ProductDetailScreen() {
   const { addProduct } = useCart(); const { showToast } = useToast(); const { favoriteIds, toggle, signedIn } = useFavorites(); const { user } = useSupabaseAuth();
   const [quantity, setQuantity] = useState(1); const [reviews, setReviews] = useState<ProductReview[]>([]); const [reviewOpen, setReviewOpen] = useState(false); const [reviewRating, setReviewRating] = useState(5); const [reviewComment, setReviewComment] = useState(""); const [reviewSubmitting, setReviewSubmitting] = useState(false); const [descriptionOpen, setDescriptionOpen] = useState(false);
   const favorite = favoriteIds.has(product.id); const recommendations = products.filter((item) => item.id !== product.id && item.category === product.category).slice(0, 4);
+  useEffect(() => { void recordRecentlyViewed({ kind: "product", contentId: product.id, title: product.shortName, image: product.image, detail: `${product.shopName} · ★ ${product.rating.toFixed(1)}`, price: formatThaiBaht(product.price), route: "/product/[id]", params: { id: product.id } }); }, [product]);
   useEffect(() => { void listProductReviews(product.id).then(setReviews).catch(() => setReviews([])); }, [product.id]);
   const submitReview = async () => { if (!user) { router.push("/auth"); return; } setReviewSubmitting(true); try { await submitProductReview({ productId: product.id, userId: user.id, rating: reviewRating, comment: reviewComment }); setReviewOpen(false); setReviewComment(""); showToast("ส่งรีวิวแล้ว รอการตรวจสอบก่อนเผยแพร่", "success"); } catch (error) { showToast(error instanceof Error ? error.message : "ไม่สามารถส่งรีวิวได้", "error"); } finally { setReviewSubmitting(false); } };
   const toggleFavorite = () => { if (!signedIn) { showToast("เข้าสู่ระบบเพื่อบันทึกสินค้าชื่นชอบ", "info"); router.push("/auth"); return; } void toggle(product.id).then((next) => showToast(next ? "บันทึกสินค้าชื่นชอบแล้ว" : "ลบออกจากสินค้าชื่นชอบแล้ว")).catch(() => showToast("ไม่สามารถบันทึกสินค้าชื่นชอบได้", "error")); };

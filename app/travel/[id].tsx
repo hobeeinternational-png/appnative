@@ -1,11 +1,12 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { router, useLocalSearchParams } from "expo-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Image, Modal, Pressable, ScrollView, Share, StyleSheet, Text, View } from "react-native";
 
 import { HOBEE } from "@/components/hobee/design-tokens";
 import { getTravelListing, formatTravelPrice } from "@/lib/travel-data";
 import { navigateFromCurrentLocation } from "@/lib/maps";
+import { recordRecentlyViewed } from "@/lib/recently-viewed";
 import { travelShareMessage } from "@/lib/travel-links";
 import { ScreenContainer } from "@/components/screen-container";
 
@@ -16,6 +17,10 @@ export default function TravelListingDetailScreen() {
   const [saved, setSaved] = useState(false);
   const [selectedRoomId, setSelectedRoomId] = useState(listing?.roomTypes?.[0]?.id);
   const [viewerOpen, setViewerOpen] = useState(false);
+  useEffect(() => {
+    if (!listing) return;
+    void recordRecentlyViewed({ kind: "travel", contentId: listing.id, title: listing.title, image: listing.images[0], detail: `${listing.location} · ★ ${listing.rating.toFixed(1)}`, price: formatTravelPrice(listing.priceFrom), route: "/travel/[id]", params: { id: listing.id } });
+  }, [listing]);
   if (!listing) return <ScreenContainer className="items-center justify-center p-6"><Text style={styles.missing}>ไม่พบรายการท่องเที่ยวนี้</Text><Pressable onPress={() => router.back()} style={styles.missingAction}><Text style={styles.missingActionText}>กลับไปหน้าท่องเที่ยว</Text></Pressable></ScreenContainer>;
   const selectedRoom = listing.roomTypes?.find((room) => room.id === selectedRoomId) ?? listing.roomTypes?.[0];
   const bookingParams = { id: listing.id, roomTypeId: selectedRoom?.id ?? "", type: listing.listingType };

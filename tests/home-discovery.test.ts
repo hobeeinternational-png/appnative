@@ -8,7 +8,7 @@ describe("Home discovery feed", () => {
   it("keeps the existing HOBEE categories while presenting the search-first discovery layout", () => {
     expect(source).toContain("HomeSearchActions");
     expect(source).toContain("CategoryRail");
-    expect(source).toContain("RecentStories");
+    expect(source).toContain("RecentlyViewedSection");
     expect(source).toContain("DiscoverySection");
     for (const category of ["ท่องเที่ยว", "ร้านค้า", "สินค้า", "บริการ", "ร้านอาหาร", "เรียนรู้", "Opportunity", "Community"]) {
       expect(source).toContain(category);
