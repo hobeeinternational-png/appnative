@@ -146,3 +146,4 @@
 - [x] สร้าง HOBEE Admin Web Portal สำหรับ desktop product, inventory และ order operations โดยใช้ Supabase role/RLS เดิม
 - [x] เพิ่ม Product Create และอัปโหลดรูปภาพสินค้าใน Admin Portal โดยใช้ Supabase Storage/role/RLS เดิม
 - [x] ปรับ FloatingBottomNav ให้บางและโปร่งใสแบบ glass ตามแนว Instagram โดยคง Assistive Mode เดิม
+- [x] คืนปุ่มกลาง HOBEE ให้เป็นวงกลมเด่นบน Thin Glass Navigation
