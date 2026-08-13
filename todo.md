@@ -141,3 +141,4 @@
 - [x] ปรับหน้า Account เป็น HOBEE premium profile/rewards dashboard ตามภาพอ้างอิง โดยใช้ข้อมูลจริงและ role เดิม
 - [x] ปรับหน้า Home เป็น Discovery Feed ตามภาพอ้างอิง โดยคงเนื้อหา หมวดหมู่ routes และ data flow เดิม
 - [x] เพิ่ม Recently Viewed จากการเข้าชมจริงของสินค้า ทริป และ content แล้วแสดงบน Home
+- [x] กู้ development preview ที่ไม่แสดงผลและยืนยันว่า HOBEE render ได้

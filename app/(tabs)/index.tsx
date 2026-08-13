@@ -75,7 +75,7 @@ function DiscoverySection({ products }: { products: ReturnType<typeof useCatalog
   const serviceCards = [
     { id: "service-travel", image: hobeeStories[2].image, title: "จองโรงแรมและดีลท่องเที่ยว", detail: "บริการ HOBEE Travel", price: "เริ่มวางแผน", badge: "TRAVEL", route: "/travel" as Href },
     { id: "service-food", image: hobeeStories[1].image, title: "ร้านอาหารท้องถิ่นและ Halal", detail: "สั่งล่วงหน้าได้", price: "ดูร้านอาหาร", badge: "FOOD", route: "/travel/food" as Href },
-    { id: "service-learn", image: hobeeStories[3].image, title: "เรียนรู้เพื่อชุมชนและธุรกิจ", detail: "HOBEE Academy", price: "เริ่มเรียน", badge: "LEARNING", route: "/learn" as Href },
+    { id: "service-learn", image: (hobeeStories[3] ?? hobeeStories[0]).image, title: "เรียนรู้เพื่อชุมชนและธุรกิจ", detail: "HOBEE Academy", price: "เริ่มเรียน", badge: "LEARNING", route: "/learn" as Href },
     { id: "service-community", image: hobeeStories[0].image, title: "โอกาสและ Community", detail: "เชื่อมต่อ Ecosystem", price: "สำรวจโอกาส", badge: "COMMUNITY", route: "/(tabs)/discover" as Href },
   ];
   const cards = activeTab === "แนะนำ" ? [...storyCards.slice(0, 2), ...productCards] : activeTab === "ใกล้คุณ" ? [...storyCards, ...productCards.slice(0, 2)] : serviceCards;
