@@ -1,5 +1,7 @@
 import "@/global.css";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -32,6 +34,7 @@ export const unstable_settings = {
 };
 
 export default function RootLayout() {
+  const [iconFontLoaded, iconFontError] = useFonts(MaterialIcons.font);
   const initialInsets = initialWindowMetrics?.insets ?? DEFAULT_WEB_INSETS;
   const initialFrame = initialWindowMetrics?.frame ?? DEFAULT_WEB_FRAME;
 
@@ -111,6 +114,9 @@ export default function RootLayout() {
   );
 
   const shouldOverrideSafeArea = Platform.OS === "web";
+
+  // Keep vector icons from rendering as empty glyphs while the font is being restored after a Metro reload.
+  if (!iconFontLoaded && !iconFontError) return null;
 
   if (shouldOverrideSafeArea) {
     return (

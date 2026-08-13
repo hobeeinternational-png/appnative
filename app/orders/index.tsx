@@ -1,5 +1,5 @@
 import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from "react-native";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import { HOBEE } from "@/components/hobee/design-tokens";
@@ -12,9 +12,12 @@ import { formatThaiBaht } from "@/lib/hobee-data";
 import { orderStatusLabel } from "@/lib/orders";
 
 export default function OrdersScreen() {
+  const { status } = useLocalSearchParams<{ status?: string }>();
   const { user } = useSupabaseAuth();
   const { orders, loading, error, refresh } = useOrders();
-  const emptyContent = loading ? <ActivityIndicator color={HOBEE.colors.gold} /> : <EmptyState title="ยังไม่มีคำสั่งซื้อ" description={error ?? "เมื่อสั่งซื้อสินค้า รายการจะปรากฏที่นี่"} />;
+  const filteredOrders = status === "processing" ? orders.filter((order) => ["pending", "confirmed", "processing"].includes(order.status)) : status === "refunded" ? orders.filter((order) => ["cancelled", "refunded"].includes(order.status)) : status ? orders.filter((order) => order.status === status) : orders;
+  const filterTitle = ({ processing: "กำลังดำเนินการ", shipped: "จัดส่งแล้ว", refunded: "รอตรวจสอบ / คืนเงิน" } as Record<string, string>)[status ?? ""];
+  const emptyContent = loading ? <ActivityIndicator color={HOBEE.colors.gold} /> : <EmptyState title={filterTitle ? `ยังไม่มีรายการ${filterTitle}` : "ยังไม่มีคำสั่งซื้อ"} description={error ?? "เมื่อสั่งซื้อสินค้า รายการจะปรากฏที่นี่"} />;
 
   if (!user) {
     return <ScreenContainer edges={["top", "bottom", "left", "right"]} containerClassName="bg-[#F8F7F5]" className="items-center justify-center px-6"><EmptyState title="เข้าสู่ระบบเพื่อดูคำสั่งซื้อ" description="ประวัติการซื้อและสถานะจัดส่งของคุณจะแสดงอยู่ที่นี่" onAction={() => router.push("/auth")} actionLabel="เข้าสู่ระบบ" /></ScreenContainer>;
@@ -22,9 +25,9 @@ export default function OrdersScreen() {
 
   return (
     <ScreenContainer edges={["top", "bottom", "left", "right"]} containerClassName="bg-[#F8F7F5]" className="px-5" safeAreaClassName="pt-3">
-      <BackHeader title="คำสั่งซื้อของฉัน" subtitle="ติดตามการชำระเงินและการจัดส่ง" onBack={() => router.back()} />
+      <BackHeader title="คำสั่งซื้อของฉัน" subtitle={filterTitle ? `แสดงสถานะ: ${filterTitle}` : "ติดตามการชำระเงินและการจัดส่ง"} onBack={() => router.back()} />
       <FlatList
-        data={orders}
+        data={filteredOrders}
         keyExtractor={(item) => item.id}
         refreshing={loading}
         onRefresh={() => void refresh()}

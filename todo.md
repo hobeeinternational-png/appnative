@@ -137,3 +137,5 @@
 - [x] นำ HOBEE Corporate Identity Design System ไปใช้กับ tokens กลางและ shared UI
 - [x] นำ Travel Navigation Architecture ระดับ L1–L4 ไปใช้กับ Explore และ Travel ecosystem
 - [x] เพิ่ม Google Maps และ GPS Navigation จริงใน Travel Local Discovery และ Listing Detail
+- [x] แก้ shared icon rendering ที่ทำให้ไอคอนในปุ่มไม่แสดง
+- [x] ปรับหน้า Account เป็น HOBEE premium profile/rewards dashboard ตามภาพอ้างอิง โดยใช้ข้อมูลจริงและ role เดิม
