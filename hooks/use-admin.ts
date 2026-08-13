@@ -22,6 +22,5 @@ export function useAdmin() {
     } catch (cause) { setError(cause instanceof Error ? cause.message : "ไม่สามารถโหลดหลังบ้านได้"); } finally { setLoading(false); }
   }, [user]);
   useEffect(() => { void refresh(); }, [refresh]);
-  return { allowed, loading, products, orders, error, refresh };
+  return { allowed, loading, products, orders, error, refresh, user };
 }
-

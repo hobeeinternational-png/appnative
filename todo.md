@@ -155,3 +155,6 @@
 - [x] ตั้งค่า Supabase URL และ publishable key ของ project ใหม่ใน mobile client
 - [x] เชื่อม Admin Portal สำหรับจัดการสินค้าเข้ากับ Vercel backend ใน source code โดยใช้ Supabase authorization เดิม
 - [ ] Deploy Vercel backend และกำหนด EXPO_PUBLIC_HOBEE_API_BASE_URL เพื่อเปิดใช้ Admin API บน production
+- [x] ตรวจและกู้ตาราง user_roles บน Supabase project tfqrykzqvdqxjnhzevvn เพื่อเปิดสิทธิ์ Admin
+- [x] แก้การตั้งสิทธิ์ Admin ที่ยังไม่สำเร็จบน Supabase project tfqrykzqvdqxjnhzevvn
+- [ ] แก้ Admin Portal session ที่ยังไม่เห็น role admin หลังตั้งสิทธิ์บน Supabase
