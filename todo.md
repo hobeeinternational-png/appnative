@@ -169,3 +169,9 @@
 - [x] Rebuild Admin dashboard ด้วย KPI จริง, Action Center, analytics states และ quick navigation
 - [x] เพิ่ม reusable Admin table/search/filter/empty/error states และ quick actions ที่ไม่เปลี่ยน backend contract
 - [ ] ตรวจ visual desktop, accessibility, role-aware UI, TypeScript และ regression tests ของ Admin Portal
+- [x] Audit Home, Shop, Discover, Account และ shared tokens เทียบภาพ layered native reference
+- [x] เพิ่ม design tokens สำหรับ atmosphere, elevation, section moods และ micro-interactions
+- [x] ปรับ Home เป็น premium layered discovery experience โดยคง content/routes/data flow เดิม
+- [x] ปรับ Shop, Discover และ Account ให้ใช้ layered visual system เดียวกัน
+- [x] Polish shared cards, fixed header และ FloatingBottomNav ให้มี depth และ native interaction
+- [ ] ตรวจ mobile portrait visual, TypeScript และ regression tests หลัง visual system refactor
