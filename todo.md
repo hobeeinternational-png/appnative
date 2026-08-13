@@ -158,3 +158,4 @@
 - [x] ตรวจและกู้ตาราง user_roles บน Supabase project tfqrykzqvdqxjnhzevvn เพื่อเปิดสิทธิ์ Admin
 - [x] แก้การตั้งสิทธิ์ Admin ที่ยังไม่สำเร็จบน Supabase project tfqrykzqvdqxjnhzevvn
 - [ ] แก้ Admin Portal session ที่ยังไม่เห็น role admin หลังตั้งสิทธิ์บน Supabase
+- [x] ปรับ Admin Auth/Portal สำหรับ desktop และเพิ่ม password login บน web preview

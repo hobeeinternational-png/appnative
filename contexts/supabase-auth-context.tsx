@@ -10,6 +10,7 @@ type SupabaseAuthContextValue = {
   loading: boolean;
   configured: boolean;
   sendMagicLink: (email: string) => Promise<void>;
+  signInWithPassword: (email: string, password: string) => Promise<void>;
   completeMagicLink: (url: string) => Promise<void>;
   signOut: () => Promise<void>;
 };
@@ -49,6 +50,16 @@ export function SupabaseAuthProvider({ children }: PropsWithChildren) {
     if (error) throw error;
   }, []);
 
+  const signInWithPassword = useCallback(async (email: string, password: string) => {
+    if (!isSupabaseConfigured) throw new Error("ยังไม่ได้ตั้งค่า Supabase สำหรับแอป");
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email.trim().toLowerCase(),
+      password,
+    });
+    if (error) throw error;
+    setSession(data.session);
+  }, []);
+
   const completeMagicLink = useCallback(async (url: string) => {
     if (!isSupabaseConfigured) throw new Error("ยังไม่ได้ตั้งค่า Supabase สำหรับแอป");
     const { data, error } = await supabase.auth.exchangeCodeForSession(url);
@@ -69,10 +80,11 @@ export function SupabaseAuthProvider({ children }: PropsWithChildren) {
       loading,
       configured: isSupabaseConfigured,
       sendMagicLink,
+      signInWithPassword,
       completeMagicLink,
       signOut,
     }),
-    [completeMagicLink, loading, sendMagicLink, session, signOut],
+    [completeMagicLink, loading, sendMagicLink, session, signInWithPassword, signOut],
   );
 
   return <SupabaseAuthContext.Provider value={value}>{children}</SupabaseAuthContext.Provider>;
@@ -83,4 +95,3 @@ export function useSupabaseAuth() {
   if (!context) throw new Error("useSupabaseAuth must be used inside SupabaseAuthProvider");
   return context;
 }
-
