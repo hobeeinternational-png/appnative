@@ -86,6 +86,12 @@ const config: ExpoConfig = {
   },
   plugins: [
     "expo-router",
+    [
+      "expo-image-picker",
+      {
+        photosPermission: "Allow $(PRODUCT_NAME) to select product images for HOBEE Admin.",
+      },
+    ],
     "expo-asset",
     "expo-font",
     "expo-web-browser",
