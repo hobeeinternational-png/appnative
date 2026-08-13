@@ -1,5 +1,4 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
@@ -9,6 +8,7 @@ import { HOBEE } from "@/components/hobee/design-tokens";
 import { ScreenContainer } from "@/components/screen-container";
 import { useToast } from "@/contexts/toast-context";
 import { useAdmin } from "@/hooks/use-admin";
+import { chooseAdminImages } from "@/lib/admin-image-picker";
 import { createAdminProduct, getAdminProductFormOptions, slugifyProductName, type AdminImageCandidate, type AdminProductFormOptions } from "@/lib/admin";
 
 function navigate(workspace: AdminWorkspace) {
@@ -27,7 +27,7 @@ export default function AdminNewProductScreen() {
   const [shopId, setShopId] = useState(""); const [categoryId, setCategoryId] = useState(""); const [price, setPrice] = useState(""); const [stock, setStock] = useState("0"); const [sku, setSku] = useState(""); const [origin, setOrigin] = useState(""); const [status, setStatus] = useState<"draft" | "published">("draft");
   const [images, setImages] = useState<AdminImageCandidate[]>([]); const [saving, setSaving] = useState(false);
   useEffect(() => { getAdminProductFormOptions().then((data) => { setOptions(data); setShopId((current) => current || data.shops[0]?.id || ""); }).catch((error) => showToast(error instanceof Error ? error.message : "โหลดตัวเลือกสินค้าไม่ได้", "error")).finally(() => setFetchingOptions(false)); }, [showToast]);
-  const chooseImages = async () => { const result = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.Images, allowsMultipleSelection: true, selectionLimit: Math.max(1, 5 - images.length), quality: 0.82 }); if (!result.canceled) { const selected = result.assets.map((asset) => ({ uri: asset.uri, fileName: asset.fileName, mimeType: asset.mimeType, fileSize: asset.fileSize, altText: name || null })); setImages((current) => [...current, ...selected].slice(0, 5)); } };
+  const chooseImages = async () => { const selected = (await chooseAdminImages(Math.max(1, 5 - images.length))).map((asset) => ({ ...asset, altText: name || null })); setImages((current) => [...current, ...selected].slice(0, 5)); };
   const save = async () => { setSaving(true); try { const product = await createAdminProduct({ shop_id: shopId, category_id: categoryId || null, name, slug: slug || slugifyProductName(name), description: description || null, price: Number(price), stock_quantity: Number(stock), sku: sku || null, origin: origin || null, status }, images); showToast(images.length ? "สร้างสินค้าและอัปโหลดรูปแล้ว" : "สร้างสินค้าแล้ว"); router.replace({ pathname: "/admin/product/[id]", params: { id: product.id } }); } catch (error) { showToast(error instanceof Error ? error.message : "สร้างสินค้าไม่สำเร็จ", "error"); } finally { setSaving(false); } };
   if (loading || fetchingOptions) return <ScreenContainer edges={["top", "bottom", "left", "right"]} className="items-center justify-center"><ActivityIndicator color={HOBEE.colors.goldDark} size="large" /></ScreenContainer>;
   if (!allowed) return <ScreenContainer edges={["top", "bottom", "left", "right"]} className="items-center justify-center"><Text className="text-sm font-bold text-muted">บัญชีนี้ไม่มีสิทธิ์เข้าถึง HOBEE Admin Portal</Text></ScreenContainer>;

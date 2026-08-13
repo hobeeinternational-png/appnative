@@ -164,3 +164,8 @@
 - [x] สร้าง Admin workspace เพื่อเพิ่ม แก้ไข ซ่อน และลบสินค้า ทริป และห้องพัก
 - [x] เพิ่ม Admin image manager สำหรับอัปโหลด เพิ่ม แทนที่ และลบรูปภาพ
 - [x] ตรวจ role-gated CRUD, TypeScript, tests และ desktop/mobile Admin flows
+- [x] Audit shell, dashboard data, role boundaries และ route coverage ของ Admin Portal เทียบภาพอ้างอิง
+- [x] Refactor desktop Admin sidebar, top bar, profile/logout confirmation และ responsive control-center shell
+- [x] Rebuild Admin dashboard ด้วย KPI จริง, Action Center, analytics states และ quick navigation
+- [x] เพิ่ม reusable Admin table/search/filter/empty/error states และ quick actions ที่ไม่เปลี่ยน backend contract
+- [ ] ตรวจ visual desktop, accessibility, role-aware UI, TypeScript และ regression tests ของ Admin Portal
