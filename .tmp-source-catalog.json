@@ -1,0 +1,4 @@
+{
+  "project_id": "iwzxlsweuyuoqdslkblw",
+  "query": "select jsonb_build_object('shops', coalesce((select jsonb_agg(to_jsonb(x)) from (select * from public.shops order by created_at limit 50) x), '[]'::jsonb), 'categories', coalesce((select jsonb_agg(to_jsonb(x)) from (select * from public.product_categories order by sort_order, created_at limit 50) x), '[]'::jsonb), 'products', coalesce((select jsonb_agg(to_jsonb(x)) from (select * from public.products order by created_at limit 100) x), '[]'::jsonb), 'product_images', coalesce((select jsonb_agg(to_jsonb(x)) from (select * from public.product_images order by product_id, sort_order limit 500) x), '[]'::jsonb), 'stories', coalesce((select jsonb_agg(to_jsonb(x)) from (select * from public.stories order by created_at limit 100) x), '[]'::jsonb)) as catalog limit 1;"
+}

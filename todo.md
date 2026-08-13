@@ -151,3 +151,5 @@
 - [x] ปรับ top search bar, Travel header และ status bar ให้พอดีจอและอ่านชัด
 - [x] ปรับ top search bar, Travel header และ status bar ให้พอดีจอและอ่านชัด
 - [x] เชื่อม HOBEE Mobile และส่ง source code เวอร์ชันปัจจุบันขึ้น GitHub repository ที่ผู้ใช้ระบุ
+- [x] นำ HOBEE database schema, RLS และ storage migrations ขึ้น Supabase project ที่ผู้ใช้ระบุ
+- [x] ตั้งค่า Supabase URL และ publishable key ของ project ใหม่ใน mobile client

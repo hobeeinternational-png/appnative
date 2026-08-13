@@ -1,0 +1,5 @@
+{
+  "project_id": "tfqrykzqvdqxjnhzevvn",
+  "name": "harden_hobee_security_definer_functions",
+  "query": "REVOKE ALL ON FUNCTION public.create_order_from_items(uuid, uuid, jsonb) FROM PUBLIC, anon, authenticated;\nGRANT EXECUTE ON FUNCTION public.create_order_from_items(uuid, uuid, jsonb) TO service_role;\nREVOKE ALL ON FUNCTION public.handle_new_user() FROM PUBLIC, anon, authenticated;\nREVOKE ALL ON FUNCTION public.set_updated_at() FROM PUBLIC, anon, authenticated;\nREVOKE ALL ON FUNCTION private.create_order_from_items(uuid, uuid, jsonb) FROM PUBLIC, anon, authenticated;\nREVOKE ALL ON FUNCTION private.has_role(text) FROM PUBLIC, anon, authenticated;\nREVOKE ALL ON FUNCTION private.is_platform_admin() FROM PUBLIC, anon, authenticated;\nREVOKE ALL ON FUNCTION private.owns_shop(uuid) FROM PUBLIC, anon, authenticated;"
+}
