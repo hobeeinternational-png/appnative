@@ -181,3 +181,7 @@
 - [x] คืน HOBEE Brand Header และ polish Home top area, hero, recently viewed และ section depth
 - [x] ปรับ FloatingBottomNav ให้ spacing สมดุลและมีพื้นที่รอบ center HOBEE button
 - [ ] ตรวจ BackHeader, Android/back fallback, safe areas, TypeScript และ regression tests
+- [x] Audit fixed app shell, safe area และ background boundary ของ Home top area
+- [x] สร้าง shared continuous top-surface layer ครอบ safe area, brand header และ search shell
+- [x] ลบรอยตัดระหว่าง header/search/category และทำ gradient fade เข้าสู่ canvas อย่างเนียน
+- [x] ตรวจ TypeScript, Home route และ mobile visual smoke test สำหรับ full-bleed top area
