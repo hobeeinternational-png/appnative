@@ -25,6 +25,7 @@ import { LocaleProvider } from "@/contexts/locale-context";
 import { ToastProvider } from "@/contexts/toast-context";
 import { SupabaseAuthProvider } from "@/contexts/supabase-auth-context";
 import { NotificationBootstrap } from "@/components/notification-bootstrap";
+import { BackHeader, shouldShowBackHeader } from "@/components/hobee/back-header";
 
 const DEFAULT_WEB_INSETS: EdgeInsets = { top: 0, right: 0, bottom: 0, left: 0 };
 const DEFAULT_WEB_FRAME: Rect = { x: 0, y: 0, width: 0, height: 0 };
@@ -95,12 +96,12 @@ export default function RootLayout() {
               <NotificationBootstrap>
                 <ToastProvider>
                   <CartProvider>
-                {/* Default to hiding native headers so raw route segments don't appear (e.g. "(tabs)", "products/[id]"). */}
-                {/* If a screen needs the native header, explicitly enable it and set a human title via Stack.Screen options. */}
-                {/* in order for ios apps tab switching to work properly, use presentation: "fullScreenModal" for login page, whenever you decide to use presentation: "modal*/}
-                <Stack screenOptions={{ headerShown: false }}>
-                  <Stack.Screen name="(tabs)" />
-                  <Stack.Screen name="oauth/callback" />
+                <Stack screenOptions={({ route }) => ({ headerShown: shouldShowBackHeader(route.name), header: () => <BackHeader routeName={route.name} /> })}>
+                  <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                  <Stack.Screen name="auth" options={{ headerShown: false }} />
+                  <Stack.Screen name="oauth/callback" options={{ headerShown: false }} />
+                  <Stack.Screen name="auth/callback" options={{ headerShown: false }} />
+                  <Stack.Screen name="payment/callback" options={{ headerShown: false }} />
                 </Stack>
                 <StatusBar style="dark" translucent backgroundColor="#F6F6F4" />
                   </CartProvider>

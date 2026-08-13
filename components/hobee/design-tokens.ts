@@ -22,5 +22,6 @@ export const HOBEE = {
     featured: { shadowColor: "#18362A", shadowOffset: { width: 0, height: 12 }, shadowOpacity: 0.18, shadowRadius: 20, elevation: 8 },
     floating: { shadowColor: "#15271F", shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.22, shadowRadius: 22, elevation: 12 },
   },
+  nav: { itemGap: 20, centerBreathing: 94, barHeight: 56, outerInset: 14 },
   motion: { pressScale: 0.975, cardPressScale: 0.98, fast: 140, standard: 220, entrance: 300 },
 } as const;

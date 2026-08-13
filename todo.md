@@ -175,3 +175,9 @@
 - [x] ปรับ Shop, Discover และ Account ให้ใช้ layered visual system เดียวกัน
 - [x] Polish shared cards, fixed header และ FloatingBottomNav ให้มี depth และ native interaction
 - [ ] ตรวจ mobile portrait visual, TypeScript และ regression tests หลัง visual system refactor
+- [x] Audit Home brand header, FloatingBottomNav spacing และ deep-screen route coverage
+- [x] สร้าง shared BackHeader กับ route fallback สำหรับ deep screens
+- [x] นำ BackHeader ไปใช้กับ Product, Travel, Story, Cart, Checkout, Orders, Rewards, Favorites, Address และ child screens
+- [x] คืน HOBEE Brand Header และ polish Home top area, hero, recently viewed และ section depth
+- [x] ปรับ FloatingBottomNav ให้ spacing สมดุลและมีพื้นที่รอบ center HOBEE button
+- [ ] ตรวจ BackHeader, Android/back fallback, safe areas, TypeScript และ regression tests
