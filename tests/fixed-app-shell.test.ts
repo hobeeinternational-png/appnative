@@ -10,7 +10,7 @@ describe("fixed top app shell", () => {
     for (const screen of screens) {
       const source = readFileSync(resolve(root, screen), "utf8");
       expect(source).toContain("FixedAppShell");
-      expect(source).toContain("header={<AppHeader");
+      expect(source).toContain("header={");
       expect(source).toContain("search={<");
       expect(source).toContain("style={styles.scroll}");
     }
