@@ -4,11 +4,12 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { HOBEE } from "@/components/hobee/design-tokens";
 
-export type AdminWorkspace = "overview" | "products" | "orders" | "inventory";
+export type AdminWorkspace = "overview" | "products" | "travel" | "orders" | "inventory";
 
 const navItems: { key: AdminWorkspace; label: string; icon: keyof typeof MaterialIcons.glyphMap }[] = [
   { key: "overview", label: "ภาพรวม", icon: "grid-view" },
   { key: "products", label: "สินค้า", icon: "inventory-2" },
+  { key: "travel", label: "ทริปและที่พัก", icon: "travel-explore" },
   { key: "orders", label: "คำสั่งซื้อ", icon: "receipt-long" },
   { key: "inventory", label: "คลังสินค้า", icon: "warehouse" },
 ];

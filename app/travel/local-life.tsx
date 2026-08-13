@@ -6,7 +6,8 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { HOBEE } from "@/components/hobee/design-tokens";
 import { AppHeader, FixedAppShell, SearchBar, SectionHeader, useHeaderElevation } from "@/components/hobee/shared-ui";
 import { TravelListingCard } from "@/components/hobee/travel-ui";
-import { travelListings, travelProvinces } from "@/lib/travel-data";
+import { travelProvinces } from "@/lib/travel-data";
+import { useTravelCatalog } from "@/lib/travel-catalog";
 import { ScreenContainer } from "@/components/screen-container";
 
 const LOCAL_CUES = [
@@ -18,7 +19,8 @@ const LOCAL_CUES = [
 export default function LocalLifeScreen() {
   const [province, setProvince] = useState<(typeof travelProvinces)[number]["id"]>("all");
   const { elevated, onScroll } = useHeaderElevation();
-  const listings = useMemo(() => province === "all" ? travelListings : travelListings.filter((listing) => listing.provinceId === province), [province]);
+  const { listings: catalog } = useTravelCatalog();
+  const listings = useMemo(() => province === "all" ? catalog : catalog.filter((listing) => listing.provinceId === province), [catalog, province]);
   const openListing = (id: string) => router.push({ pathname: "/travel/[id]" as any, params: { id } });
   return <ScreenContainer containerClassName="bg-[#F8F7F5]" safeAreaClassName="pt-7" edges={["top", "left", "right"]}><FixedAppShell elevated={elevated} header={<AppHeader showLocation={false} brandSuffix="TRAVEL" />} search={<SearchBar onPress={() => router.push("/travel")} placeholder="ค้นหากิจกรรม ร้านอาหาร หรือ Creator" />}><ScrollView style={styles.scroll} onScroll={onScroll} scrollEventThrottle={16} showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}><ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>{travelProvinces.map((item) => <Pressable key={item.id} onPress={() => setProvince(item.id)} style={[styles.chip, province === item.id && styles.chipActive]}><Text style={[styles.chipText, province === item.id && styles.chipTextActive]}>{item.label}</Text></Pressable>)}</ScrollView><View style={styles.intro}><Text style={styles.eyebrow}>LOCAL LIFE HUB</Text><Text style={styles.title}>{province === "all" ? "วิถีถิ่นที่รอให้คุณค้นพบ" : `เรื่องดีของ${travelProvinces.find((item) => item.id === province)?.label}`}</Text><Text style={styles.copy}>เลือกสนับสนุนผู้ประกอบการในพื้นที่ ผ่านที่พัก ทริป อาหาร และกิจกรรมที่มีข้อมูลแหล่งที่มา</Text></View><SectionHeader title="แนะนำจากพื้นที่" /><ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.rail}>{listings.map((listing) => <TravelListingCard key={listing.id} listing={listing} onPress={() => openListing(listing.id)} />)}</ScrollView><SectionHeader title="ไปให้ลึกกว่าเดิม" /><View style={styles.cueList}>{LOCAL_CUES.map((cue) => <View key={cue.title} style={styles.cue}><View style={styles.cueIcon}><MaterialIcons name={cue.icon} size={25} color={HOBEE.colors.travelTeal} /></View><View style={styles.cueCopy}><Text style={styles.cueTitle}>{cue.title}</Text><Text style={styles.cueText}>{cue.text}</Text></View></View>)}</View><Pressable onPress={() => router.push("/(tabs)/discover")} style={styles.creator}><Text style={styles.creatorEyebrow}>STORY & COMMUNITY</Text><Text style={styles.creatorTitle}>ฟังเรื่องเล่าจาก Creator ท้องถิ่น</Text><Text style={styles.creatorText}>เปิด Discover เพื่อเลือกอ่านเรื่องราวจากชุมชนและวางแผนการเดินทางของคุณ</Text><View style={styles.creatorAction}><Text style={styles.creatorActionText}>ไปที่ Discover</Text><MaterialIcons name="arrow-forward" size={20} color={HOBEE.colors.ink} /></View></Pressable></ScrollView></FixedAppShell></ScreenContainer>;
 }

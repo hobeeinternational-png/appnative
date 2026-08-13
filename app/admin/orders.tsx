@@ -14,6 +14,7 @@ import { orderStatusLabel, paymentStatusLabel } from "@/lib/orders";
 function navigate(workspace: AdminWorkspace) {
   if (workspace === "overview") router.push("/admin");
   else if (workspace === "products") router.push("/admin/products" as any);
+  else if (workspace === "travel") router.push("/admin/travel" as any);
   else if (workspace === "orders") router.replace("/admin/orders");
   else router.push({ pathname: "/admin/products" as any, params: { filter: "low-stock" } });
 }

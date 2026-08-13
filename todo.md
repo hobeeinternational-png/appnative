@@ -159,3 +159,8 @@
 - [x] แก้การตั้งสิทธิ์ Admin ที่ยังไม่สำเร็จบน Supabase project tfqrykzqvdqxjnhzevvn
 - [ ] แก้ Admin Portal session ที่ยังไม่เห็น role admin หลังตั้งสิทธิ์บน Supabase
 - [x] ปรับ Admin Auth/Portal สำหรับ desktop และเพิ่ม password login บน web preview
+- [x] Audit data models, schema และ Admin workflow สำหรับสินค้า ทริป ห้องพัก และรูปภาพ
+- [x] เพิ่ม Supabase schema/RLS สำหรับ travel listings, room types และคลังรูปภาพของผู้ดูแล
+- [x] สร้าง Admin workspace เพื่อเพิ่ม แก้ไข ซ่อน และลบสินค้า ทริป และห้องพัก
+- [x] เพิ่ม Admin image manager สำหรับอัปโหลด เพิ่ม แทนที่ และลบรูปภาพ
+- [x] ตรวจ role-gated CRUD, TypeScript, tests และ desktop/mobile Admin flows

@@ -7,6 +7,7 @@ import { HOBEE } from "@/components/hobee/design-tokens";
 import { AppHeader, FixedAppShell, SearchBar, SectionHeader, useHeaderElevation } from "@/components/hobee/shared-ui";
 import { TravelIntentCard, TravelListingCard } from "@/components/hobee/travel-ui";
 import { travelIntents, travelListings, travelProvinces } from "@/lib/travel-data";
+import { useTravelCatalog } from "@/lib/travel-catalog";
 import { ScreenContainer } from "@/components/screen-container";
 
 type IntentId = (typeof travelIntents)[number]["id"];
@@ -20,8 +21,9 @@ export default function TravelHomeScreen() {
   const [currency, setCurrency] = useState("THB ฿");
   const [language, setLanguage] = useState("TH");
   const { elevated, onScroll } = useHeaderElevation();
-  const listings = useMemo(() => travelListings.filter((listing) => (province === "all" || listing.provinceId === province) && (!intent || INTENT_LISTING_IDS[intent].includes(listing.id))), [province, intent]);
-  const hero = listings[0] ?? travelListings[0];
+  const { listings: catalog } = useTravelCatalog();
+  const listings = useMemo(() => catalog.filter((listing) => (province === "all" || listing.provinceId === province) && (!intent || INTENT_LISTING_IDS[intent].includes(listing.id))), [catalog, province, intent]);
+  const hero = listings[0] ?? catalog[0] ?? travelListings[0];
   const openListing = (id: string) => router.push({ pathname: "/travel/[id]", params: { id } } as never);
   const pickProvince = (id: (typeof travelProvinces)[number]["id"]) => { setProvince(id); setIntent(null); };
 

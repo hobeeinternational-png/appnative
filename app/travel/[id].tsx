@@ -5,6 +5,7 @@ import { Image, Modal, Pressable, ScrollView, Share, StyleSheet, Text, View } fr
 
 import { HOBEE } from "@/components/hobee/design-tokens";
 import { getTravelListing, formatTravelPrice } from "@/lib/travel-data";
+import { useTravelCatalog } from "@/lib/travel-catalog";
 import { navigateFromCurrentLocation } from "@/lib/maps";
 import { recordRecentlyViewed } from "@/lib/recently-viewed";
 import { travelShareMessage } from "@/lib/travel-links";
@@ -12,7 +13,8 @@ import { ScreenContainer } from "@/components/screen-container";
 
 export default function TravelListingDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const listing = useMemo(() => getTravelListing(id), [id]);
+  const { listings } = useTravelCatalog();
+  const listing = useMemo(() => listings.find((entry) => entry.id === id) ?? getTravelListing(id), [id, listings]);
   const [activeImage, setActiveImage] = useState(0);
   const [saved, setSaved] = useState(false);
   const [selectedRoomId, setSelectedRoomId] = useState(listing?.roomTypes?.[0]?.id);

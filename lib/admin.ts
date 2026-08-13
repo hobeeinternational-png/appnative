@@ -10,6 +10,8 @@ export const PRODUCT_IMAGE_BUCKET = "product-images";
 export type AdminProductCreateInput = { shop_id: string; category_id?: string | null; name: string; slug: string; description?: string | null; price: number; stock_quantity: number; sku?: string | null; origin?: string | null; status: "draft" | "published" | "archived" };
 export type AdminImageCandidate = { uri: string; fileName?: string | null; mimeType?: string | null; fileSize?: number | null; altText?: string | null };
 export type AdminProductFormOptions = { shops: { id: string; name: string }[]; categories: { id: string; name: string }[] };
+export type AdminStoredImage = { id: string; storage_path: string; alt_text: string | null; sort_order: number; url: string };
+export type AdminProductUpdateInput = Partial<Pick<AdminProductCreateInput, "shop_id" | "category_id" | "name" | "slug" | "description" | "price" | "stock_quantity" | "sku" | "origin" | "status">>;
 
 export async function isCurrentUserAdmin(userId: string) {
   const { data, error } = await supabase.from("user_roles").select("role").eq("user_id", userId).eq("role", "admin").maybeSingle();
@@ -42,11 +44,7 @@ export async function getAdminProductFormOptions(): Promise<AdminProductFormOpti
 export async function createAdminProduct(input: AdminProductCreateInput, images: AdminImageCandidate[] = []) {
   const validation = validateAdminProductInput(input);
   if (validation) throw new Error(validation);
-  if (images.length > 5) throw new Error("อัปโหลดรูปสินค้าได้สูงสุด 5 รูป");
-  for (const image of images) {
-    if (image.fileSize && image.fileSize > 5 * 1024 * 1024) throw new Error("รูปภาพแต่ละรูปต้องมีขนาดไม่เกิน 5 MB");
-    if (image.mimeType && !["image/jpeg", "image/png", "image/webp"].includes(image.mimeType)) throw new Error("รองรับเฉพาะ JPG, PNG และ WebP");
-  }
+  validateImages(images, "สินค้า");
   const viaApi = hobeeApi.isConfigured();
   const product = viaApi
     ? (await hobeeApi.createAdminProduct({ shopId: input.shop_id, categoryId: input.category_id || null, name: input.name, slug: input.slug, description: input.description || null, price: input.price, stockQuantity: input.stock_quantity, sku: input.sku || null, origin: input.origin || null, status: input.status })).product
@@ -55,36 +53,83 @@ export async function createAdminProduct(input: AdminProductCreateInput, images:
       if (error || !data) throw error ?? new Error("สร้างสินค้าไม่สำเร็จ");
       return data;
     })();
-  const records: { product_id: string; storage_path: string; alt_text: string | null; sort_order: number }[] = [];
-  for (const [index, image] of images.entries()) {
-    const response = await fetch(image.uri);
-    const blob = await response.blob();
-    const extension = image.fileName?.split(".").pop()?.toLowerCase() || image.mimeType?.split("/").pop() || "jpg";
-    const path = `products/${product.id}/${Date.now()}-${index}.${extension}`;
-    const { data: uploaded, error: uploadError } = await supabase.storage.from(PRODUCT_IMAGE_BUCKET).upload(path, blob, { contentType: image.mimeType ?? blob.type ?? "image/jpeg", upsert: false });
-    if (uploadError || !uploaded) throw uploadError ?? new Error("อัปโหลดรูปสินค้าไม่สำเร็จ");
-    records.push({ product_id: product.id, storage_path: uploaded.path, alt_text: image.altText ?? input.name, sort_order: index });
-  }
-  if (records.length) {
-    const { error: imageError } = await supabase.from("product_images").insert(records);
-    if (imageError) throw imageError;
-  }
+  await uploadAdminProductImages(product.id, images, input.name);
   return product;
 }
 
 export async function getAdminProduct(id: string) {
-  const { data, error } = await supabase.from("products").select("id,name,price,stock_quantity,status,sku,description,origin,category_id").eq("id", id).single();
+  const { data, error } = await supabase.from("products").select("id,shop_id,name,slug,price,stock_quantity,status,sku,description,origin,category_id").eq("id", id).single();
   if (error || !data) throw error ?? new Error("ไม่พบสินค้า");
-  return data as { id: string; name: string; price: number; stock_quantity: number; status: "draft" | "published" | "archived"; sku: string | null; description: string | null; origin: string | null; category_id: string | null };
+  return data as { id: string; shop_id: string; name: string; slug: string; price: number; stock_quantity: number; status: "draft" | "published" | "archived"; sku: string | null; description: string | null; origin: string | null; category_id: string | null };
 }
 
-export async function updateAdminProduct(id: string, payload: { price: number; stock_quantity: number; status: "draft" | "published" | "archived"; description?: string | null }) {
-  if (hobeeApi.isConfigured()) {
+export async function updateAdminProduct(id: string, payload: AdminProductUpdateInput) {
+  const hasOnlyApiFields = Object.keys(payload).every((key) => ["price", "stock_quantity", "status", "description"].includes(key));
+  if (hobeeApi.isConfigured() && hasOnlyApiFields && payload.price !== undefined && payload.stock_quantity !== undefined && payload.status !== undefined) {
     await hobeeApi.updateAdminProduct(id, { price: payload.price, stockQuantity: payload.stock_quantity, status: payload.status, ...(payload.description !== undefined ? { description: payload.description } : {}) });
     return;
   }
   const { error } = await supabase.from("products").update(payload).eq("id", id);
   if (error) throw error;
+}
+
+export async function getAdminProductImages(productId: string): Promise<AdminStoredImage[]> {
+  const { data, error } = await supabase.from("product_images").select("id,storage_path,alt_text,sort_order").eq("product_id", productId).order("sort_order");
+  if (error) throw error;
+  return (data ?? []).map((image) => ({ ...image, url: supabase.storage.from(PRODUCT_IMAGE_BUCKET).getPublicUrl(image.storage_path).data.publicUrl }));
+}
+
+export async function uploadAdminProductImages(productId: string, images: AdminImageCandidate[], defaultAltText: string) {
+  if (!images.length) return;
+  validateImages(images, "สินค้า");
+  const existing = await getAdminProductImages(productId);
+  if (existing.length + images.length > 5) throw new Error("สินค้าแต่ละรายการมีรูปภาพได้สูงสุด 5 รูป");
+  const records: { product_id: string; storage_path: string; alt_text: string | null; sort_order: number }[] = [];
+  for (const [index, image] of images.entries()) {
+    const storagePath = await uploadImage(PRODUCT_IMAGE_BUCKET, `products/${productId}`, image, index);
+    records.push({ product_id: productId, storage_path: storagePath, alt_text: image.altText ?? defaultAltText, sort_order: existing.length + index });
+  }
+  const { error } = await supabase.from("product_images").insert(records);
+  if (error) throw error;
+}
+
+export async function replaceAdminProductImage(image: AdminStoredImage, productId: string, candidate: AdminImageCandidate, altText: string) {
+  validateImages([candidate], "สินค้า");
+  const storagePath = await uploadImage(PRODUCT_IMAGE_BUCKET, `products/${productId}`, candidate, image.sort_order);
+  const { error } = await supabase.from("product_images").update({ storage_path: storagePath, alt_text: candidate.altText ?? altText }).eq("id", image.id);
+  if (error) throw error;
+  await supabase.storage.from(PRODUCT_IMAGE_BUCKET).remove([image.storage_path]);
+}
+
+export async function deleteAdminProductImage(image: AdminStoredImage) {
+  const { error } = await supabase.from("product_images").delete().eq("id", image.id);
+  if (error) throw error;
+  await supabase.storage.from(PRODUCT_IMAGE_BUCKET).remove([image.storage_path]);
+}
+
+export async function deleteAdminProduct(productId: string) {
+  const images = await getAdminProductImages(productId);
+  const { error } = await supabase.from("products").delete().eq("id", productId);
+  if (error) throw error;
+  if (images.length) await supabase.storage.from(PRODUCT_IMAGE_BUCKET).remove(images.map((image) => image.storage_path));
+}
+
+function validateImages(images: AdminImageCandidate[], entityLabel: string) {
+  if (images.length > 5) throw new Error(`อัปโหลดรูป${entityLabel}ได้สูงสุด 5 รูป`);
+  for (const image of images) {
+    if (image.fileSize && image.fileSize > 5 * 1024 * 1024) throw new Error("รูปภาพแต่ละรูปต้องมีขนาดไม่เกิน 5 MB");
+    if (image.mimeType && !["image/jpeg", "image/png", "image/webp"].includes(image.mimeType)) throw new Error("รองรับเฉพาะ JPG, PNG และ WebP");
+  }
+}
+
+async function uploadImage(bucket: string, folder: string, image: AdminImageCandidate, index: number) {
+  const response = await fetch(image.uri);
+  const blob = await response.blob();
+  const extension = image.fileName?.split(".").pop()?.toLowerCase() || image.mimeType?.split("/").pop() || "jpg";
+  const path = `${folder}/${Date.now()}-${index}.${extension}`;
+  const { data, error } = await supabase.storage.from(bucket).upload(path, blob, { contentType: image.mimeType ?? blob.type ?? "image/jpeg", upsert: false });
+  if (error || !data) throw error ?? new Error("อัปโหลดรูปภาพไม่สำเร็จ");
+  return data.path;
 }
 
 export async function updateAdminOrderStatus(id: string, status: "confirmed" | "processing" | "shipped" | "delivered" | "cancelled") {

@@ -1,12 +1,13 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { router, useLocalSearchParams } from "expo-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 
 import { HOBEE } from "@/components/hobee/design-tokens";
 import { TravelStep } from "@/components/hobee/travel-ui";
 import { calculateTravelBooking, formatTravelMoney, previewBookingRef } from "@/lib/travel-booking";
 import { getTravelListing } from "@/lib/travel-data";
+import { useTravelCatalog } from "@/lib/travel-catalog";
 import type { TravelBookingDraft } from "@/lib/travel-types";
 import { ScreenContainer } from "@/components/screen-container";
 
@@ -14,10 +15,12 @@ const STEPS = ["วันและผู้เดินทาง", "บริก
 
 export default function TravelBookingScreen() {
   const { id, roomTypeId } = useLocalSearchParams<{ id: string; roomTypeId?: string }>();
-  const listing = useMemo(() => getTravelListing(id), [id]);
+  const { listings } = useTravelCatalog();
+  const listing = useMemo(() => listings.find((entry) => entry.id === id) ?? getTravelListing(id), [id, listings]);
   const [step, setStep] = useState(1);
   const [draft, setDraft] = useState<TravelBookingDraft>({ listingId: id, listingType: listing?.listingType ?? "trip", roomTypeId: roomTypeId || listing?.roomTypes?.[0]?.id, tripMode: listing?.tripModes?.[0] ?? "join", checkIn: "2026-09-12", checkOut: "2026-09-14", departureDate: listing?.departureDates?.[0] ?? "2026-09-12", rooms: 1, adults: 2, children: 0, addOnIds: [], paymentPlan: "deposit" });
   const [contact, setContact] = useState({ name: "", email: "", phone: "", nationality: "" });
+  useEffect(() => { if (listing) setDraft((current) => ({ ...current, listingId: listing.id, listingType: listing.listingType, roomTypeId: listing.roomTypes?.some((room) => room.id === current.roomTypeId) ? current.roomTypeId : roomTypeId || listing.roomTypes?.[0]?.id, tripMode: listing.tripModes?.includes(current.tripMode ?? "join") ? current.tripMode : listing.tripModes?.[0] ?? "join", departureDate: listing.departureDates?.includes(current.departureDate ?? "") ? current.departureDate : listing.departureDates?.[0] ?? current.departureDate })); }, [listing, roomTypeId]);
   if (!listing) return <ScreenContainer className="items-center justify-center"><Text>ไม่พบรายการสำหรับการจอง</Text></ScreenContainer>;
   const quote = calculateTravelBooking(listing, draft);
   const updateNumber = (field: "rooms" | "adults" | "children", next: number) => setDraft((current) => ({ ...current, [field]: Math.max(field === "children" ? 0 : 1, next) }));

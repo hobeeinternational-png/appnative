@@ -13,6 +13,7 @@ import { createAdminProduct, getAdminProductFormOptions, slugifyProductName, typ
 
 function navigate(workspace: AdminWorkspace) {
   if (workspace === "overview") router.push("/admin");
+  else if (workspace === "travel") router.push("/admin/travel" as any);
   else if (workspace === "orders") router.push("/admin/orders");
   else router.push("/admin/products" as any);
 }

@@ -6,11 +6,13 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { HOBEE } from "@/components/hobee/design-tokens";
 import { formatTravelMoney } from "@/lib/travel-booking";
 import { getTravelListing } from "@/lib/travel-data";
+import { useTravelCatalog } from "@/lib/travel-catalog";
 import { ScreenContainer } from "@/components/screen-container";
 
 export default function TravelVoucherScreen() {
   const { id, listingId, deposit, total } = useLocalSearchParams<{ id: string; listingId: string; deposit: string; total: string }>();
-  const listing = useMemo(() => getTravelListing(listingId), [listingId]);
+  const { listings } = useTravelCatalog();
+  const listing = useMemo(() => listings.find((entry) => entry.id === listingId) ?? getTravelListing(listingId), [listingId, listings]);
   if (!listing) return <ScreenContainer className="items-center justify-center"><Text>ไม่พบ Voucher นี้</Text></ScreenContainer>;
   return <ScreenContainer containerClassName="bg-[#F8F7F5]" edges={["top", "left", "right"]}><ScrollView contentContainerStyle={styles.content}><View style={styles.hero}><MaterialIcons name="confirmation-number" size={46} color={HOBEE.colors.gold} /><Text style={styles.heroOverline}>DIGITAL VOUCHER PREVIEW</Text><Text style={styles.heroTitle}>คำขอจองพร้อมตรวจสอบ</Text><Text style={styles.heroText}>Voucher จริงจะออกหลัง availability และ payment ถูกยืนยันโดย server</Text></View><View style={styles.ticket}><View style={styles.ticketTop}><Text style={styles.brand}>HOBEE TRAVEL</Text><View style={styles.status}><Text style={styles.statusText}>PENDING CONFIRMATION</Text></View></View><Text style={styles.ref}>{id}</Text><Text style={styles.listing}>{listing.title}</Text><Text style={styles.location}>{listing.location}</Text><View style={styles.divider} /><Row label={listing.listingType === "trip" ? "วันออกเดินทาง" : "เช็คอิน / เช็คเอาต์"} value={listing.listingType === "trip" ? listing.departureDates?.[0] ?? "รอยืนยัน" : "รอยืนยันจากผู้ประกอบการ"} /><Row label="ผู้ดำเนินการ" value={listing.operatorName} /><Row label="ยอดรวมคำขอจอง" value={formatTravelMoney(Number(total) || listing.priceFrom)} /><Row label="ยอดชำระในขั้นนี้" value={formatTravelMoney(Number(deposit) || 0)} strong /><View style={styles.qr}><MaterialIcons name="qr-code-2" size={118} color={HOBEE.colors.ink} /><Text style={styles.qrText}>QR Check-in จะแสดงหลังยืนยันการจอง</Text></View></View><View style={styles.notice}><MaterialIcons name="info" size={21} color={HOBEE.colors.travelTeal} /><Text style={styles.noticeText}>หน้านี้เป็น presentation preview ไม่ใช่หลักฐานการจองหรือการชำระเงิน จนกว่าระบบ booking ฝั่ง server จะพร้อมใช้งาน</Text></View><Pressable onPress={() => router.replace("/travel" as any)} style={styles.action}><Text style={styles.actionText}>กลับสู่หน้าท่องเที่ยว</Text><MaterialIcons name="arrow-forward" size={21} color={HOBEE.colors.ink} /></Pressable></ScrollView></ScreenContainer>;
 }
