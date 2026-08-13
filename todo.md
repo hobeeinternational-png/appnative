@@ -150,4 +150,4 @@
 - [x] ปรับ spacing ของ 4 ปุ่มรอบ HOBEE ให้กระชับและสมดุลบน Thin Glass Navigation
 - [x] ปรับ top search bar, Travel header และ status bar ให้พอดีจอและอ่านชัด
 - [x] ปรับ top search bar, Travel header และ status bar ให้พอดีจอและอ่านชัด
-- [ ] เชื่อม HOBEE Mobile และส่ง source code เวอร์ชันปัจจุบันขึ้น GitHub repository ที่ผู้ใช้ระบุ
+- [x] เชื่อม HOBEE Mobile และส่ง source code เวอร์ชันปัจจุบันขึ้น GitHub repository ที่ผู้ใช้ระบุ
