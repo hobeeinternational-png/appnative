@@ -1,7 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type PropsWithChildren } from "react";
 import type { Session, User } from "@supabase/supabase-js";
-import * as Linking from "expo-linking";
-
 import { isSupabaseConfigured, supabase } from "@/lib/supabase";
 
 type SupabaseAuthContextValue = {
@@ -9,9 +7,7 @@ type SupabaseAuthContextValue = {
   session: Session | null;
   loading: boolean;
   configured: boolean;
-  sendMagicLink: (email: string) => Promise<void>;
   signInWithPassword: (email: string, password: string) => Promise<void>;
-  completeMagicLink: (url: string) => Promise<void>;
   signOut: () => Promise<void>;
 };
 
@@ -40,29 +36,12 @@ export function SupabaseAuthProvider({ children }: PropsWithChildren) {
     return () => subscription.subscription.unsubscribe();
   }, []);
 
-  const sendMagicLink = useCallback(async (email: string) => {
-    if (!isSupabaseConfigured) throw new Error("ยังไม่ได้ตั้งค่า Supabase สำหรับแอป");
-    const redirectTo = Linking.createURL("auth/callback");
-    const { error } = await supabase.auth.signInWithOtp({
-      email: email.trim().toLowerCase(),
-      options: { emailRedirectTo: redirectTo, shouldCreateUser: true },
-    });
-    if (error) throw error;
-  }, []);
-
   const signInWithPassword = useCallback(async (email: string, password: string) => {
     if (!isSupabaseConfigured) throw new Error("ยังไม่ได้ตั้งค่า Supabase สำหรับแอป");
     const { data, error } = await supabase.auth.signInWithPassword({
       email: email.trim().toLowerCase(),
       password,
     });
-    if (error) throw error;
-    setSession(data.session);
-  }, []);
-
-  const completeMagicLink = useCallback(async (url: string) => {
-    if (!isSupabaseConfigured) throw new Error("ยังไม่ได้ตั้งค่า Supabase สำหรับแอป");
-    const { data, error } = await supabase.auth.exchangeCodeForSession(url);
     if (error) throw error;
     setSession(data.session);
   }, []);
@@ -79,12 +58,10 @@ export function SupabaseAuthProvider({ children }: PropsWithChildren) {
       session,
       loading,
       configured: isSupabaseConfigured,
-      sendMagicLink,
       signInWithPassword,
-      completeMagicLink,
       signOut,
     }),
-    [completeMagicLink, loading, sendMagicLink, session, signInWithPassword, signOut],
+    [loading, session, signInWithPassword, signOut],
   );
 
   return <SupabaseAuthContext.Provider value={value}>{children}</SupabaseAuthContext.Provider>;

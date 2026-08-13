@@ -1,14 +1,5 @@
 export const HOBEE_SCHEME = "manushobeemobile";
 
-export function isMagicLinkCallback(url: string) {
-  try {
-    const parsed = new URL(url);
-    return parsed.protocol === `${HOBEE_SCHEME}:` && parsed.hostname === "auth" && parsed.pathname === "/callback";
-  } catch {
-    return false;
-  }
-}
-
 export type PaymentReturn = { orderId: string | null; status: "success" | "pending" | "cancelled" | "failed" | "unknown" };
 
 export function parsePaymentReturn(url: string): PaymentReturn | null {

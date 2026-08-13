@@ -185,3 +185,7 @@
 - [x] สร้าง shared continuous top-surface layer ครอบ safe area, brand header และ search shell
 - [x] ลบรอยตัดระหว่าง header/search/category และทำ gradient fade เข้าสู่ canvas อย่างเนียน
 - [x] ตรวจ TypeScript, Home route และ mobile visual smoke test สำหรับ full-bleed top area
+- [x] Audit Magic Link UI, auth context และ deep-link dependencies ก่อนเปลี่ยนเป็น password-only
+- [x] ปรับ Auth screen และ Supabase auth context ให้ password login ใช้ได้บน web, iOS และ Android
+- [x] ลบ Magic Link UI/dead code โดยคง Supabase session, logout และ admin role flow เดิม
+- [x] ตรวจ TypeScript, regression tests และ Admin password login flow
