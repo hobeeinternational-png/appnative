@@ -1,15 +1,7 @@
+import { afterSalesQueueRank, caseQueueLabel, getAfterSalesSlaState, type AfterSalesSlaState } from "@/lib/after-sales-operations-summary";
 import { supabase } from "@/lib/supabase";
 
-export type OrderItemForAfterSales = {
-  id: string;
-  product_id: string;
-  shop_id: string;
-  product_name: string;
-  sku: string | null;
-  unit_price: number;
-  quantity: number;
-  line_total: number;
-};
+export type OrderItemForAfterSales = { id: string; product_id: string; shop_id: string; product_name: string; sku: string | null; unit_price: number; quantity: number; line_total: number };
 
 export type AfterSalesCase = {
   id: string;
@@ -27,6 +19,12 @@ export type AfterSalesCase = {
   updated_at: string;
   resolved_at: string | null;
   closed_at: string | null;
+  assigned_to?: string | null;
+  first_response_due_at?: string | null;
+  customer_response_due_at?: string | null;
+  refund_due_at?: string | null;
+  return_inspection_due_at?: string | null;
+  escalated_at?: string | null;
 };
 
 export type AfterSalesCaseDetail = AfterSalesCase & {
@@ -36,14 +34,15 @@ export type AfterSalesCaseDetail = AfterSalesCase & {
   refund: { id: string; status: string; amount: number; currency: string; refund_method: string | null; requested_at: string; approved_at: string | null; completed_at: string | null } | null;
   returnShipment: { id: string; carrier: string | null; tracking_number: string | null; tracking_url: string | null; status: string; shipped_at: string | null; received_at: string | null } | null;
   replacementShipment: { id: string; provider: string | null; tracking_number: string | null; tracking_url: string | null; status: string; shipped_at: string | null; delivered_at: string | null; received_at: string | null } | null;
+  auditLogs: Array<{ id: string; action_type: string; reason: string | null; previous_state: Record<string, unknown>; next_state: Record<string, unknown>; created_at: string }>;
 };
 
+export type AfterSalesOperationCase = AfterSalesCase & { queueLabel: string; slaState: AfterSalesSlaState; queueRank: number };
+
+const CASE_SELECT = "id,case_number,order_id,order_item_id,shop_id,case_type,description,requested_resolution,status,priority,decision_note,created_at,updated_at,resolved_at,closed_at,assigned_to,first_response_due_at,customer_response_due_at,refund_due_at,return_inspection_due_at,escalated_at";
+
 export async function listOrderItemsForAfterSales(orderId: string) {
-  const { data, error } = await supabase
-    .from("order_items")
-    .select("id,product_id,shop_id,product_name,sku,unit_price,quantity,line_total")
-    .eq("order_id", orderId)
-    .order("created_at", { ascending: true });
+  const { data, error } = await supabase.from("order_items").select("id,product_id,shop_id,product_name,sku,unit_price,quantity,line_total").eq("order_id", orderId).order("created_at", { ascending: true });
   if (error) throw error;
   return (data ?? []) as OrderItemForAfterSales[];
 }
@@ -54,72 +53,42 @@ export async function confirmOrderReceived(orderId: string) {
   return data as string;
 }
 
-export async function submitAfterSalesCase(input: {
-  orderId: string;
-  orderItemId: string;
-  caseType: string;
-  description: string;
-  requestedResolution: string;
-  reasonCode?: string;
-}) {
-  const { data, error } = await supabase.rpc("submit_my_after_sales_case" as never, {
-    p_order_id: input.orderId,
-    p_order_item_id: input.orderItemId,
-    p_case_type: input.caseType,
-    p_description: input.description,
-    p_requested_resolution: input.requestedResolution,
-    p_reason_code: input.reasonCode ?? null,
-  } as never);
+export async function submitAfterSalesCase(input: { orderId: string; orderItemId: string; caseType: string; description: string; requestedResolution: string; reasonCode?: string }) {
+  const { data, error } = await supabase.rpc("submit_my_after_sales_case" as never, { p_order_id: input.orderId, p_order_item_id: input.orderItemId, p_case_type: input.caseType, p_description: input.description, p_requested_resolution: input.requestedResolution, p_reason_code: input.reasonCode ?? null } as never);
   if (error) throw error;
   return data as string;
 }
 
 export async function listMyAfterSalesCases() {
-  const { data, error } = await supabase
-    .from("after_sales_cases")
-    .select("id,case_number,order_id,order_item_id,shop_id,case_type,description,requested_resolution,status,priority,decision_note,created_at,updated_at,resolved_at,closed_at")
-    .order("updated_at", { ascending: false });
+  const { data, error } = await supabase.from("after_sales_cases").select(CASE_SELECT).order("updated_at", { ascending: false });
   if (error) throw error;
   return (data ?? []) as AfterSalesCase[];
 }
 
 export async function getMyAfterSalesCase(caseId: string): Promise<AfterSalesCaseDetail> {
-  const [caseResult, eventsResult, messagesResult, evidenceResult, refundsResult, returnsResult, replacementsResult] = await Promise.all([
-    supabase.from("after_sales_cases").select("id,case_number,order_id,order_item_id,shop_id,case_type,description,requested_resolution,status,priority,decision_note,created_at,updated_at,resolved_at,closed_at").eq("id", caseId).single(),
+  const [caseResult, eventsResult, messagesResult, evidenceResult, refundsResult, returnsResult, replacementsResult, auditResult] = await Promise.all([
+    supabase.from("after_sales_cases").select(CASE_SELECT).eq("id", caseId).single(),
     supabase.from("after_sales_case_events").select("id,event_type,description,created_at").eq("case_id", caseId).order("created_at", { ascending: true }),
     supabase.from("after_sales_case_messages").select("id,visibility,body,created_at").eq("case_id", caseId).order("created_at", { ascending: true }),
     supabase.from("after_sales_evidence").select("id,storage_path,media_type,file_name,note,created_at").eq("case_id", caseId).order("created_at", { ascending: true }),
     supabase.from("after_sales_refunds").select("id,status,amount,currency,refund_method,requested_at,approved_at,completed_at").eq("case_id", caseId).order("created_at", { ascending: false }).limit(1),
     supabase.from("return_shipments").select("id,carrier,tracking_number,tracking_url,status,shipped_at,received_at").eq("case_id", caseId).maybeSingle(),
     supabase.from("replacement_shipments").select("id,provider,tracking_number,tracking_url,status,shipped_at,delivered_at,received_at").eq("case_id", caseId).maybeSingle(),
+    supabase.from("after_sales_case_audit_logs").select("id,action_type,reason,previous_state,next_state,created_at").eq("case_id", caseId).order("created_at", { ascending: true }),
   ]);
   const firstError = [caseResult.error, eventsResult.error, messagesResult.error, evidenceResult.error, refundsResult.error, returnsResult.error, replacementsResult.error].find(Boolean);
   if (firstError || !caseResult.data) throw firstError ?? new Error("ไม่พบคำร้อง");
-  return {
-    ...(caseResult.data as AfterSalesCase),
-    events: (eventsResult.data ?? []) as AfterSalesCaseDetail["events"],
-    messages: (messagesResult.data ?? []) as AfterSalesCaseDetail["messages"],
-    evidence: (evidenceResult.data ?? []) as AfterSalesCaseDetail["evidence"],
-    refund: (refundsResult.data?.[0] ?? null) as AfterSalesCaseDetail["refund"],
-    returnShipment: (returnsResult.data ?? null) as AfterSalesCaseDetail["returnShipment"],
-    replacementShipment: (replacementsResult.data ?? null) as AfterSalesCaseDetail["replacementShipment"],
-  };
+  return { ...(caseResult.data as AfterSalesCase), events: (eventsResult.data ?? []) as AfterSalesCaseDetail["events"], messages: (messagesResult.data ?? []) as AfterSalesCaseDetail["messages"], evidence: (evidenceResult.data ?? []) as AfterSalesCaseDetail["evidence"], refund: (refundsResult.data?.[0] ?? null) as AfterSalesCaseDetail["refund"], returnShipment: (returnsResult.data ?? null) as AfterSalesCaseDetail["returnShipment"], replacementShipment: (replacementsResult.data ?? null) as AfterSalesCaseDetail["replacementShipment"], auditLogs: (auditResult.data ?? []) as AfterSalesCaseDetail["auditLogs"] };
 }
 
-export async function addAfterSalesMessage(caseId: string, body: string) {
-  const { data, error } = await supabase.rpc("add_my_after_sales_message" as never, { p_case_id: caseId, p_body: body, p_visibility: "customer" } as never);
+export async function addAfterSalesMessage(caseId: string, body: string, visibility: "customer" | "seller" | "support" | "internal" = "customer") {
+  const { data, error } = await supabase.rpc("add_my_after_sales_message" as never, { p_case_id: caseId, p_body: body, p_visibility: visibility } as never);
   if (error) throw error;
   return data as string;
 }
 
 export async function submitReturnTracking(input: { caseId: string; carrier: string; trackingNumber: string; trackingUrl?: string }) {
-  const { data, error } = await supabase.rpc("submit_my_return_tracking" as never, {
-    p_case_id: input.caseId,
-    p_carrier: input.carrier,
-    p_tracking_number: input.trackingNumber,
-    p_tracking_url: input.trackingUrl ?? null,
-    p_receipt_storage_path: null,
-  } as never);
+  const { data, error } = await supabase.rpc("submit_my_return_tracking" as never, { p_case_id: input.caseId, p_carrier: input.carrier, p_tracking_number: input.trackingNumber, p_tracking_url: input.trackingUrl ?? null, p_receipt_storage_path: null } as never);
   if (error) throw error;
   return data as string;
 }
@@ -144,14 +113,62 @@ export async function cancelMyPendingOrder(orderId: string, reason: string) {
 }
 
 export async function listManageableAfterSalesCases(status?: string) {
-  let query = supabase.from("after_sales_cases").select("id,case_number,user_id,order_id,order_item_id,shop_id,case_type,description,requested_resolution,status,priority,decision_note,created_at,updated_at,resolved_at,closed_at").order("updated_at", { ascending: false });
+  let query = supabase.from("after_sales_cases").select(CASE_SELECT).order("updated_at", { ascending: false });
   if (status && status !== "all") query = query.eq("status", status);
   const { data, error } = await query;
   if (error) throw error;
   return (data ?? []) as AfterSalesCase[];
 }
 
+export async function listAfterSalesOperationsQueue(status?: string): Promise<AfterSalesOperationCase[]> {
+  const cases = await listManageableAfterSalesCases(status);
+  const now = Date.now();
+  return cases.map((item) => {
+    const slaState = getAfterSalesSlaState(item.first_response_due_at, now);
+    return { ...item, slaState, queueLabel: caseQueueLabel({ status: item.status, requestedResolution: item.requested_resolution }), queueRank: afterSalesQueueRank({ priority: item.priority, slaState, updatedAt: item.updated_at }) };
+  }).sort((a, b) => b.queueRank - a.queueRank);
+}
+
 export async function reviewAfterSalesCase(caseId: string, nextStatus: string, note?: string) {
   const { error } = await supabase.rpc("review_my_after_sales_case" as never, { p_case_id: caseId, p_next_status: nextStatus, p_decision_note: note ?? null } as never);
   if (error) throw error;
+}
+
+export async function assignAfterSalesCase(input: { caseId: string; assigneeId: string; priority?: string; note?: string }) {
+  const { error } = await supabase.rpc("assign_my_after_sales_case" as never, { p_case_id: input.caseId, p_assignee_id: input.assigneeId, p_priority: input.priority ?? null, p_note: input.note ?? null } as never);
+  if (error) throw error;
+}
+
+export async function listNotificationPreferences() {
+  const { data, error } = await supabase.from("user_notification_preferences").select("category,in_app_enabled,push_enabled").order("category");
+  if (error) throw error;
+  return (data ?? []) as Array<{ category: string; in_app_enabled: boolean; push_enabled: boolean }>;
+}
+
+export async function saveNotificationPreference(input: { category: string; inAppEnabled: boolean; pushEnabled: boolean }) {
+  const { data: authData, error: authError } = await supabase.auth.getUser();
+  if (authError || !authData.user) throw authError ?? new Error("กรุณาเข้าสู่ระบบ");
+  const { error } = await supabase.from("user_notification_preferences").upsert({ user_id: authData.user.id, category: input.category, in_app_enabled: input.inAppEnabled, push_enabled: input.pushEnabled }, { onConflict: "user_id,category" });
+  if (error) throw error;
+}
+
+export async function receiveAfterSalesReturn(caseId: string, note?: string) {
+  const { error } = await supabase.rpc("receive_my_after_sales_return" as never, { p_case_id: caseId, p_note: note ?? null } as never);
+  if (error) throw error;
+}
+
+export async function inspectAfterSalesReturn(caseId: string, result: "accepted" | "rejected", note?: string) {
+  const { error } = await supabase.rpc("inspect_my_after_sales_return" as never, { p_case_id: caseId, p_result: result, p_note: note ?? null } as never);
+  if (error) throw error;
+}
+
+export async function updateAfterSalesRefundStatus(refundId: string, nextStatus: "processing" | "completed" | "failed", providerReference?: string, note?: string) {
+  const { error } = await supabase.rpc("update_my_after_sales_refund_status" as never, { p_refund_id: refundId, p_next_status: nextStatus, p_provider_reference: providerReference ?? null, p_note: note ?? null } as never);
+  if (error) throw error;
+}
+
+export async function shipAfterSalesReplacement(input: { caseId: string; provider: string; trackingNumber: string; trackingUrl?: string }) {
+  const { data, error } = await supabase.rpc("ship_my_after_sales_replacement" as never, { p_case_id: input.caseId, p_provider: input.provider, p_tracking_number: input.trackingNumber, p_tracking_url: input.trackingUrl ?? null } as never);
+  if (error) throw error;
+  return data as string;
 }

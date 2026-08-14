@@ -104,10 +104,13 @@ export default function RootLayout() {
                   <Stack.Screen name="oauth/callback" options={{ headerShown: false }} />
                   <Stack.Screen name="payment/callback" options={{ headerShown: false }} />
                   <Stack.Screen name="my-hobee" options={{ headerShown: false }} />
+                  <Stack.Screen name="my-hobee/after-sales" options={{ headerShown: false }} />
                   <Stack.Screen name="my-hobee/notifications" options={{ headerShown: false }} />
+                  <Stack.Screen name="my-hobee/notification-preferences" options={{ headerShown: false }} />
                   <Stack.Screen name="my-hobee/earnings" options={{ headerShown: false }} />
                   <Stack.Screen name="admin/role-approvals" options={{ headerShown: false }} />
                   <Stack.Screen name="admin/after-sales" options={{ headerShown: false }} />
+                  <Stack.Screen name="admin/after-sales/[id]" options={{ headerShown: false }} />
                   <Stack.Screen name="orders/[id]/delivery" options={{ headerShown: false }} />
                   <Stack.Screen name="orders/[id]/buy-again" options={{ headerShown: false }} />
                   <Stack.Screen name="orders/[id]/help" options={{ headerShown: false }} />

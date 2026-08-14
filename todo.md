@@ -244,3 +244,14 @@
 - [x] เพิ่ม Return, Refund และ Replacement tracking views ตาม case data และ resolution ที่อนุมัติแล้ว
 - [x] สร้าง Seller/Admin case-management foundation และ notification deep links สำหรับ after-sales
 - [x] ตรวจ RLS, customer/seller isolation, idempotency, TypeScript, tests และ commerce regressions
+- [x] Audit after-sales, work inbox, notifications, permissions, storage และ admin/seller surfaces ที่มีอยู่
+- [x] ออกแบบ unified event taxonomy, SLA policy, queue model และ role/permission matrix โดย reuse contracts เดิม
+- [x] เพิ่ม schema, RLS, permissions และ idempotent event foundation สำหรับ operations center, SLA และ notification preferences
+- [x] สร้าง protected event dispatcher, SLA procedures, assignment, internal note และ seller/admin case actions
+- [x] สร้าง operations data layer และ tests สำหรับ event idempotency, SLA, notification routing และ permission boundaries
+- [x] ยกระดับ customer case conversation, notifications และ claim detail ตาม policy ใหม่
+- [x] สร้าง Seller Native After-Sales dashboard และ mobile case operations แบบ permission-aware
+- [x] ขยาย Seller Web/Admin After-Sales Control Center ด้วย queue, filters, metrics และ assignment
+- [x] เชื่อม event-driven Work Inbox, in-app/push notification preferences, badges และ safe deep links
+- [x] เพิ่ม return inspection, refund approval และ replacement fulfilment tracking ตาม role permissions
+- [x] ตรวจ security/RLS, case isolation, event/retry idempotency, TypeScript และ regression suite
