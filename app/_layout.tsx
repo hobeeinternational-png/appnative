@@ -99,6 +99,8 @@ export default function RootLayout() {
                 <Stack screenOptions={({ route }) => ({ headerShown: shouldShowBackHeader(route.name), header: () => <BackHeader routeName={route.name} /> })}>
                   <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                   <Stack.Screen name="auth" options={{ headerShown: false }} />
+                  <Stack.Screen name="auth/forgot-password" options={{ headerShown: false }} />
+                  <Stack.Screen name="auth/reset-password" options={{ headerShown: false }} />
                   <Stack.Screen name="oauth/callback" options={{ headerShown: false }} />
                   <Stack.Screen name="payment/callback" options={{ headerShown: false }} />
                 </Stack>

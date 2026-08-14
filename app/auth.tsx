@@ -1,115 +1,46 @@
-import { useState } from "react";
-import { Platform, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { useMemo, useState } from "react";
+import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { MaterialIcons } from "@expo/vector-icons";
-
-import { BrandMark } from "@/components/hobee/brand-mark";
-import { PrimaryButton } from "@/components/hobee/primary-button";
 import { ScreenContainer } from "@/components/screen-container";
+import { AuthHero } from "@/components/hobee/auth-hero";
 import { useSupabaseAuth } from "@/contexts/supabase-auth-context";
 import { useToast } from "@/contexts/toast-context";
+import { credentialHint, detectAuthIdentifier, isPasswordValid, mapAuthError } from "@/lib/auth-credentials";
 
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+type Mode = "login" | "signup";
 
 export default function AuthScreen() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const { configured, signInWithPassword, user } = useSupabaseAuth();
-  const { showToast } = useToast();
-  const { redirectTo } = useLocalSearchParams<{ redirectTo?: string }>();
-
-  const requestPasswordSignIn = async () => {
-    if (!emailPattern.test(email.trim()) || !password) {
-      showToast("กรุณากรอกอีเมลและรหัสผ่าน", "error");
-      return;
-    }
+  const { mode: routeMode, redirectTo } = useLocalSearchParams<{ mode?: Mode; redirectTo?: string }>();
+  const [mode, setMode] = useState<Mode>(routeMode === "signup" ? "signup" : "login");
+  const [identifier, setIdentifier] = useState(""); const [name, setName] = useState(""); const [password, setPassword] = useState(""); const [confirm, setConfirm] = useState("");
+  const [showPassword, setShowPassword] = useState(false); const [attempted, setAttempted] = useState(false); const [submitting, setSubmitting] = useState(false);
+  const { configured, user, signInWithPassword, signUpWithPassword } = useSupabaseAuth(); const { showToast } = useToast();
+  const identifierKind = useMemo(() => detectAuthIdentifier(identifier), [identifier]); const signup = mode === "signup";
+  const identifierError = attempted && identifierKind === "invalid"; const passwordError = attempted && !isPasswordValid(password); const confirmError = attempted && signup && confirm !== password;
+  const swapMode = (next: Mode) => { setMode(next); setPassword(""); setConfirm(""); setAttempted(false); };
+  const complete = () => router.replace(redirectTo === "/admin" ? "/admin" : "/(tabs)/account");
+  const submit = async () => {
+    setAttempted(true); if (identifierKind === "invalid" || !isPasswordValid(password) || (signup && confirm !== password)) return;
     setSubmitting(true);
     try {
-      await signInWithPassword(email, password);
-      showToast("เข้าสู่ระบบสำเร็จ", "success");
-      router.replace(redirectTo === "/admin" ? "/admin" : "/(tabs)/account");
-    } catch (error) {
-      showToast(error instanceof Error ? error.message : "ไม่สามารถเข้าสู่ระบบได้", "error");
-    } finally {
-      setSubmitting(false);
-    }
+      if (signup) { const session = await signUpWithPassword(identifier, password, name); if (session) { showToast("สมัครสมาชิกและเข้าสู่ระบบสำเร็จ", "success"); complete(); } else { showToast("ส่งอีเมลยืนยันบัญชีแล้ว กรุณายืนยันก่อนเข้าสู่ระบบ", "success"); swapMode("login"); } }
+      else { await signInWithPassword(identifier, password); showToast("เข้าสู่ระบบสำเร็จ", "success"); complete(); }
+    } catch (error) { showToast(mapAuthError(error), "error"); } finally { setSubmitting(false); }
   };
-
-  if (user) {
-    return (
-      <ScreenContainer edges={["top", "bottom", "left", "right"]} className="items-center justify-center px-5">
-        <View className="w-full max-w-sm rounded-[28px] border border-border bg-surface p-6">
-          <MaterialIcons name="verified-user" size={32} color="#317A50" />
-          <Text className="mt-4 text-2xl font-black text-foreground">เข้าสู่ระบบแล้ว</Text>
-          <Text className="mt-2 text-sm leading-6 text-muted">{user.email}</Text>
-          <PrimaryButton label="ไปที่บัญชีของฉัน" icon="arrow-forward" onPress={() => router.replace("/(tabs)/account")} style={styles.button} />
-        </View>
-      </ScreenContainer>
-    );
-  }
-
-  return (
-    <ScreenContainer edges={["top", "bottom", "left", "right"]} className="px-5" safeAreaClassName="pt-3">
-      <Pressable accessibilityRole="button" accessibilityLabel="ย้อนกลับ" onPress={() => router.back()} style={({ pressed }) => [styles.back, pressed && styles.pressed]}>
-        <MaterialIcons name="arrow-back" size={22} color="#17352A" />
-      </Pressable>
-      <View style={styles.authContent}>
-        <BrandMark />
-        <Text className="mt-9 text-3xl font-black leading-10 text-foreground">ทุกสิทธิพิเศษ{`\n`}เริ่มต้นที่บัญชี HOBEE</Text>
-        <Text className="mt-3 text-base leading-6 text-muted">เข้าสู่ระบบด้วยอีเมลและรหัสผ่านของบัญชี HOBEE</Text>
-        <View className="mt-8 rounded-2xl border border-border bg-surface p-5">
-          <View className="flex-row items-center gap-3">
-            <View className="h-10 w-10 items-center justify-center rounded-xl bg-[#F5EBCF]">
-              <MaterialIcons name="lock-outline" size={22} color="#C98716" />
-            </View>
-            <View className="flex-1">
-              <Text className="font-black text-foreground">เข้าสู่ระบบ</Text>
-              <Text className="mt-0.5 text-xs leading-5 text-muted">ใช้บัญชีเดียวกันบน web, iOS และ Android</Text>
-            </View>
-          </View>
-          <TextInput
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoCorrect={false}
-            placeholder="อีเมลของคุณ"
-            placeholderTextColor="#8A978E"
-            returnKeyType="next"
-            editable={configured && !submitting}
-            onSubmitEditing={() => undefined}
-            className="mt-5 h-13 rounded-xl border border-border bg-background px-4 text-base text-foreground"
-          />
-          <View style={styles.passwordBlock}>
-            <TextInput
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-              autoCapitalize="none"
-              placeholder="รหัสผ่าน"
-              placeholderTextColor="#8A978E"
-              editable={configured && !submitting}
-              onSubmitEditing={() => void requestPasswordSignIn()}
-              style={styles.passwordInput}
-            />
-            <PrimaryButton label="เข้าสู่ระบบ" icon="login" loading={submitting} disabled={!configured} onPress={() => void requestPasswordSignIn()} style={styles.passwordButton} />
-          </View>
-          {!configured ? <Text className="mt-3 text-center text-xs leading-5 text-error">ยังไม่ได้ตั้งค่า Supabase สำหรับแอปนี้</Text> : null}
-        </View>
-        <PrimaryButton label="กลับไปเลือกชมสินค้า" icon="shopping-bag" variant="outline" onPress={() => router.replace("/(tabs)/shop")} style={styles.button} />
-        <Text className="mt-4 text-center text-xs leading-5 text-muted">หากยังไม่มีรหัสผ่าน โปรดติดต่อผู้ดูแลระบบเพื่อสร้างบัญชีใน Supabase</Text>
-      </View>
-    </ScreenContainer>
-  );
+  if (user) return <ScreenContainer edges={["top", "bottom", "left", "right"]} className="items-center justify-center px-6"><View style={styles.logged}><MaterialIcons name="verified-user" size={34} color="#257347" /><Text style={styles.loggedTitle}>คุณเข้าสู่ระบบแล้ว</Text><Text style={styles.loggedText}>{user.email ?? user.phone ?? "บัญชี HOBEE"}</Text><Action label="ไปต่อ" icon="arrow-forward" onPress={complete} /></View></ScreenContainer>;
+  return <ScreenContainer edges={["left", "right", "bottom"]} containerClassName="bg-[#FFFDFC]" safeAreaClassName="bg-[#FFFDFC]"><StatusBar style="dark" translucent backgroundColor="transparent" /><KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined} style={styles.flex}><ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}><AuthHero onHome={() => router.replace("/(tabs)")} /><View style={styles.form}><Text style={styles.title}>{signup ? "มาร่วมสร้างวันดี ๆ" : "เริ่มต้นวันดี ๆ"}{`\n`}<Text style={styles.gold}>กับ HOBEE</Text></Text><Text style={styles.subtitle}>{signup ? "สมัครสมาชิกเพื่อรับประสบการณ์และสิทธิประโยชน์ของคุณ" : "เข้าสู่ระบบเพื่อรับประสบการณ์และสิทธิประโยชน์ของคุณ"}</Text>
+      {signup ? <Field label="ชื่อที่ต้องการให้เรียก"><TextInput value={name} onChangeText={setName} editable={configured && !submitting} placeholder="ชื่อของคุณ (ไม่บังคับ)" placeholderTextColor="#A8AEA2" style={styles.simpleInput} /></Field> : null}
+      <Field label="อีเมล หรือ เบอร์โทรศัพท์" error={identifierError ? "กรุณากรอกอีเมล หรือเบอร์โทรศัพท์ไทยให้ถูกต้อง" : undefined}><InputShell icon={identifierKind === "phone" ? "phone-iphone" : "person-outline"}><TextInput value={identifier} onChangeText={setIdentifier} editable={configured && !submitting} keyboardType={identifierKind === "phone" ? "phone-pad" : "email-address"} autoCapitalize="none" autoCorrect={false} placeholder="กรอกอีเมล หรือ เบอร์โทรศัพท์" placeholderTextColor="#A8AEA2" returnKeyType="next" style={styles.shellInput} /></InputShell>{identifier.length > 0 && !identifierError ? <Text style={styles.hint}>{credentialHint(identifier)}</Text> : null}</Field>
+      <Field label="รหัสผ่าน" error={passwordError ? "รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร" : undefined}><InputShell icon="lock-outline"><TextInput value={password} onChangeText={setPassword} editable={configured && !submitting} secureTextEntry={!showPassword} autoCapitalize="none" placeholder="กรอกรหัสผ่าน" placeholderTextColor="#A8AEA2" returnKeyType={signup ? "next" : "done"} onSubmitEditing={signup ? undefined : () => void submit()} style={styles.shellInput} /><Pressable accessibilityRole="button" accessibilityLabel={showPassword ? "ซ่อนรหัสผ่าน" : "แสดงรหัสผ่าน"} onPress={() => setShowPassword((value) => !value)} hitSlop={10}><MaterialIcons name={showPassword ? "visibility" : "visibility-off"} size={22} color="#7D877A" /></Pressable></InputShell></Field>
+      {signup ? <Field label="ยืนยันรหัสผ่าน" error={confirmError ? "รหัสผ่านทั้งสองช่องไม่ตรงกัน" : undefined}><InputShell icon="verified-user"><TextInput value={confirm} onChangeText={setConfirm} editable={configured && !submitting} secureTextEntry={!showPassword} autoCapitalize="none" placeholder="กรอกรหัสผ่านอีกครั้ง" placeholderTextColor="#A8AEA2" returnKeyType="done" onSubmitEditing={() => void submit()} style={styles.shellInput} /></InputShell></Field> : null}
+      {!configured ? <Text style={styles.config}>ยังไม่ได้ตั้งค่า Supabase สำหรับแอปนี้</Text> : null}<Action label={submitting ? "กำลังดำเนินการ..." : signup ? "สมัครสมาชิก" : "เข้าสู่ระบบ"} icon={signup ? "person-add" : "login"} onPress={() => void submit()} disabled={!configured || submitting} />
+      <View style={styles.links}>{signup ? <Pressable onPress={() => swapMode("login")}><Text style={styles.link}>มีบัญชีอยู่แล้ว? <Text style={styles.linkGold}>เข้าสู่ระบบ</Text></Text></Pressable> : <Pressable onPress={() => router.push("/auth/forgot-password")}><Text style={styles.link}>ลืมรหัสผ่าน?</Text></Pressable>}{!signup ? <Pressable onPress={() => swapMode("signup")}><Text style={styles.link}>ยังไม่มีบัญชี? <Text style={styles.linkGold}>สมัครสมาชิก HOBEE</Text></Text></Pressable> : null}</View>
+      <View style={styles.divider}><View style={styles.rule} /><Text style={styles.dividerText}>HOBEE ACCOUNT</Text><View style={styles.rule} /></View><View style={styles.help}><MaterialIcons name="support-agent" size={22} color="#74674C" /><View><Text style={styles.helpTitle}>มีปัญหาในการเข้าสู่ระบบ?</Text><Text style={styles.helpLink}>ศูนย์ช่วยเหลือ HOBEE</Text></View></View><Text style={styles.version}>HOBEE Mobile</Text>
+    </View></ScrollView></KeyboardAvoidingView></ScreenContainer>;
 }
-
-const styles = StyleSheet.create({
-  authContent: { flex: 1, justifyContent: "center", width: "100%", maxWidth: Platform.OS === "web" ? 620 : undefined, alignSelf: "center", paddingBottom: 80, marginTop: 32 },
-  back: { height: 44, width: 44, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "#E8E0D0", borderRadius: 22, backgroundColor: "#FFFFFF" },
-  button: { marginTop: 16 },
-  passwordBlock: { marginTop: 12 },
-  passwordInput: { height: 50, marginTop: 12, borderRadius: 12, borderWidth: 1, borderColor: "#E8E0D0", backgroundColor: "#FFFDF7", paddingHorizontal: 14, color: "#17352A", fontSize: 15 },
-  passwordButton: { marginTop: 10 },
-  pressed: { opacity: 0.76, transform: [{ scale: 0.98 }] },
-});
+function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) { return <View style={styles.field}><Text style={styles.label}>{label}</Text>{children}{error ? <Text style={styles.error}>{error}</Text> : null}</View>; }
+function InputShell({ icon, children }: { icon: React.ComponentProps<typeof MaterialIcons>["name"]; children: React.ReactNode }) { return <View style={styles.inputShell}><MaterialIcons name={icon} size={22} color="#507054" />{children}</View>; }
+function Action({ label, icon, onPress, disabled }: { label: string; icon: React.ComponentProps<typeof MaterialIcons>["name"]; onPress: () => void; disabled?: boolean }) { return <Pressable disabled={disabled} onPress={onPress} style={({ pressed }) => [styles.action, disabled && styles.disabled, pressed && styles.pressed]}><Text style={styles.actionText}>{label}</Text><MaterialIcons name={icon} size={20} color="#FFF" /></Pressable>; }
+const styles = StyleSheet.create({ flex:{flex:1},scroll:{flexGrow:1,backgroundColor:"#FFFDFC"},form:{paddingHorizontal:28,marginTop:-4,paddingBottom:40,maxWidth:Platform.OS==="web"?620:undefined,width:"100%",alignSelf:"center"},title:{fontSize:34,lineHeight:42,letterSpacing:-.7,color:"#214D2D",fontWeight:"900",marginTop:8},gold:{color:"#D38B19"},subtitle:{fontSize:16,lineHeight:24,color:"#697166",marginTop:11,marginBottom:27},field:{marginBottom:17},label:{fontSize:16,fontWeight:"800",color:"#2A302B",marginBottom:9},simpleInput:{height:58,borderRadius:17,borderWidth:1,borderColor:"#E7E4DC",backgroundColor:"#FFFEFB",paddingHorizontal:16,fontSize:16,color:"#1D3526"},inputShell:{height:58,borderRadius:17,borderWidth:1,borderColor:"#E7E4DC",backgroundColor:"#FFFEFB",paddingHorizontal:16,flexDirection:"row",alignItems:"center",gap:12},shellInput:{height:"100%",flex:1,fontSize:16,color:"#1D3526"},hint:{color:"#7D877A",fontSize:12,marginTop:6},error:{color:"#C84B3D",fontSize:12,marginTop:6},config:{color:"#C84B3D",fontSize:13,textAlign:"center",marginBottom:9},action:{height:58,borderRadius:29,backgroundColor:"#214D2D",marginTop:8,flexDirection:"row",alignItems:"center",justifyContent:"center",gap:9,shadowColor:"#214D2D",shadowOpacity:.2,shadowRadius:14,shadowOffset:{width:0,height:7},elevation:4},actionText:{color:"#FFF",fontSize:18,fontWeight:"900"},disabled:{opacity:.55},links:{flexDirection:"row",justifyContent:"space-between",alignItems:"center",gap:10,marginTop:20},link:{fontSize:14,fontWeight:"700",color:"#536255"},linkGold:{fontWeight:"900",color:"#CF891C"},divider:{flexDirection:"row",alignItems:"center",gap:12,marginVertical:29},rule:{flex:1,height:StyleSheet.hairlineWidth,backgroundColor:"#E5E3DE"},dividerText:{fontSize:10,letterSpacing:.8,fontWeight:"800",color:"#959B92"},help:{minHeight:68,borderRadius:17,backgroundColor:"#F8F4E8",flexDirection:"row",gap:12,alignItems:"center",paddingHorizontal:15},helpTitle:{color:"#66675F",fontSize:13,fontWeight:"700"},helpLink:{color:"#315132",fontSize:14,fontWeight:"900",marginTop:2},version:{textAlign:"center",color:"#B4B7B0",fontSize:12,marginTop:24},pressed:{opacity:.78,transform:[{scale:.98}]},logged:{width:"100%",maxWidth:420,padding:28,borderRadius:28,backgroundColor:"#FFFDFC",borderWidth:1,borderColor:"#EBE4D5"},loggedTitle:{fontSize:24,fontWeight:"900",color:"#214D2D",marginTop:15},loggedText:{fontSize:14,color:"#6B776E",marginTop:7} });

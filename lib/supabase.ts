@@ -1,7 +1,9 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createClient } from "@supabase/supabase-js";
-import "react-native-url-polyfill/auto";
 import { Platform } from "react-native";
+
+if (Platform.OS !== "web") {
+  require("react-native-url-polyfill/auto");
+}
 
 const url = process.env.EXPO_PUBLIC_SUPABASE_URL?.trim() ?? "";
 const publishableKey = process.env.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY?.trim() ?? "";
@@ -13,6 +15,13 @@ const serverStorage = {
   setItem: async (_key: string, _value: string) => {},
   removeItem: async (_key: string) => {},
 };
+const browserStorage = {
+  getItem: async (key: string) => (typeof window === "undefined" ? null : window.localStorage.getItem(key)),
+  setItem: async (key: string, value: string) => { if (typeof window !== "undefined") window.localStorage.setItem(key, value); },
+  removeItem: async (key: string) => { if (typeof window !== "undefined") window.localStorage.removeItem(key); },
+};
+const nativeStorage = Platform.OS === "web" ? null : require("@react-native-async-storage/async-storage").default;
+const authStorage = isWebServerRender ? serverStorage : Platform.OS === "web" ? browserStorage : nativeStorage;
 
 if (!isSupabaseConfigured) {
   console.warn("[Supabase] Missing EXPO_PUBLIC_SUPABASE_URL or EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY");
@@ -27,7 +36,7 @@ export const supabase = createClient(
   isSupabaseConfigured ? publishableKey : "invalid-publishable-key",
   {
     auth: {
-      storage: isWebServerRender ? serverStorage : AsyncStorage,
+      storage: authStorage,
       autoRefreshToken: !isWebServerRender,
       persistSession: !isWebServerRender,
       detectSessionInUrl: false,

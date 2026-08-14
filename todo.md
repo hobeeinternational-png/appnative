@@ -189,3 +189,11 @@
 - [x] ปรับ Auth screen และ Supabase auth context ให้ password login ใช้ได้บน web, iOS และ Android
 - [x] ลบ Magic Link UI/dead code โดยคง Supabase session, logout และ admin role flow เดิม
 - [x] ตรวจ TypeScript, regression tests และ Admin password login flow
+- [x] Audit Supabase Email/Phone auth, user identifiers และ Login routes ปัจจุบัน
+- [x] สร้าง HOBEE Local/Community/Nature hero artwork สำหรับ Login แบบ edge-to-edge
+- [x] รองรับ Email/Phone + Password login พร้อม session persistence และ error mapping
+- [x] สร้าง Signup และ Password Reset flow ที่เชื่อม Supabase จริง
+- [x] ปรับ Login UI ให้ premium ตามภาพอ้างอิง พร้อม show/hide password, keyboard avoidance และ safe area
+- [x] แสดงเฉพาะ social providers ที่เชื่อมใช้งานจริง และซ่อน provider ที่ยังไม่รองรับ
+- [x] ตรวจ TypeScript, auth regression, Admin authorization และ mobile visual states
+- [ ] เปิด Supabase Phone Auth provider และทดสอบ phone password login บน iOS/Android จริง
