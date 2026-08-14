@@ -103,6 +103,7 @@ export default function RootLayout() {
                   <Stack.Screen name="auth/reset-password" options={{ headerShown: false }} />
                   <Stack.Screen name="oauth/callback" options={{ headerShown: false }} />
                   <Stack.Screen name="payment/callback" options={{ headerShown: false }} />
+                  <Stack.Screen name="my-hobee" options={{ headerShown: false }} />
                 </Stack>
                 <StatusBar style="dark" translucent backgroundColor="#F6F6F4" />
                   </CartProvider>

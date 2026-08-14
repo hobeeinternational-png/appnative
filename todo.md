@@ -217,3 +217,10 @@
 - [x] Audit product image components ใน customer catalog, product detail และ Admin Portal
 - [x] ปรับ product image containers เป็น 1:1 โดยใช้ cover crop ไม่บิดสัดส่วน
 - [x] ตรวจ TypeScript, catalog regression และ mobile layout หลังปรับสัดส่วนภาพสินค้า
+- [x] Audit schema, role constraints, data sources และ center-button route สำหรับ My HOBEE
+- [x] เพิ่ม Supabase schema/RLS สำหรับ multi-role profiles, role applications และ unified work inbox
+- [x] สร้าง My HOBEE data layer จาก profile, roles, orders, rewards และ work items ที่มีข้อมูลจริง
+- [x] สร้าง My HOBEE Overview, Role Marketplace และ segmented module navigation
+- [x] เพิ่ม Unified Work Inbox และ Mobile Order Center พร้อม quick actions ที่ role/data รองรับ
+- [x] เชื่อมปุ่ม HOBEE สีส้มกลางให้เปิด My HOBEE โดยคง Assistive Mode เดิม
+- [x] ตรวจ role/RLS, TypeScript, tests และ My HOBEE mobile flows
