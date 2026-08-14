@@ -214,3 +214,6 @@
 - [x] Audit ไอคอน H และ asset pipeline ของ Travel header ก่อนใช้ Official HOBEE Logo
 - [x] เพิ่ม Official HOBEE Logo เป็น asset และแทนไอคอน H ใน Travel header
 - [x] ตรวจ TypeScript และ safe-area layout ของ Official Logo ใน Travel header
+- [x] Audit product image components ใน customer catalog, product detail และ Admin Portal
+- [x] ปรับ product image containers เป็น 1:1 โดยใช้ cover crop ไม่บิดสัดส่วน
+- [x] ตรวจ TypeScript, catalog regression และ mobile layout หลังปรับสัดส่วนภาพสินค้า
