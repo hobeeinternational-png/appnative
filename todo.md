@@ -197,3 +197,7 @@
 - [x] แสดงเฉพาะ social providers ที่เชื่อมใช้งานจริง และซ่อน provider ที่ยังไม่รองรับ
 - [x] ตรวจ TypeScript, auth regression, Admin authorization และ mobile visual states
 - [ ] เปิด Supabase Phone Auth provider และทดสอบ phone password login บน iOS/Android จริง
+- [x] Audit Travel top shell, Search Bar, back control และ safe-area offsets เทียบ Home
+- [x] จัด Travel header/search/back control ใหม่ให้ปุ่มย้อนกลับอยู่ใต้ Search
+- [x] ปรับ Travel safe area, content offset และ sticky behavior ให้ไม่ทับ status bar/Dynamic Island
+- [x] ตรวจ TypeScript, Travel route, back navigation และ mobile portrait layout

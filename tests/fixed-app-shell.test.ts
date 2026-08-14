@@ -29,4 +29,14 @@ describe("fixed top app shell", () => {
       expect(source).toContain("scrollEventThrottle={16}");
     }
   });
+
+  it("supports a fixed utility row below Search for Travel without moving it into scroll content", () => {
+    const sharedUi = readFileSync(resolve(root, "components/hobee/shared-ui.tsx"), "utf8");
+    const travel = readFileSync(resolve(root, "app/travel/index.tsx"), "utf8");
+    expect(sharedUi).toContain("belowSearch?: ReactNode");
+    expect(sharedUi).toContain("styles.belowSearch");
+    expect(travel).toContain("belowSearch={utilityRow}");
+    expect(travel).toContain("กลับหน้าหลัก");
+    expect(travel).toContain('safeAreaClassName="pt-0"');
+  });
 });
