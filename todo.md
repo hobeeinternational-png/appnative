@@ -204,3 +204,6 @@
 - [x] Audit Travel top strip ซ้ำและ safe-area spacing ของ header/search
 - [x] ลบ top strip ซ้ำและขยับ HOBEE TRAVEL กับ Search Bar ให้ชิด safe area แบบ Home
 - [x] ตรวจ TypeScript และ mobile top layout หลังปรับ Travel header
+- [x] Audit spacer และ touch targets ของ FloatingBottomNav ทั้งฝั่ง Home–Travel และ Calendar–Account
+- [x] ปรับระยะไอคอนทั้งสองฝั่งให้สมมาตรรอบปุ่ม HOBEE กลาง โดยคงพื้นที่กดใช้งาน
+- [x] ตรวจ TypeScript, regression และ mobile safe-area ของ Bottom Navigation หลังปรับ spacing
