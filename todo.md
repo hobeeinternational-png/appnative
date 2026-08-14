@@ -201,3 +201,6 @@
 - [x] จัด Travel header/search/back control ใหม่ให้ปุ่มย้อนกลับอยู่ใต้ Search
 - [x] ปรับ Travel safe area, content offset และ sticky behavior ให้ไม่ทับ status bar/Dynamic Island
 - [x] ตรวจ TypeScript, Travel route, back navigation และ mobile portrait layout
+- [x] Audit Travel top strip ซ้ำและ safe-area spacing ของ header/search
+- [x] ลบ top strip ซ้ำและขยับ HOBEE TRAVEL กับ Search Bar ให้ชิด safe area แบบ Home
+- [x] ตรวจ TypeScript และ mobile top layout หลังปรับ Travel header

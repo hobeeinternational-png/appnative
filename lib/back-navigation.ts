@@ -7,5 +7,5 @@ const ROUTE_RULES: Record<string, BackRule> = {
   "admin/index": { title: "HOBEE Admin", fallback: "/(tabs)/account" }, "admin/products": { title: "จัดการสินค้า", fallback: "/admin" }, "admin/orders": { title: "จัดการคำสั่งซื้อ", fallback: "/admin" }, "admin/stores": { title: "ร้านค้า / Seller", fallback: "/admin" }, "admin/travel": { title: "จัดการทริปและที่พัก", fallback: "/admin" },
 };
 
-export function shouldShowBackHeader(routeName: string) { return !["(tabs)", "auth", "oauth/callback", "auth/callback", "payment/callback"].includes(routeName); }
+export function shouldShowBackHeader(routeName: string) { return !["(tabs)", "auth", "oauth/callback", "auth/callback", "payment/callback", "travel", "travel/index"].includes(routeName); }
 export function getBackRule(routeName: string): BackRule { return ROUTE_RULES[routeName] ?? { title: "HOBEE", fallback: "/(tabs)" }; }

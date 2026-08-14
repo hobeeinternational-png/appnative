@@ -7,6 +7,7 @@ describe("HOBEE BackHeader route rules", () => {
     expect(shouldShowBackHeader("(tabs)")).toBe(false);
     expect(shouldShowBackHeader("auth")).toBe(false);
     expect(shouldShowBackHeader("payment/callback")).toBe(false);
+    expect(shouldShowBackHeader("travel/index")).toBe(false);
   });
 
   it("shows a native back header for deep customer and admin routes", () => {
