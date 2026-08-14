@@ -211,3 +211,6 @@
 - [x] จัดเตรียมรูปจริง รายละเอียด และราคาเริ่มต้นที่ผู้ดูแลแก้ไขได้สำหรับ HOBEE Honey ทั้ง 8 รายการ
 - [x] อัปโหลดรูปสินค้าและสร้าง product/product_images records ใน Supabase โดยไม่กระทบข้อมูลเดิม
 - [x] ยืนยันสินค้าใหม่ใน Admin Portal และ customer catalog พร้อมสรุปราคาชั่วคราว
+- [x] Audit ไอคอน H และ asset pipeline ของ Travel header ก่อนใช้ Official HOBEE Logo
+- [x] เพิ่ม Official HOBEE Logo เป็น asset และแทนไอคอน H ใน Travel header
+- [x] ตรวจ TypeScript และ safe-area layout ของ Official Logo ใน Travel header
