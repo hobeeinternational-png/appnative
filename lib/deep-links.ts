@@ -15,13 +15,17 @@ export function parsePaymentReturn(url: string): PaymentReturn | null {
 }
 
 export function isOrderNotificationRoute(route: unknown): route is string {
-  return typeof route === "string" && /^\/orders(?:\/[A-Za-z0-9_-]+)?$/.test(route);
+  return typeof route === "string" && /^\/orders(?:\/[A-Za-z0-9_-]+(?:\/(?:delivery|help|buy-again))?)?$/.test(route);
 }
 
 export function isMyHobeeNotificationRoute(route: unknown): route is string {
   return typeof route === "string" && /^\/my-hobee(?:\/(?:roles|work|earnings|notifications))?$/.test(route);
 }
 
+export function isAfterSalesNotificationRoute(route: unknown): route is string {
+  return typeof route === "string" && (/^\/claims(?:\/[A-Za-z0-9_-]+)?$/.test(route) || route === "/admin/after-sales");
+}
+
 export function isHobeeNotificationRoute(route: unknown): route is string {
-  return isOrderNotificationRoute(route) || isMyHobeeNotificationRoute(route);
+  return isOrderNotificationRoute(route) || isMyHobeeNotificationRoute(route) || isAfterSalesNotificationRoute(route);
 }

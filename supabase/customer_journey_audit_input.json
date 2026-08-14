@@ -1,0 +1,4 @@
+{
+  "project_id": "tfqrykzqvdqxjnhzevvn",
+  "query": "SELECT table_name, string_agg(column_name || ':' || data_type, ', ' ORDER BY ordinal_position) AS columns FROM information_schema.columns WHERE table_schema = 'public' AND table_name IN ('orders', 'order_items', 'payments', 'shipments', 'product_reviews', 'user_notifications', 'work_inbox_items', 'earnings_ledger', 'bookings') GROUP BY table_name LIMIT 20;"
+}

@@ -24,7 +24,10 @@ const STATUS: Record<string, { background: string; color: string; label: string 
   paid: { background: "#DEF5E9", color: "#167457", label: "ชำระแล้ว" },
   processing: { background: "#E6EFFF", color: "#366BB9", label: "กำลังเตรียมสินค้า" },
   shipped: { background: "#E6EFFF", color: "#366BB9", label: "จัดส่งแล้ว" },
+  in_transit: { background: "#E6EFFF", color: "#366BB9", label: "อยู่ระหว่างขนส่ง" },
+  out_for_delivery: { background: "#FFF1C8", color: "#8B6617", label: "กำลังนำส่ง" },
   delivered: { background: "#DEF5E9", color: "#167457", label: "ส่งสำเร็จ" },
+  completed: { background: "#DEF5E9", color: "#167457", label: "ได้รับสินค้าแล้ว" },
   cancelled: { background: "#FFE8E4", color: "#B65045", label: "ยกเลิกแล้ว" },
   refunded: { background: "#F0E8FF", color: "#7652AA", label: "คืนเงินแล้ว" },
 };

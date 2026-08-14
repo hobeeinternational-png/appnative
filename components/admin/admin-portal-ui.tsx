@@ -9,7 +9,7 @@ import { useSupabaseAuth } from "@/contexts/supabase-auth-context";
 import { useToast } from "@/contexts/toast-context";
 import { isSupabaseConfigured } from "@/lib/supabase";
 
-export type AdminWorkspace = "overview" | "products" | "travel" | "orders" | "inventory" | "sellers" | "role_approvals" | "customers" | "promotions" | "reviews" | "shipping" | "payments" | "reports" | "notifications" | "activity" | "settings" | "system";
+export type AdminWorkspace = "overview" | "products" | "travel" | "orders" | "after_sales" | "inventory" | "sellers" | "role_approvals" | "customers" | "promotions" | "reviews" | "shipping" | "payments" | "reports" | "notifications" | "activity" | "settings" | "system";
 type NavItem = { key: AdminWorkspace; label: string; icon: keyof typeof MaterialIcons.glyphMap; enabled?: boolean };
 
 const navItems: NavItem[] = [
@@ -17,6 +17,7 @@ const navItems: NavItem[] = [
   { key: "products", label: "สินค้า", icon: "inventory-2", enabled: true },
   { key: "travel", label: "ทริปและที่พัก", icon: "travel-explore", enabled: true },
   { key: "orders", label: "คำสั่งซื้อ", icon: "receipt-long", enabled: true },
+  { key: "after_sales", label: "เคสหลังการขาย", icon: "support-agent", enabled: true },
   { key: "inventory", label: "คลังสินค้า", icon: "warehouse", enabled: true },
   { key: "sellers", label: "ร้านค้า / Seller", icon: "storefront", enabled: true },
   { key: "role_approvals", label: "อนุมัติบทบาท", icon: "verified-user", enabled: true },
@@ -47,7 +48,7 @@ export function AdminPortalShell({ active, title, subtitle, onNavigate, onRefres
   const initials = adminName.trim().slice(0, 1).toUpperCase();
   const visibleItems = useMemo(() => navItems, []);
   const handleUnavailable = (label: string) => showToast(`${label} ยังไม่มี data source ที่อนุมัติสำหรับการจัดการในเวอร์ชันนี้`, "error");
-  const handleNavigation = (workspace: AdminWorkspace) => { if (workspace === "sellers") { router.push("/admin/stores" as any); return; } if (workspace === "role_approvals") { router.push("/admin/role-approvals" as any); return; } onNavigate(workspace); };
+  const handleNavigation = (workspace: AdminWorkspace) => { if (workspace === "sellers") { router.push("/admin/stores" as any); return; } if (workspace === "role_approvals") { router.push("/admin/role-approvals" as any); return; } if (workspace === "after_sales") { router.push("/admin/after-sales" as any); return; } onNavigate(workspace); };
   const handleRefresh = async () => { if (!onRefresh) { showToast("ข้อมูลหน้านี้อัปเดตจาก Supabase เมื่อโหลดหน้า", "success"); return; } setRefreshing(true); try { await onRefresh(); showToast("อัปเดตข้อมูลจาก Supabase แล้ว"); } catch { showToast("ไม่สามารถอัปเดตข้อมูลได้", "error"); } finally { setRefreshing(false); } };
   const handleSearchSubmit = () => { const term = search.trim(); if (!term) return; if (term.startsWith("#") || /^ord-/i.test(term)) { router.push("/admin/orders"); showToast("เปิดคำสั่งซื้อแล้ว ใช้ช่องค้นหาในตารางเพื่อค้นหา “ + term + “", "success"); return; } router.push("/admin/products" as any); showToast("เปิดคลังสินค้าแล้ว ใช้ช่องค้นหาในตารางเพื่อค้นหา “ + term + “", "success"); };
   const doLogout = async () => { try { await signOut(); setLogoutOpen(false); router.replace("/auth"); showToast("ออกจากระบบแล้ว"); } catch { showToast("ไม่สามารถออกจากระบบได้", "error"); } };

@@ -233,3 +233,14 @@
 - [x] เพิ่ม Mobile Order Operations สำหรับสมาชิกองค์กรที่มี permission พร้อม quick actions, confirmations, haptics และ toast
 - [x] เพิ่ม Booking Foundation และ Unified Earnings Ledger ที่ trace กลับ source ได้
 - [x] ตรวจ security/RLS, permission boundaries, event idempotency, TypeScript, tests และ native flows ของ MY HOBEE Phase 2
+- [x] Audit order, shipment, payment, review, notification และ after-sales schema/workflow ที่มีอยู่
+- [x] ออกแบบ customer lifecycle, claim policy, resolution workflow และ authorization model โดยคง contracts เดิม
+- [x] เพิ่ม Supabase schema, storage, RLS และ audit/event foundation สำหรับ after-sales
+- [x] สร้าง protected procedures สำหรับ received confirmation, claim submission, case workflow, return tracking และ financial safeguards
+- [x] สร้าง lifecycle helpers, customer data layer และ regression tests สำหรับ action visibility กับ financial limits
+- [x] ยกระดับ Order Detail และ Delivery Detail ด้วย timeline, tracking, received confirmation และ post-purchase actions
+- [x] เพิ่ม buy-again flow ที่ตรวจสินค้า ราคา และสต็อกปัจจุบันก่อนเพิ่ม cart
+- [x] สร้าง Order Help Center, claim wizard และ My Cases สำหรับลูกค้าพร้อม evidence upload
+- [x] เพิ่ม Return, Refund และ Replacement tracking views ตาม case data และ resolution ที่อนุมัติแล้ว
+- [x] สร้าง Seller/Admin case-management foundation และ notification deep links สำหรับ after-sales
+- [x] ตรวจ RLS, customer/seller isolation, idempotency, TypeScript, tests และ commerce regressions

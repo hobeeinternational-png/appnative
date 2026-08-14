@@ -1,0 +1,4 @@
+{
+  "project_id": "tfqrykzqvdqxjnhzevvn",
+  "query": "SELECT c.conrelid::regclass::text AS table_name, c.conname, pg_get_constraintdef(c.oid) AS definition FROM pg_constraint c WHERE c.conrelid IN ('public.orders'::regclass, 'public.shipments'::regclass, 'public.payments'::regclass, 'public.product_reviews'::regclass) ORDER BY table_name, c.conname LIMIT 100;"
+}

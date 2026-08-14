@@ -107,6 +107,12 @@ export default function RootLayout() {
                   <Stack.Screen name="my-hobee/notifications" options={{ headerShown: false }} />
                   <Stack.Screen name="my-hobee/earnings" options={{ headerShown: false }} />
                   <Stack.Screen name="admin/role-approvals" options={{ headerShown: false }} />
+                  <Stack.Screen name="admin/after-sales" options={{ headerShown: false }} />
+                  <Stack.Screen name="orders/[id]/delivery" options={{ headerShown: false }} />
+                  <Stack.Screen name="orders/[id]/buy-again" options={{ headerShown: false }} />
+                  <Stack.Screen name="orders/[id]/help" options={{ headerShown: false }} />
+                  <Stack.Screen name="claims" options={{ headerShown: false }} />
+                  <Stack.Screen name="claims/[id]" options={{ headerShown: false }} />
                 </Stack>
                 <StatusBar style="dark" translucent backgroundColor="#F6F6F4" />
                   </CartProvider>

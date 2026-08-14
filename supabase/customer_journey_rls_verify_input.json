@@ -1,0 +1,4 @@
+{
+  "project_id": "tfqrykzqvdqxjnhzevvn",
+  "query": "SELECT c.relname AS table_name, c.relrowsecurity AS rls_enabled FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace WHERE n.nspname = 'public' AND c.relname IN ('after_sales_cases', 'after_sales_case_events', 'after_sales_case_messages', 'after_sales_evidence', 'after_sales_refunds', 'after_sales_refund_items', 'return_shipments', 'replacement_shipments', 'order_lifecycle_events', 'after_sales_policies') ORDER BY c.relname LIMIT 20;"
+}

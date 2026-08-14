@@ -1,0 +1,4 @@
+{
+  "project_id": "tfqrykzqvdqxjnhzevvn",
+  "query": "SELECT proname, prosecdef FROM pg_proc WHERE pronamespace = 'public'::regnamespace AND proname IN ('confirm_my_hobee_order_received', 'submit_my_after_sales_case', 'attach_my_after_sales_evidence', 'add_my_after_sales_message', 'review_my_after_sales_case', 'submit_my_return_tracking', 'authorize_my_after_sales_refund', 'ship_my_after_sales_replacement', 'cancel_my_pending_order') ORDER BY proname LIMIT 20;"
+}

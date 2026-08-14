@@ -89,7 +89,7 @@ const config: ExpoConfig = {
     [
       "expo-image-picker",
       {
-        photosPermission: "Allow $(PRODUCT_NAME) to select product images for HOBEE Admin.",
+        photosPermission: "Allow $(PRODUCT_NAME) to select photos or videos as evidence for a HOBEE order support request.",
       },
     ],
     "expo-asset",

@@ -10,6 +10,7 @@ export type HobeeOrder = {
   currency: string;
   status: string;
   payment_status: string;
+  customer_received_at: string | null;
   created_at: string;
 };
 
@@ -23,7 +24,7 @@ export type Shipment = {
   delivered_at: string | null;
 };
 
-const orderFields = "id,order_number,subtotal,shipping_fee,discount_amount,total,currency,status,payment_status,created_at";
+const orderFields = "id,order_number,subtotal,shipping_fee,discount_amount,total,currency,status,payment_status,customer_received_at,created_at";
 
 export async function listMyOrders(): Promise<HobeeOrder[]> {
   const { data, error } = await supabase.from("orders").select(orderFields).order("created_at", { ascending: false });

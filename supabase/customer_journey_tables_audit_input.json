@@ -1,0 +1,4 @@
+{
+  "project_id": "tfqrykzqvdqxjnhzevvn",
+  "query": "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND (table_name ILIKE '%claim%' OR table_name ILIKE '%case%' OR table_name ILIKE '%refund%' OR table_name ILIKE '%return%' OR table_name ILIKE '%activity%' OR table_name ILIKE '%audit%') ORDER BY table_name LIMIT 50;"
+}

@@ -1,0 +1,4 @@
+{
+  "project_id": "tfqrykzqvdqxjnhzevvn",
+  "query": "SELECT c.relname AS table_name, t.tgname AS trigger_name, p.proname AS function_name FROM pg_trigger t JOIN pg_class c ON c.oid = t.tgrelid JOIN pg_proc p ON p.oid = t.tgfoid WHERE NOT t.tgisinternal AND c.relname IN ('orders', 'shipments', 'payments', 'product_reviews') ORDER BY c.relname, t.tgname LIMIT 50;"
+}
