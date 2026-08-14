@@ -6,18 +6,19 @@ import { HOBEE } from "@/components/hobee/design-tokens";
 
 const OFFICIAL_HOBEE_MARK = require("../../assets/images/hobee-official-mark.png");
 
-export type MyHobeeSection = "overview" | "roles" | "work";
+export type MyHobeeSection = "overview" | "roles" | "work" | "earnings";
 
 const sections: Array<{ key: MyHobeeSection; label: string; route: string }> = [
   { key: "overview", label: "ภาพรวม", route: "/my-hobee" },
   { key: "roles", label: "บทบาท", route: "/my-hobee/roles" },
   { key: "work", label: "งาน", route: "/my-hobee/work" },
+  { key: "earnings", label: "รายได้", route: "/my-hobee/earnings" },
 ];
 
-export function MyHobeeHeader({ title, onBack, notificationCount = 0 }: { title?: string; onBack?: () => void; notificationCount?: number }) {
+export function MyHobeeHeader({ title, onBack, notificationCount = 0, onNotifications }: { title?: string; onBack?: () => void; notificationCount?: number; onNotifications?: () => void }) {
   return <View style={styles.header}>
     <View style={styles.headerLeft}>{onBack ? <Pressable accessibilityLabel="ย้อนกลับ" onPress={onBack} style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}><MaterialIcons name="arrow-back" size={23} color="#FFFFFF" /></Pressable> : <View style={styles.markShell}><Image source={OFFICIAL_HOBEE_MARK} style={styles.mark} resizeMode="contain" /></View>}<View><Text style={styles.wordmark}>HOBEE</Text><Text style={styles.subtitle}>{title ?? "MY HOBEE"}</Text></View></View>
-    <View style={styles.headerRight}><Pressable accessibilityLabel="สแกน QR HOBEE" onPress={() => undefined} style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}><MaterialIcons name="qr-code-scanner" size={22} color="#FFFFFF" /></Pressable><Pressable accessibilityLabel="การแจ้งเตือน" onPress={() => undefined} style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}><MaterialIcons name="notifications-none" size={23} color="#FFFFFF" />{notificationCount > 0 ? <View style={styles.badge}><Text style={styles.badgeText}>{Math.min(notificationCount, 99)}</Text></View> : null}</Pressable></View>
+    <View style={styles.headerRight}><Pressable accessibilityLabel="สแกน QR HOBEE" onPress={() => undefined} style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}><MaterialIcons name="qr-code-scanner" size={22} color="#FFFFFF" /></Pressable><Pressable accessibilityLabel="การแจ้งเตือน" onPress={onNotifications ?? (() => router.push("/my-hobee/notifications" as never))} style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}><MaterialIcons name="notifications-none" size={23} color="#FFFFFF" />{notificationCount > 0 ? <View style={styles.badge}><Text style={styles.badgeText}>{Math.min(notificationCount, 99)}</Text></View> : null}</Pressable></View>
   </View>;
 }
 

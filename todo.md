@@ -224,3 +224,12 @@
 - [x] เพิ่ม Unified Work Inbox และ Mobile Order Center พร้อม quick actions ที่ role/data รองรับ
 - [x] เชื่อมปุ่ม HOBEE สีส้มกลางให้เปิด My HOBEE โดยคง Assistive Mode เดิม
 - [x] ตรวจ role/RLS, TypeScript, tests และ My HOBEE mobile flows
+- [x] Audit schema, admin workflows, order lifecycle และ notification/deep-link pathways สำหรับ MY HOBEE Phase 2
+- [x] ออกแบบ organization, membership, permission, role approval, booking, earnings และ event model โดย reuse schema เดิม
+- [x] เพิ่ม Supabase migrations/RLS สำหรับ organization foundation, approval audit, bookings, earnings ledger, notifications และ event idempotency
+- [x] สร้าง server-authorized procedures สำหรับ role decisions, order actions, booking events, earning records และ notifications
+- [x] สร้าง Admin Role Approval Center พร้อม review states, decisions, reviewer และ audit trail
+- [x] ยกระดับ My HOBEE Overview, organizations, Work Inbox filters และ deep links จาก notification
+- [x] เพิ่ม Mobile Order Operations สำหรับสมาชิกองค์กรที่มี permission พร้อม quick actions, confirmations, haptics และ toast
+- [x] เพิ่ม Booking Foundation และ Unified Earnings Ledger ที่ trace กลับ source ได้
+- [x] ตรวจ security/RLS, permission boundaries, event idempotency, TypeScript, tests และ native flows ของ MY HOBEE Phase 2

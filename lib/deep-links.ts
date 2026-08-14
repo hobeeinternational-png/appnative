@@ -17,3 +17,11 @@ export function parsePaymentReturn(url: string): PaymentReturn | null {
 export function isOrderNotificationRoute(route: unknown): route is string {
   return typeof route === "string" && /^\/orders(?:\/[A-Za-z0-9_-]+)?$/.test(route);
 }
+
+export function isMyHobeeNotificationRoute(route: unknown): route is string {
+  return typeof route === "string" && /^\/my-hobee(?:\/(?:roles|work|earnings|notifications))?$/.test(route);
+}
+
+export function isHobeeNotificationRoute(route: unknown): route is string {
+  return isOrderNotificationRoute(route) || isMyHobeeNotificationRoute(route);
+}

@@ -104,6 +104,9 @@ export default function RootLayout() {
                   <Stack.Screen name="oauth/callback" options={{ headerShown: false }} />
                   <Stack.Screen name="payment/callback" options={{ headerShown: false }} />
                   <Stack.Screen name="my-hobee" options={{ headerShown: false }} />
+                  <Stack.Screen name="my-hobee/notifications" options={{ headerShown: false }} />
+                  <Stack.Screen name="my-hobee/earnings" options={{ headerShown: false }} />
+                  <Stack.Screen name="admin/role-approvals" options={{ headerShown: false }} />
                 </Stack>
                 <StatusBar style="dark" translucent backgroundColor="#F6F6F4" />
                   </CartProvider>
