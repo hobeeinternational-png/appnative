@@ -76,7 +76,7 @@ export async function updateAdminProduct(id: string, payload: AdminProductUpdate
 export async function getAdminProductImages(productId: string): Promise<AdminStoredImage[]> {
   const { data, error } = await supabase.from("product_images").select("id,storage_path,alt_text,sort_order").eq("product_id", productId).order("sort_order");
   if (error) throw error;
-  return (data ?? []).map((image) => ({ ...image, url: supabase.storage.from(PRODUCT_IMAGE_BUCKET).getPublicUrl(image.storage_path).data.publicUrl }));
+  return (data ?? []).map((image) => ({ ...image, url: productImageUrl(image.storage_path) }));
 }
 
 export async function uploadAdminProductImages(productId: string, images: AdminImageCandidate[], defaultAltText: string) {
@@ -98,20 +98,21 @@ export async function replaceAdminProductImage(image: AdminStoredImage, productI
   const storagePath = await uploadImage(PRODUCT_IMAGE_BUCKET, `products/${productId}`, candidate, image.sort_order);
   const { error } = await supabase.from("product_images").update({ storage_path: storagePath, alt_text: candidate.altText ?? altText }).eq("id", image.id);
   if (error) throw error;
-  await supabase.storage.from(PRODUCT_IMAGE_BUCKET).remove([image.storage_path]);
+  if (!isExternalImageUrl(image.storage_path)) await supabase.storage.from(PRODUCT_IMAGE_BUCKET).remove([image.storage_path]);
 }
 
 export async function deleteAdminProductImage(image: AdminStoredImage) {
   const { error } = await supabase.from("product_images").delete().eq("id", image.id);
   if (error) throw error;
-  await supabase.storage.from(PRODUCT_IMAGE_BUCKET).remove([image.storage_path]);
+  if (!isExternalImageUrl(image.storage_path)) await supabase.storage.from(PRODUCT_IMAGE_BUCKET).remove([image.storage_path]);
 }
 
 export async function deleteAdminProduct(productId: string) {
   const images = await getAdminProductImages(productId);
   const { error } = await supabase.from("products").delete().eq("id", productId);
   if (error) throw error;
-  if (images.length) await supabase.storage.from(PRODUCT_IMAGE_BUCKET).remove(images.map((image) => image.storage_path));
+  const managedStoragePaths = images.map((image) => image.storage_path).filter((path) => !isExternalImageUrl(path));
+  if (managedStoragePaths.length) await supabase.storage.from(PRODUCT_IMAGE_BUCKET).remove(managedStoragePaths);
 }
 
 function validateImages(images: AdminImageCandidate[], entityLabel: string) {
@@ -130,6 +131,16 @@ async function uploadImage(bucket: string, folder: string, image: AdminImageCand
   const { data, error } = await supabase.storage.from(bucket).upload(path, blob, { contentType: image.mimeType ?? blob.type ?? "image/jpeg", upsert: false });
   if (error || !data) throw error ?? new Error("อัปโหลดรูปภาพไม่สำเร็จ");
   return data.path;
+}
+
+function isExternalImageUrl(path: string) {
+  return /^https?:\/\//i.test(path);
+}
+
+function productImageUrl(storagePath: string) {
+  return isExternalImageUrl(storagePath)
+    ? storagePath
+    : supabase.storage.from(PRODUCT_IMAGE_BUCKET).getPublicUrl(storagePath).data.publicUrl;
 }
 
 export async function updateAdminOrderStatus(id: string, status: "confirmed" | "processing" | "shipped" | "delivered" | "cancelled") {

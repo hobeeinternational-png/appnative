@@ -207,3 +207,7 @@
 - [x] Audit spacer และ touch targets ของ FloatingBottomNav ทั้งฝั่ง Home–Travel และ Calendar–Account
 - [x] ปรับระยะไอคอนทั้งสองฝั่งให้สมมาตรรอบปุ่ม HOBEE กลาง โดยคงพื้นที่กดใช้งาน
 - [x] ตรวจ TypeScript, regression และ mobile safe-area ของ Bottom Navigation หลังปรับ spacing
+- [x] Audit product catalog, Supabase Storage และ product-images policy ก่อนนำเข้าสินค้า HOBEE Honey
+- [x] จัดเตรียมรูปจริง รายละเอียด และราคาเริ่มต้นที่ผู้ดูแลแก้ไขได้สำหรับ HOBEE Honey ทั้ง 8 รายการ
+- [x] อัปโหลดรูปสินค้าและสร้าง product/product_images records ใน Supabase โดยไม่กระทบข้อมูลเดิม
+- [x] ยืนยันสินค้าใหม่ใน Admin Portal และ customer catalog พร้อมสรุปราคาชั่วคราว
