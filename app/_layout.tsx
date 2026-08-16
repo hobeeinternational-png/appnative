@@ -108,6 +108,17 @@ export default function RootLayout() {
                   <Stack.Screen name="my-hobee/notifications" options={{ headerShown: false }} />
                   <Stack.Screen name="my-hobee/notification-preferences" options={{ headerShown: false }} />
                   <Stack.Screen name="my-hobee/earnings" options={{ headerShown: false }} />
+                  <Stack.Screen name="my-hobee/workspaces" options={{ headerShown: false }} />
+                  <Stack.Screen name="workspace" options={{ headerShown: false }} />
+                  <Stack.Screen name="organization" options={{ headerShown: false }} />
+                  <Stack.Screen name="seller" options={{ headerShown: false }} />
+                  <Stack.Screen name="hospitality" options={{ headerShown: false }} />
+                  <Stack.Screen name="creative" options={{ headerShown: false }} />
+                  <Stack.Screen name="field-service" options={{ headerShown: false }} />
+                  <Stack.Screen name="employee" options={{ headerShown: false }} />
+                  <Stack.Screen name="support" options={{ headerShown: false }} />
+                  <Stack.Screen name="notification/[id]" options={{ headerShown: false }} />
+                  <Stack.Screen name="admin/workspace/[workspace]" options={{ headerShown: false }} />
                   <Stack.Screen name="admin/role-approvals" options={{ headerShown: false }} />
                   <Stack.Screen name="admin/after-sales" options={{ headerShown: false }} />
                   <Stack.Screen name="admin/after-sales/[id]" options={{ headerShown: false }} />

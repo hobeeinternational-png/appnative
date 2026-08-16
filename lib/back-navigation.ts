@@ -9,3 +9,6 @@ const ROUTE_RULES: Record<string, BackRule> = {
 
 export function shouldShowBackHeader(routeName: string) { return !["(tabs)", "auth", "oauth/callback", "auth/callback", "payment/callback", "travel", "travel/index"].includes(routeName) && !routeName.startsWith("my-hobee"); }
 export function getBackRule(routeName: string): BackRule { return ROUTE_RULES[routeName] ?? { title: "HOBEE", fallback: "/(tabs)" }; }
+
+type RouterWithBack = { canGoBack?: () => boolean; back: () => void; replace: (...args: any[]) => void };
+export function goBackOr(router: RouterWithBack, fallback: string) { if (router.canGoBack?.()) router.back(); else router.replace(fallback); }

@@ -278,3 +278,27 @@
 - [x] จัดทำ E2E evidence pack, operational runbook และ release gate สำหรับงานที่ทำได้โดยไม่พึ่ง Vercel access
 - [x] จัดทำ external integration handoff สำหรับ Vercel deployment, Opn sandbox และ real-device evidence ที่รอเจ้าของระบบ
 - [x] จัดทำ production-readiness matrix, E2E evidence checklist และ release gate ที่แยก verified/blocked
+- [ ] Audit routes, screens, shared UI และกำหนด UI completeness baseline สำหรับทุกบทบาท
+- [x] Audit routes, screens, shared UI และกำหนด UI completeness baseline สำหรับทุกบทบาท
+- [x] สร้าง shared presentation-data contracts, UI state primitives และ role workspace architecture
+- [x] สร้าง shared presentation-data contracts, UI state primitives และ role workspace architecture
+- [ ] สร้าง Organization and Staff UI สำหรับ owner, manager, invitations, permissions, activity และ settings
+- [x] สร้าง Organization and Staff UI สำหรับ owner, manager, invitations, permissions, activity และ settings
+- [ ] ทำ Seller UI ครบสำหรับ daily operations, products, inventory, customers, promotions, claims, earnings และ store settings
+- [x] ทำ Seller UI ครบสำหรับ daily operations, products, inventory, customers, promotions, claims, earnings และ store settings
+- [ ] ทำ Hotel and Tour operations UI ครบสำหรับ booking, inventory, schedule, guests/passengers, check-in และ earnings
+- [x] ทำ Hotel and Tour operations UI ครบสำหรับ booking, inventory, schedule, guests/passengers, check-in และ earnings
+- [ ] ทำ Creator, Affiliate และ Teacher UI ครบสำหรับ work, promotion, courses, performance และ earnings
+- [x] ทำ Creator, Affiliate และ Teacher UI ครบสำหรับ work, promotion, courses, performance และ earnings
+- [ ] ทำ Guide and Service Provider UI ครบสำหรับ jobs, availability, calendar, customers, completion และ earnings
+- [x] ทำ Guide and Service Provider UI ครบสำหรับ jobs, availability, calendar, customers, completion และ earnings
+- [ ] ทำ HOBEE Employee UI ครบสำหรับ attendance, shifts, tasks, leave, expenses, performance และ documents
+- [x] ทำ HOBEE Employee UI ครบสำหรับ attendance, shifts, tasks, leave, expenses, performance และ documents
+- [ ] ปิดช่องว่าง Customer UI สำหรับ support, notification detail, offline, maintenance, permission denied และ global errors
+- [x] ปิดช่องว่าง Customer UI สำหรับ support, notification detail, offline, maintenance, permission denied และ global errors
+- [ ] ปิดช่องว่าง Admin UI สำหรับ organizations, staff, customers, payments, shipping, audit logs, system status และ settings
+- [x] ปิดช่องว่าง Admin UI สำหรับ organizations, staff, customers, payments, shipping, audit logs, system status และ settings
+- [ ] ตรวจ navigation, back behavior, safe area, screen states และ responsive mobile-first presentation ทุกบทบาท
+- [x] ตรวจ navigation, back behavior, safe area, screen states และ responsive mobile-first presentation ทุกบทบาท
+- [ ] รัน TypeScript, screen/navigation regression tests และจัดทำ UI completeness matrix
+- [x] รัน TypeScript, screen/navigation regression tests และจัดทำ UI completeness matrix
