@@ -15,7 +15,7 @@ import type { RecentlyViewedItem } from "@/lib/recently-viewed-data";
 
 const CATEGORY_ITEMS = [
   { label: "ท่องเที่ยว", icon: "luggage", tone: "#FFF1C8", route: "/travel" },
-  { label: "ร้านค้า", icon: "storefront", tone: "#FFF2D8", route: "/(tabs)/shop" },
+  { label: "ร้านค้า", icon: "storefront", tone: "#FFF2D8", route: "/stores" },
   { label: "สินค้า", icon: "inventory-2", tone: "#D9FAF1", route: "/(tabs)/shop" },
   { label: "บริการ", icon: "business-center", tone: "#E0F2FE", route: "/(tabs)/discover" },
   { label: "ร้านอาหาร", icon: "restaurant", tone: "#FFF1DE", route: "/travel/food" },

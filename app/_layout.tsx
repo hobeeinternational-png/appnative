@@ -117,6 +117,12 @@ export default function RootLayout() {
                   <Stack.Screen name="field-service" options={{ headerShown: false }} />
                   <Stack.Screen name="employee" options={{ headerShown: false }} />
                   <Stack.Screen name="support" options={{ headerShown: false }} />
+                  <Stack.Screen name="stores" options={{ headerShown: false }} />
+                  <Stack.Screen name="stores/[id]" options={{ headerShown: false }} />
+                  <Stack.Screen name="stores/saved" options={{ headerShown: false }} />
+                  <Stack.Screen name="stores/[id]/preorder" options={{ headerShown: false }} />
+                  <Stack.Screen name="stores/orders/[reference]" options={{ headerShown: false }} />
+                  <Stack.Screen name="stores/orders/[reference]/review" options={{ headerShown: false }} />
                   <Stack.Screen name="notification/[id]" options={{ headerShown: false }} />
                   <Stack.Screen name="admin/workspace/[workspace]" options={{ headerShown: false }} />
                   <Stack.Screen name="admin/role-approvals" options={{ headerShown: false }} />

@@ -302,3 +302,23 @@
 - [x] ตรวจ navigation, back behavior, safe area, screen states และ responsive mobile-first presentation ทุกบทบาท
 - [ ] รัน TypeScript, screen/navigation regression tests และจัดทำ UI completeness matrix
 - [x] รัน TypeScript, screen/navigation regression tests และจัดทำ UI completeness matrix
+- [ ] Audit Home category route, commerce/cart architecture, navigation contracts และกำหนด Local Store domain boundary
+- [x] Audit Home category route, commerce/cart architecture, navigation contracts และกำหนด Local Store domain boundary
+- [ ] สร้าง Local Store TypeScript models, presentation repository, query/filter helpers และ local persistence contracts
+- [x] สร้าง Local Store TypeScript models, presentation repository, query/filter helpers และ local persistence contracts
+- [ ] สร้าง shared Local Store UI primitives สำหรับ cards, badges, filters, province sheet, map presentation และ location states
+- [x] สร้าง shared Local Store UI primitives สำหรับ cards, badges, filters, province sheet, map presentation และ location states
+- [ ] สร้าง Local Stores Directory พร้อม fixed app shell, จังหวัด, search, filters, list/map, open-now, favorites และ recently viewed
+- [x] สร้าง Local Stores Directory พร้อม fixed app shell, จังหวัด, search, filters, list/map, open-now, favorites และ recently viewed
+- [ ] สร้าง Store Detail พร้อม hero, ชั่วโมงเปิดทำการ, เมนู, amenities, contact, map preview, navigate และ reviews
+- [x] สร้าง Store Detail พร้อม hero, ชั่วโมงเปิดทำการ, เมนู, amenities, contact, map preview, navigate และ reviews
+- [ ] สร้าง Local Pre-order journey สำหรับ menu selection, cart, pickup/delivery, time, notes, review และ confirmation
+- [x] สร้าง Local Pre-order journey สำหรับ menu selection, cart, pickup/delivery, time, notes, review และ confirmation
+- [ ] สร้าง Local Order detail/status, favorite stores, recently viewed stores และ post-completion review flows
+- [x] สร้าง Local Order detail/status, favorite stores, recently viewed stores และ post-completion review flows
+- [ ] เชื่อม category ร้านค้าจาก Home, safe back/deep-link behavior และ location/offline/error/permission states
+- [x] เชื่อม category ร้านค้าจาก Home, safe back/deep-link behavior และ location/offline/error/permission states
+- [ ] รัน TypeScript และ regression tests พร้อมเพิ่ม Local Stores route, data, order journey และ hooks-safety coverage
+- [x] รัน TypeScript และ regression tests พร้อมเพิ่ม Local Stores route, data, order journey และ hooks-safety coverage
+- [ ] บันทึก checkpoint และรายงาน HOBEE LOCAL STORES — UI COMPLETE
+- [x] บันทึก checkpoint และรายงาน HOBEE LOCAL STORES — UI COMPLETE
