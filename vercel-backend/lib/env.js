@@ -11,5 +11,6 @@ export function getServerConfig(env = /** @type {Record<string, string | undefin
     paymentWebhookSecret: required("PAYMENT_WEBHOOK_SECRET", env.PAYMENT_WEBHOOK_SECRET),
     opnSecretKey: env.OPN_SECRET_KEY ?? "",
     paymentReturnUrl: env.PAYMENT_RETURN_URL ?? "",
+    cronSecret: env.CRON_SECRET ?? "",
   };
 }

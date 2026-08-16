@@ -10,5 +10,6 @@
 | `PAYMENT_WEBHOOK_SECRET` | Yes | HMAC secret สำหรับ trusted sender |
 | `OPN_SECRET_KEY` | For Opn | ใช้ sandbox ก่อน production |
 | `PAYMENT_RETURN_URL` | For redirects | `manushobeemobile://payment/callback` |
+| `CRON_SECRET` | For push outbox worker | Vercel Cron ส่ง Bearer token นี้เมื่อเรียก `/api/workers/push-outbox` |
 | `SHIPPOP_API_KEY` | Optional | เปิด integration หลัง merchant approval |
 | `SHIPPOP_API_BASE_URL` | Optional | Endpoint ที่ยืนยันจากบัญชี SHIPPOP |

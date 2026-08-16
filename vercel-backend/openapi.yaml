@@ -45,6 +45,46 @@ paths:
           description: Missing or invalid Supabase bearer token.
         '404':
           description: Owned pending order not found.
+  /api/payments/opn-webhook:
+    post:
+      summary: Verify an Opn charge event against the provider API and transition payment/order state idempotently.
+      responses:
+        '200':
+          description: Event processed, ignored, or previously processed.
+        '404':
+          description: Payment provider reference not found.
+  /api/payments/refunds/process:
+    post:
+      summary: Process an already-approved after-sales refund through the payment provider. This endpoint is admin-only and never accepts a client-defined amount.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [refundId]
+              properties:
+                refundId:
+                  type: string
+                  format: uuid
+      responses:
+        '200':
+          description: Refund processed or a duplicate request returned safely.
+        '403':
+          description: Admin role required.
+        '409':
+          description: Refund is not approved or no supported paid provider payment exists.
+  /api/workers/push-outbox:
+    post:
+      summary: Deliver queued push notifications. Intended for Vercel Cron only.
+      security:
+        - cronBearer: []
+      responses:
+        '200':
+          description: Queued notifications were processed with sent, suppressed, and failed counts.
   /api/payments/webhook:
     post:
       summary: Receive a signed payment provider event and transition payment/order states idempotently.
@@ -67,6 +107,9 @@ components:
       type: apiKey
       in: header
       name: x-hobee-webhook-signature
+    cronBearer:
+      type: http
+      scheme: bearer
   schemas:
     CreateOrderRequest:
       type: object
@@ -98,11 +141,14 @@ components:
     CreatePaymentIntentRequest:
       type: object
       additionalProperties: false
-      required: [orderId, provider]
+      required: [orderId, method]
       properties:
         orderId:
           type: string
           format: uuid
-        provider:
+        method:
           type: string
-          enum: [manual, bank_transfer, payment_gateway]
+          enum: [mock_promptpay, mock_card, opn_promptpay, opn_card]
+        cardToken:
+          type: string
+          description: One-time token from the provider client SDK. Raw card data is never accepted.

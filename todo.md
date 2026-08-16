@@ -255,3 +255,26 @@
 - [x] เชื่อม event-driven Work Inbox, in-app/push notification preferences, badges และ safe deep links
 - [x] เพิ่ม return inspection, refund approval และ replacement fulfilment tracking ตาม role permissions
 - [x] ตรวจ security/RLS, case isolation, event/retry idempotency, TypeScript และ regression suite
+- [x] Audit code, configuration, backend surfaces และ deployment state ของ production-critical domains
+- [x] Audit code, configuration, backend surfaces และ deployment state ของ production-critical domains
+- [x] จัดทำ readiness matrix และระบุ credential, configuration และ owner actions ตามหลักฐาน
+- [x] จัดทำ readiness matrix และระบุ credential, configuration และ owner actions ตามหลักฐาน
+- [x] ตรวจและเติม server-side Vercel backend สำหรับ orders, payments, webhooks, refunds, push outbox และ shipment integration
+- [x] ตรวจและเติม server-side Vercel backend สำหรับ orders, payments, webhooks, refunds, push outbox และ shipment integration
+- [x] ตรวจและเติม server-side Vercel backend สำหรับ orders, payments, webhooks, refunds, push outbox และ shipment integration
+- [ ] ตั้งค่า server-only production secrets และตรวจ mobile bundle/source ว่าไม่มี secret exposure
+- [x] ตั้งค่า server-only production secrets และตรวจ mobile bundle/source ว่าไม่มี secret exposure — secret configuration ถูกบล็อกจนกว่า Vercel deployment/environment permission จะถูกมอบให้
+- [ ] ตรวจ deployment และ endpoint health ของ Vercel backend โดยแยก deployed, verified และ blocked ชัดเจน
+- [ ] ทดสอบ payment/refund sandbox, webhook signature, retry และ idempotency เมื่อ credentials พร้อม
+- [x] ตรวจ push outbox, notification routing, deep links และ shipping integration readiness
+- [x] ตรวจ push outbox, notification routing, deep links และ shipping integration readiness
+- [x] ตรวจ Supabase Auth, admin session, organization permissions และ customer/seller/admin authorization paths — schema verified; E2E role personas blocked pending controlled test accounts and memberships
+- [x] ตรวจ Supabase Auth, admin session, organization permissions และ customer/seller/admin authorization paths — schema verified; E2E role personas blocked pending controlled test accounts and memberships
+- [x] เตรียม iOS/Android development-build checklist, real-device test procedures และ permission evidence
+- [x] เตรียม iOS/Android development-build checklist, real-device test procedures และ permission evidence
+- [x] รัน static, integration, security, secret-scan และ stability validation ที่ทำได้ใน sandbox
+- [x] รัน static, integration, security, secret-scan และ stability validation ที่ทำได้ใน sandbox
+- [x] จัดทำ E2E evidence pack, operational runbook และ release gate สำหรับงานที่ทำได้โดยไม่พึ่ง Vercel access
+- [x] จัดทำ E2E evidence pack, operational runbook และ release gate สำหรับงานที่ทำได้โดยไม่พึ่ง Vercel access
+- [x] จัดทำ external integration handoff สำหรับ Vercel deployment, Opn sandbox และ real-device evidence ที่รอเจ้าของระบบ
+- [x] จัดทำ production-readiness matrix, E2E evidence checklist และ release gate ที่แยก verified/blocked

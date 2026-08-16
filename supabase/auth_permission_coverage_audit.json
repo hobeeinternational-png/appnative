@@ -1,0 +1,4 @@
+{
+  "project_id": "tfqrykzqvdqxjnhzevvn",
+  "query": "SELECT (SELECT count(*) FROM public.profiles) AS profile_count, (SELECT count(*) FROM public.user_roles) AS user_role_count, (SELECT coalesce(string_agg(role, ',' ORDER BY role), '') FROM (SELECT DISTINCT role FROM public.user_roles) roles) AS configured_role_types, (SELECT count(*) FROM public.organizations) AS organization_count, (SELECT count(*) FROM public.organization_memberships WHERE status = 'active') AS active_membership_count, (SELECT count(*) FROM public.organization_member_permissions) AS organization_permission_count, (SELECT count(*) FROM public.after_sales_cases) AS after_sales_case_count LIMIT 1;"
+}
