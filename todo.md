@@ -322,3 +322,27 @@
 - [x] รัน TypeScript และ regression tests พร้อมเพิ่ม Local Stores route, data, order journey และ hooks-safety coverage
 - [ ] บันทึก checkpoint และรายงาน HOBEE LOCAL STORES — UI COMPLETE
 - [x] บันทึก checkpoint และรายงาน HOBEE LOCAL STORES — UI COMPLETE
+- [ ] Audit Travel routes, data models, booking flows, map/local discovery, hotel reuse points และ visual baseline ตามภาพอ้างอิง
+- [x] Audit Travel routes, data models, booking flows, map/local discovery, hotel reuse points และ visual baseline ตามภาพอ้างอิง
+- [ ] ขยาย Travel presentation contracts สำหรับ intents, styles, provinces, destinations, workshops, stays, templates, bookings และ planner โดยคง backend contracts เดิม
+- [x] ขยาย Travel presentation contracts สำหรับ intents, styles, provinces, destinations, workshops, stays, templates, bookings และ planner โดยคง backend contracts เดิม
+- [ ] Refactor Travel Home เป็น premium hub ตามภาพ พร้อม header controls, 4 intent cards, 10 travel styles, provinces และ editorial discovery rails
+- [x] Refactor Travel Home เป็น premium hub ตามภาพ พร้อม header controls, 4 intent cards, 10 travel styles, provinces และ editorial discovery rails
+- [ ] เติม Province Detail และ Local Life discovery ให้มี overview, highlights, food, stay, workshop, trips, map และ local stories
+- [x] เติม Province Detail และ Local Life discovery ให้มี overview, highlights, food, stay, workshop, trips, map และ local stories
+- [ ] เติม Trip Detail ให้ครบด้วย gallery, itinerary, inclusions, meeting point, operator, policy, reviews, similar trips และ sticky CTA
+- [x] เติม Trip Detail ให้ครบด้วย gallery, itinerary, inclusions, meeting point, operator, policy, reviews, similar trips และ sticky CTA
+- [ ] เติม Native booking journey 4 ขั้น, booking success และ reuse Payment UI เดิมโดยไม่สร้าง payment system ใหม่
+- [x] เติม Native booking journey 4 ขั้น, booking success และ reuse Payment UI เดิมโดยไม่สร้าง payment system ใหม่
+- [ ] เติม My Trips, booking detail, cancellation/refund presentation, review และ operator contact flows
+- [x] เติม My Trips, booking detail, cancellation/refund presentation, review และ operator contact flows
+- [ ] เติม Custom Trip Builder, daily planner, budget, save/share/template clone และ map-planning presentation
+- [x] เติม Custom Trip Builder, daily planner, budget, save/share/template clone และ map-planning presentation
+- [ ] เติม Foreign Visitor hub, service cards, locale/currency controls และ travel safety/empty/error boundaries
+- [x] เติม Foreign Visitor hub, service cards, locale/currency controls และ travel safety/empty/error boundaries
+- [ ] เชื่อม Home Travel category, shared navigation, safe back/deep links, save/share/location states และ travel module integration
+- [x] เชื่อม Home Travel category, shared navigation, safe back/deep links, save/share/location states และ travel module integration
+- [ ] รัน TypeScript และ regression suite พร้อมเพิ่ม coverage สำหรับ Travel hub, booking, My Trips และ planner contracts
+- [x] รัน TypeScript และ regression suite พร้อมเพิ่ม coverage สำหรับ Travel hub, booking, My Trips และ planner contracts
+- [ ] บันทึก checkpoint และรายงาน HOBEE TRAVEL ECOSYSTEM — UI COMPLETE
+- [x] บันทึก checkpoint และรายงาน HOBEE TRAVEL ECOSYSTEM — UI COMPLETE

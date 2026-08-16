@@ -123,6 +123,12 @@ export default function RootLayout() {
                   <Stack.Screen name="stores/[id]/preorder" options={{ headerShown: false }} />
                   <Stack.Screen name="stores/orders/[reference]" options={{ headerShown: false }} />
                   <Stack.Screen name="stores/orders/[reference]/review" options={{ headerShown: false }} />
+                  <Stack.Screen name="travel/my-trips" options={{ headerShown: false }} />
+                  <Stack.Screen name="travel/bookings/[id]" options={{ headerShown: false }} />
+                  <Stack.Screen name="travel/review/[id]" options={{ headerShown: false }} />
+                  <Stack.Screen name="travel/visitor" options={{ headerShown: false }} />
+                  <Stack.Screen name="travel/search" options={{ headerShown: false }} />
+                  <Stack.Screen name="travel/safety" options={{ headerShown: false }} />
                   <Stack.Screen name="notification/[id]" options={{ headerShown: false }} />
                   <Stack.Screen name="admin/workspace/[workspace]" options={{ headerShown: false }} />
                   <Stack.Screen name="admin/role-approvals" options={{ headerShown: false }} />
