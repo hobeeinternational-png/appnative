@@ -400,3 +400,25 @@
 - [x] รัน TypeScript และ regression suite พร้อมเพิ่ม coverage สำหรับ Learning discovery, access states, player, progress, events และ teacher mapping
 - [ ] บันทึก checkpoint และรายงาน HOBEE LEARNING PLATFORM UI COMPLETE
 - [x] บันทึก checkpoint และรายงาน HOBEE LEARNING PLATFORM UI COMPLETE
+- [ ] Audit Community, Story, Club, Activity, Opportunity, Profile, Media, Travel sharing, favorites และ notification routes/data layers ที่มีอยู่
+- [x] Audit Community, Story, Club, Activity, Opportunity, Profile, Media, Travel sharing, favorites และ notification routes/data layers ที่มีอยู่
+- [ ] สร้าง Community presentation contracts สำหรับ province, search, recommendations, stories, clubs, activities, jobs, trips, creators, membership และ moderation states
+- [x] สร้าง Community presentation contracts สำหรับ province, search, recommendations, stories, clubs, activities, jobs, trips, creators, membership และ moderation states
+- [ ] ต่อยอด Community Home ด้วย app shell, province selector, search, filters, hero, quick intents และ mixed-content recommendation feed
+- [x] ต่อยอด Community Home ด้วย app shell, province selector, search, filters, hero, quick intents และ mixed-content recommendation feed
+- [ ] สร้าง Community Search, topic/hashtag discovery, saved/recent search และ loading/empty/error/offline/location states
+- [x] สร้าง Community Search, topic/hashtag discovery, saved/recent search และ loading/empty/error/offline/location states
+- [ ] ต่อยอด Story discovery/detail/create draft-preview journeys พร้อม media reuse, related entities, comment/report/save/share presentation boundaries
+- [x] ต่อยอด Story discovery/detail/create draft-preview journeys พร้อม media reuse, related entities, comment/report/save/share presentation boundaries
+- [ ] สร้าง Club discovery/detail/membership/create journeys พร้อม public/private, request-to-join, moderator และ admin presentation states
+- [x] สร้าง Club discovery/detail/membership/create journeys พร้อม public/private, request-to-join, moderator และ admin presentation states
+- [ ] สร้าง Activity discovery/detail/create/my-activities journeys พร้อม join, calendar, club relation และ capacity presentation boundaries
+- [x] สร้าง Activity discovery/detail/create/my-activities journeys พร้อม join, calendar, club relation และ capacity presentation boundaries
+- [ ] เชื่อม Jobs/Opportunity, Community Trips, Local Discovery, Creator/Member content และ people/profile entry points กับโดเมนเดิม
+- [x] เชื่อม Jobs/Opportunity, Community Trips, Local Discovery, Creator/Member content และ people/profile entry points กับโดเมนเดิม
+- [ ] สร้าง Community Profile, followers/following, notifications, settings, privacy/report/block และ moderator/admin management presentation routes
+- [x] สร้าง Community Profile, followers/following, notifications, settings, privacy/report/block และ moderator/admin management presentation routes
+- [ ] เชื่อม Home Community category, shared navigation, safe back/deep links, notification allow-list และ non-duplicative entity routing
+- [x] เชื่อม Home Community category, shared navigation, safe back/deep links, notification allow-list และ non-duplicative entity routing
+- [x] รัน TypeScript และ regression suite พร้อมเพิ่ม coverage สำหรับ Community feed, search, stories, clubs, activities, moderation และ deep links
+- [x] บันทึก checkpoint และรายงาน HOBEE COMMUNITY HUB UI COMPLETE

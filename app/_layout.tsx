@@ -24,6 +24,7 @@ import { CartProvider } from "@/contexts/cart-context";
 import { FoodCartProvider } from "../contexts/food-cart-context";
 import { FoodPreferencesProvider } from "../contexts/food-preferences-context";
 import { LearningLibraryProvider } from "../contexts/learning-library-context";
+import { CommunityPreferencesProvider } from "../contexts/community-preferences-context";
 import { LocaleProvider } from "@/contexts/locale-context";
 import { ToastProvider } from "@/contexts/toast-context";
 import { SupabaseAuthProvider } from "@/contexts/supabase-auth-context";
@@ -102,6 +103,7 @@ export default function RootLayout() {
                   <FoodCartProvider>
                   <FoodPreferencesProvider>
                   <LearningLibraryProvider>
+                  <CommunityPreferencesProvider>
                 <Stack screenOptions={({ route }) => ({ headerShown: shouldShowBackHeader(route.name), header: () => <BackHeader routeName={route.name} /> })}>
                   <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                   <Stack.Screen name="auth" options={{ headerShown: false }} />
@@ -123,6 +125,26 @@ export default function RootLayout() {
                   <Stack.Screen name="field-service" options={{ headerShown: false }} />
                   <Stack.Screen name="employee" options={{ headerShown: false }} />
                   <Stack.Screen name="support" options={{ headerShown: false }} />
+                  <Stack.Screen name="community" options={{ headerShown: false }} />
+                  <Stack.Screen name="community/search" options={{ headerShown: false }} />
+                  <Stack.Screen name="community/topics/[id]" options={{ headerShown: false }} />
+                  <Stack.Screen name="community/stories" options={{ headerShown: false }} />
+                  <Stack.Screen name="community/create" options={{ headerShown: false }} />
+                  <Stack.Screen name="community/clubs" options={{ headerShown: false }} />
+                  <Stack.Screen name="community/clubs/[id]" options={{ headerShown: false }} />
+                  <Stack.Screen name="community/clubs/create" options={{ headerShown: false }} />
+                  <Stack.Screen name="community/activities" options={{ headerShown: false }} />
+                  <Stack.Screen name="community/activities/[id]" options={{ headerShown: false }} />
+                  <Stack.Screen name="community/activities/create" options={{ headerShown: false }} />
+                  <Stack.Screen name="community/my-activities" options={{ headerShown: false }} />
+                  <Stack.Screen name="community/jobs" options={{ headerShown: false }} />
+                  <Stack.Screen name="community/jobs/[id]" options={{ headerShown: false }} />
+                  <Stack.Screen name="community/trips" options={{ headerShown: false }} />
+                  <Stack.Screen name="community/people/[id]" options={{ headerShown: false }} />
+                  <Stack.Screen name="community/profile" options={{ headerShown: false }} />
+                  <Stack.Screen name="community/profile/network" options={{ headerShown: false }} />
+                  <Stack.Screen name="community/profile/privacy" options={{ headerShown: false }} />
+                  <Stack.Screen name="community/moderation" options={{ headerShown: false }} />
                   <Stack.Screen name="stores" options={{ headerShown: false }} />
                   <Stack.Screen name="stores/[id]" options={{ headerShown: false }} />
                   <Stack.Screen name="stores/saved" options={{ headerShown: false }} />
@@ -174,6 +196,7 @@ export default function RootLayout() {
                   <Stack.Screen name="claims/[id]" options={{ headerShown: false }} />
                 </Stack>
                 <StatusBar style="dark" translucent backgroundColor="#F6F6F4" />
+                  </CommunityPreferencesProvider>
                   </LearningLibraryProvider>
                   </FoodPreferencesProvider>
                   </FoodCartProvider>

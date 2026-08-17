@@ -34,6 +34,10 @@ export function isLearningNotificationRoute(route: unknown): route is string {
   return typeof route === "string" && /^\/learning(?:\/(?:my-learning|catalogue|membership|calendar|events(?:\/[A-Za-z0-9_-]+(?:\/(?:ticket|success))?)?|live\/[A-Za-z0-9_-]+|sessions\/[A-Za-z0-9_-]+|teacher\/[A-Za-z0-9_-]+))?$/.test(route);
 }
 
+export function isCommunityNotificationRoute(route: unknown): route is string {
+  return typeof route === "string" && /^\/community(?:\/(?:stories|clubs(?:\/[A-Za-z0-9_-]+)?|activities(?:\/[A-Za-z0-9_-]+)?|my-activities|jobs(?:\/[A-Za-z0-9_-]+)?|trips|profile(?:\/(?:network|privacy))?|people\/[A-Za-z0-9_-]+))?$/.test(route);
+}
+
 export function isHobeeNotificationRoute(route: unknown): route is string {
-  return isOrderNotificationRoute(route) || isMyHobeeNotificationRoute(route) || isAfterSalesNotificationRoute(route) || isFoodNotificationRoute(route) || isLearningNotificationRoute(route);
+  return isOrderNotificationRoute(route) || isMyHobeeNotificationRoute(route) || isAfterSalesNotificationRoute(route) || isFoodNotificationRoute(route) || isLearningNotificationRoute(route) || isCommunityNotificationRoute(route);
 }
