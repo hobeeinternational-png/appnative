@@ -10,6 +10,7 @@ import { useSupabaseAuth } from "@/contexts/supabase-auth-context";
 import { useToast } from "@/contexts/toast-context";
 import { useAdmin } from "@/hooks/use-admin";
 import { useAddresses } from "@/hooks/use-addresses";
+import { loadHobeeIdentityProfile, type HobeeIdentityProfile } from "@/lib/identity-organization-repository";
 import { useOrders } from "@/hooks/use-orders";
 import { listFavoriteIds, loadRewards, type UserCoupon } from "@/lib/loyalty";
 
@@ -23,6 +24,7 @@ export default function AccountScreen() {
   const { addresses } = useAddresses();
   const [rewards, setRewards] = useState<RewardsSummary | null>(null);
   const [favoriteCount, setFavoriteCount] = useState<number | null>(null);
+  const [profile, setProfile] = useState<HobeeIdentityProfile | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -35,7 +37,14 @@ export default function AccountScreen() {
     return () => { active = false; };
   }, [user]);
 
-  const displayName = typeof user?.user_metadata?.full_name === "string" ? user.user_metadata.full_name : typeof user?.user_metadata?.name === "string" ? user.user_metadata.name : user ? "บัญชี HOBEE ของคุณ" : "ยินดีต้อนรับสู่ HOBEE";
+  useEffect(() => {
+    let active = true;
+    if (!user) { setProfile(null); return () => { active = false; }; }
+    void loadHobeeIdentityProfile(user).then((nextProfile) => { if (active) setProfile(nextProfile); }).catch(() => { if (active) setProfile(null); });
+    return () => { active = false; };
+  }, [user]);
+
+  const displayName = profile?.displayName ?? (typeof user?.user_metadata?.full_name === "string" ? user.user_metadata.full_name : typeof user?.user_metadata?.name === "string" ? user.user_metadata.name : user ? "บัญชี HOBEE ของคุณ" : "ยินดีต้อนรับสู่ HOBEE");
   const initial = displayName.trim().charAt(0).toUpperCase() || "H";
   const activeCoupons = rewards?.coupons.filter((coupon) => !coupon.used_at).length ?? null;
   const giftedRewards = rewards?.coupons.filter((coupon) => coupon.discount_type === "fixed" && !coupon.used_at).length ?? null;
@@ -50,7 +59,7 @@ export default function AccountScreen() {
   return <ScreenContainer containerClassName="bg-[#F5F4F1]" edges={["top", "left", "right"]}><AtmosphericCanvas mood="account"><ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
       <View style={styles.hero}>
         <View style={styles.heroAuraOne} /><View style={styles.heroAuraTwo} />
-        <View style={styles.heroActions}><BrandMark /><View style={styles.heroActionGroup}><HeroIcon icon="qr-code-scanner" label="QR HOBEE" onPress={() => showToast("QR HOBEE พร้อมเชื่อมการใช้งาน", "info")} /><HeroIcon icon="notifications-none" label="การแจ้งเตือน" onPress={() => protectedRoute("/my-hobee/notifications")} badge /></View></View>
+        <View style={styles.heroActions}><BrandMark /><View style={styles.heroActionGroup}><HeroIcon icon="qr-code-scanner" label="QR HOBEE" onPress={() => showToast("QR HOBEE พร้อมเชื่อมการใช้งาน", "info")} /><HeroIcon icon="notifications-none" label="การแจ้งเตือน" onPress={() => showToast("ยังไม่มีการแจ้งเตือนใหม่", "info")} badge /></View></View>
         <View style={styles.profileRow}><View style={styles.avatar}><Text style={styles.avatarText}>{initial}</Text></View><View style={styles.profileCopy}><Text numberOfLines={1} style={styles.profileName}>{displayName}</Text><Pressable onPress={() => protectedRoute("/checkout/address")} style={styles.profileManage}><Text style={styles.profileManageText}>จัดการข้อมูลส่วนตัว</Text><MaterialIcons name="chevron-right" size={18} color="#E9DCA9" /></Pressable></View></View>
         <Pressable onPress={() => protectedRoute("/rewards")} style={styles.memberCard}><View style={styles.memberTop}><View style={styles.memberIdentity}><View style={styles.memberIcon}><MaterialIcons name="explore" size={23} color={HOBEE.colors.travelTeal} /></View><Text style={styles.memberTier}>{memberTier}</Text></View><View style={styles.memberLink}><Text style={styles.memberLinkText}>ดูสิทธิประโยชน์ทั้งหมด</Text><MaterialIcons name="chevron-right" size={18} color={HOBEE.colors.travelTeal} /></View></View><View style={styles.benefits}><Benefit icon="stars" label="สะสมคะแนนจากทุกคำสั่งซื้อ" /><Benefit icon="card-giftcard" label={activeCoupons === null ? "สิทธิพิเศษสำหรับสมาชิก" : `คูปองพร้อมใช้ ${activeCoupons} รายการ`} /></View></Pressable>
       </View>
@@ -62,7 +71,7 @@ export default function AccountScreen() {
 
         <Pressable onPress={() => protectedRoute("/checkout/address")} style={styles.largeRow}><View style={styles.rowIcon}><MaterialIcons name="person-outline" size={25} color={HOBEE.colors.travelTeal} /></View><View style={styles.rowCopy}><Text style={styles.rowTitle}>ข้อมูลที่ใช้บ่อย</Text><Text numberOfLines={1} style={styles.rowSubtitle}>{user ? `ข้อมูลส่วนตัว • ที่อยู่ ${addresses.length} รายการ • วิธีชำระเงิน` : "ข้อมูลส่วนตัว • ที่อยู่ • วิธีชำระเงิน"}</Text></View><MaterialIcons name="chevron-right" size={24} color={HOBEE.colors.muted} /></Pressable>
 
-        <View style={styles.settingsCard}><SettingRow icon="help-outline" label="ศูนย์ช่วยเหลือ" onPress={() => router.push("/support")} /><View style={styles.settingDivider} /><SettingRow icon="settings" label="การตั้งค่า" onPress={() => showToast("การตั้งค่าบัญชีจะรวมอยู่ใน profile settings เมื่อ integration พร้อม", "info")} />{adminAllowed ? <><View style={styles.settingDivider} /><SettingRow icon="admin-panel-settings" label="HOBEE Admin Center" detail="จัดการสินค้าและคำสั่งซื้อ" onPress={() => router.push("/admin")} /></> : null}</View>
+        <View style={styles.settingsCard}><SettingRow icon="help-outline" label="ศูนย์ช่วยเหลือ" onPress={() => showToast("ศูนย์ช่วยเหลือพร้อมเชื่อมช่องทางสนับสนุน", "info")} /><View style={styles.settingDivider} /><SettingRow icon="settings" label="การตั้งค่า" onPress={() => showToast("การตั้งค่าบัญชีพร้อมใช้งาน", "info")} />{adminAllowed ? <><View style={styles.settingDivider} /><SettingRow icon="admin-panel-settings" label="HOBEE Admin Center" detail="จัดการสินค้าและคำสั่งซื้อ" onPress={() => router.push("/admin")} /></> : null}</View>
 
         <View style={styles.referralBanner}><View style={styles.referralAura} /><View style={styles.referralCopy}><Text style={styles.referralEyebrow}>HOBEE REWARDS</Text><Text style={styles.referralTitle}>รับรางวัลเพิ่ม</Text><Text style={styles.referralText}>แนะนำเพื่อนร่วมชุมชน แล้วรับคะแนน HOBEE Points</Text><Pressable onPress={() => protectedRoute("/rewards")} style={styles.referralButton}><Text style={styles.referralButtonText}>ดูรายละเอียด</Text><MaterialIcons name="arrow-forward" size={16} color={HOBEE.colors.ink} /></Pressable></View><View style={styles.rewardIllustration}><MaterialIcons name="card-giftcard" size={55} color={HOBEE.colors.gold} /><MaterialIcons name="auto-awesome" size={21} color="#FFFFFF" style={styles.sparkle} /></View></View>
 

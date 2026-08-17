@@ -90,26 +90,6 @@ export function createOpnPaymentProvider({ secretKey, fetchImpl = fetch }) {
       const charge = await readProviderResponse(response);
       return { providerReference: charge.id, status: mapProviderStatus(charge.status), metadata: charge.metadata ?? {} };
     },
-    async createRefund(input) {
-      const amount = toSubunits(input.amount, input.currency);
-      const form = new URLSearchParams({
-        amount: String(amount),
-        "metadata[hobee_refund_id]": input.refundId,
-      });
-      const response = await fetchImpl(`${OPN_CHARGES_URL}/${encodeURIComponent(input.chargeId)}/refunds`, {
-        method: "POST",
-        headers: {
-          Authorization: basicAuthorization(secretKey),
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: form.toString(),
-      });
-      const refund = await readProviderResponse(response);
-      return {
-        providerReference: refund.id,
-        status: refund.status,
-        testMode: refund.livemode === false,
-      };
-    },
   };
 }
+

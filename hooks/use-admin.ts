@@ -11,15 +11,15 @@ export function useAdmin() {
   const [orders, setOrders] = useState<AdminOrder[]>([]);
   const [error, setError] = useState<string | null>(null);
   const refresh = useCallback(async () => {
-    if (!user) { setAllowed(false); setLoading(false); return; }
-    setLoading(true); setError(null);
+    if (!user) { setAllowed(false); setProducts([]); setOrders([]); setError(null); setLoading(false); return; }
+    setLoading(true); setError(null); setProducts([]); setOrders([]);
     try {
       const admin = await isCurrentUserAdmin(user.id);
       setAllowed(admin);
-      if (!admin) return;
+      if (!admin) { setProducts([]); setOrders([]); return; }
       const dashboard = await getAdminDashboard();
       setProducts(dashboard.products); setOrders(dashboard.orders);
-    } catch (cause) { setError(cause instanceof Error ? cause.message : "ไม่สามารถโหลดหลังบ้านได้"); } finally { setLoading(false); }
+    } catch (cause) { setAllowed(false); setProducts([]); setOrders([]); setError(cause instanceof Error ? cause.message : "ไม่สามารถโหลดหลังบ้านได้"); } finally { setLoading(false); }
   }, [user]);
   useEffect(() => { void refresh(); }, [refresh]);
   return { allowed, loading, products, orders, error, refresh, user };

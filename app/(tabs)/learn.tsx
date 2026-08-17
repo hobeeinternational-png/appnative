@@ -4,7 +4,6 @@ import { useMemo, useState } from "react";
 import { Image, ImageBackground, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { ScreenContainer } from "@/components/screen-container";
-import { LearningDiscoveryExtension } from "@/components/hobee/learning-discovery-extension";
 import { HOBEE } from "@/components/hobee/design-tokens";
 import { coursesForWorld, formatCourseDuration, learningCourses, learningWorlds, levelLabel, type LearningCourse, type LearningWorld } from "@/lib/learning-data";
 
@@ -38,7 +37,6 @@ export default function LearningScreen() {
           </ScrollView>
 
           <FeaturedCourse course={featured} />
-          <LearningDiscoveryExtension />
           <SectionTitle title="แนะนำสำหรับคุณ" eyebrow="RECOMMENDED" />
           <Text style={styles.sectionSubtext}>คอร์สเรียนยอดนิยมคัดสรรจากผู้สอน HOBEE Academy</Text>
           <CourseRail courses={worldCourses} showProgress />
@@ -65,8 +63,7 @@ function LearningHeader() {
         <Text style={styles.wordmark}>HOBEE</Text><Text style={styles.learningLabel}>LEARNING</Text>
       </Pressable>
       <View style={styles.headerActions}>
-        <Pressable accessibilityRole="button" accessibilityLabel="ค้นหาคอร์ส" onPress={() => router.push("/learning/search" as never)} style={({ pressed }) => [styles.headerButton, pressed && styles.pressed]}><MaterialIcons name="search" size={25} color="#EEEDE8" /></Pressable>
-        <Pressable accessibilityRole="button" accessibilityLabel="ปฏิทินการเรียน" onPress={() => router.push("/learning/calendar" as never)} style={({ pressed }) => [styles.headerButton, pressed && styles.pressed]}><MaterialIcons name="calendar-month" size={22} color="#EEEDE8" /></Pressable>
+        <Pressable accessibilityRole="button" accessibilityLabel="ค้นหาคอร์ส" style={({ pressed }) => [styles.headerButton, pressed && styles.pressed]}><MaterialIcons name="search" size={25} color="#EEEDE8" /></Pressable>
         <Pressable accessibilityRole="button" accessibilityLabel="การแจ้งเตือนการเรียน" style={({ pressed }) => [styles.headerButton, pressed && styles.pressed]}><MaterialIcons name="notifications-none" size={25} color="#EEEDE8" /><View style={styles.notificationDot} /></Pressable>
         <Pressable accessibilityRole="button" accessibilityLabel="การเรียนของฉัน" onPress={() => router.push("/learning/my-learning" as never)} style={({ pressed }) => [styles.avatar, pressed && styles.pressed]}><Text style={styles.avatarText}>พ</Text></Pressable>
       </View>

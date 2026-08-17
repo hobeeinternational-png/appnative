@@ -9,7 +9,7 @@ import { useSupabaseAuth } from "@/contexts/supabase-auth-context";
 import { useToast } from "@/contexts/toast-context";
 import { isSupabaseConfigured } from "@/lib/supabase";
 
-export type AdminWorkspace = "overview" | "products" | "travel" | "orders" | "after_sales" | "inventory" | "sellers" | "role_approvals" | "organizations" | "customers" | "promotions" | "reviews" | "shipping" | "payments" | "reports" | "notifications" | "activity" | "settings" | "system";
+export type AdminWorkspace = "overview" | "products" | "travel" | "orders" | "after_sales" | "inventory" | "sellers" | "role_approvals" | "customers" | "promotions" | "reviews" | "shipping" | "payments" | "reports" | "notifications" | "activity" | "settings" | "system";
 type NavItem = { key: AdminWorkspace; label: string; icon: keyof typeof MaterialIcons.glyphMap; enabled?: boolean };
 
 const navItems: NavItem[] = [
@@ -21,17 +21,16 @@ const navItems: NavItem[] = [
   { key: "inventory", label: "คลังสินค้า", icon: "warehouse", enabled: true },
   { key: "sellers", label: "ร้านค้า / Seller", icon: "storefront", enabled: true },
   { key: "role_approvals", label: "อนุมัติบทบาท", icon: "verified-user", enabled: true },
-  { key: "organizations", label: "องค์กร & Staff", icon: "domain", enabled: true },
-  { key: "customers", label: "ลูกค้า / Users", icon: "group", enabled: true },
+  { key: "customers", label: "ลูกค้า / Users", icon: "group" },
   { key: "promotions", label: "คูปอง & โปรโมชั่น", icon: "confirmation-number" },
   { key: "reviews", label: "รีวิว", icon: "star-outline" },
-  { key: "shipping", label: "การจัดส่ง", icon: "local-shipping", enabled: true },
-  { key: "payments", label: "การชำระเงิน", icon: "account-balance-wallet", enabled: true },
-  { key: "reports", label: "รายงาน & วิเคราะห์", icon: "query-stats", enabled: true },
-  { key: "notifications", label: "การแจ้งเตือน", icon: "notifications-none", enabled: true },
-  { key: "activity", label: "Activity Log", icon: "assignment", enabled: true },
-  { key: "settings", label: "ตั้งค่า", icon: "settings", enabled: true },
-  { key: "system", label: "ระบบ & การเชื่อมต่อ", icon: "hub", enabled: true },
+  { key: "shipping", label: "การจัดส่ง", icon: "local-shipping" },
+  { key: "payments", label: "การชำระเงิน", icon: "account-balance-wallet" },
+  { key: "reports", label: "รายงาน & วิเคราะห์", icon: "query-stats" },
+  { key: "notifications", label: "การแจ้งเตือน", icon: "notifications-none" },
+  { key: "activity", label: "Activity Log", icon: "assignment" },
+  { key: "settings", label: "ตั้งค่า", icon: "settings" },
+  { key: "system", label: "ระบบ & การเชื่อมต่อ", icon: "hub" },
 ];
 
 export function AdminPortalShell({ active, title, subtitle, onNavigate, onRefresh, children }: { active: AdminWorkspace; title: string; subtitle: string; onNavigate: (workspace: AdminWorkspace) => void; onRefresh?: () => Promise<void> | void; children: ReactNode }) {

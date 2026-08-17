@@ -15,13 +15,13 @@ import type { RecentlyViewedItem } from "@/lib/recently-viewed-data";
 
 const CATEGORY_ITEMS = [
   { label: "ท่องเที่ยว", icon: "luggage", tone: "#FFF1C8", route: "/travel" },
-  { label: "ร้านค้า", icon: "storefront", tone: "#FFF2D8", route: "/stores" },
+  { label: "ร้านค้า", icon: "storefront", tone: "#FFF2D8", route: "/(tabs)/shop" },
   { label: "สินค้า", icon: "inventory-2", tone: "#D9FAF1", route: "/(tabs)/shop" },
   { label: "บริการ", icon: "business-center", tone: "#E0F2FE", route: "/(tabs)/discover" },
   { label: "ร้านอาหาร", icon: "restaurant", tone: "#FFF1DE", route: "/travel/food" },
   { label: "เรียนรู้", icon: "school", tone: "#E6F0FF", route: "/learn" },
   { label: "Opportunity", icon: "trending-up", tone: "#FFF5CC", route: "/(tabs)/discover" },
-  { label: "Community", icon: "groups", tone: "#F1E8FF", route: "/community" },
+  { label: "Community", icon: "groups", tone: "#F1E8FF", route: "/(tabs)/discover" },
 ] as const;
 
 const INTERESTS = [
@@ -71,7 +71,7 @@ function DiscoverySection({ products }: { products: ReturnType<typeof useCatalog
     { id: "service-travel", image: hobeeStories[2].image, title: "จองโรงแรมและดีลท่องเที่ยว", detail: "บริการ HOBEE Travel", price: "เริ่มวางแผน", badge: "TRAVEL", route: "/travel" as Href },
     { id: "service-food", image: hobeeStories[1].image, title: "ร้านอาหารท้องถิ่นและ Halal", detail: "สั่งล่วงหน้าได้", price: "ดูร้านอาหาร", badge: "FOOD", route: "/travel/food" as Href },
     { id: "service-learn", image: (hobeeStories[3] ?? hobeeStories[0]).image, title: "เรียนรู้เพื่อชุมชนและธุรกิจ", detail: "HOBEE Academy", price: "เริ่มเรียน", badge: "LEARNING", route: "/learn" as Href },
-    { id: "service-community", image: hobeeStories[0].image, title: "โอกาสและ Community", detail: "เชื่อมต่อ Ecosystem", price: "สำรวจโอกาส", badge: "COMMUNITY", route: "/community" as Href },
+    { id: "service-community", image: hobeeStories[0].image, title: "โอกาสและ Community", detail: "เชื่อมต่อ Ecosystem", price: "สำรวจโอกาส", badge: "COMMUNITY", route: "/(tabs)/discover" as Href },
   ];
   const cards = activeTab === "แนะนำ" ? [...storyCards.slice(0, 2), ...productCards] : activeTab === "ใกล้คุณ" ? [...storyCards, ...productCards.slice(0, 2)] : serviceCards;
   return <LayeredSection tone="cream" style={styles.discoverySection}><View style={styles.discovery}><View style={styles.tabRow}>{DISCOVERY_TABS.map((tab) => <Pressable key={tab} onPress={() => setActiveTab(tab)} style={({ pressed }) => [styles.discoveryTab, activeTab === tab && styles.discoveryTabActive, pressed && styles.pressed]}><Text style={[styles.discoveryTabText, activeTab === tab && styles.discoveryTabTextActive]}>{tab}</Text></Pressable>)}</View><View style={styles.discoveryGrid}>{cards.map((card) => <DiscoveryCard key={card.id} {...card} />)}</View></View></LayeredSection>;

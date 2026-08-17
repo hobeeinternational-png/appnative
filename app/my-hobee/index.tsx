@@ -9,8 +9,9 @@ import { MyHobeeEmptyState, MyHobeeHeader, MyHobeeSegments, formatHobeeCount, fo
 import { ScreenContainer } from "@/components/screen-container";
 import { useSupabaseAuth } from "@/contexts/supabase-auth-context";
 import { useToast } from "@/contexts/toast-context";
-import { getMyHobeeRoleDefinition, loadMyHobeeSnapshot, roleStatusLabel, type MyHobeeSnapshot } from "@/lib/my-hobee";
-import { loadMyOrganizations, type MyHobeeOrganizationMembership } from "@/lib/my-hobee-phase2";
+import { getMyHobeeRoleDefinition, roleStatusLabel, type MyHobeeSnapshot } from "@/lib/my-hobee";
+import type { MyHobeeOrganizationMembership } from "@/lib/my-hobee-phase2";
+import { loadMyHobeeIdentityWorkspace, type HobeeIdentityProfile } from "@/lib/identity-organization-repository";
 
 const router = expoRouter as { push: (href: string) => void; replace: (href: string) => void };
 
@@ -19,15 +20,16 @@ export default function MyHobeeOverviewScreen() {
   const { showToast } = useToast();
   const [snapshot, setSnapshot] = useState<MyHobeeSnapshot | null>(null);
   const [organizations, setOrganizations] = useState<MyHobeeOrganizationMembership[]>([]);
+  const [profile, setProfile] = useState<HobeeIdentityProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const displayName = typeof user?.user_metadata?.full_name === "string" ? user.user_metadata.full_name : typeof user?.user_metadata?.name === "string" ? user.user_metadata.name : "สมาชิก HOBEE";
+  const displayName = profile?.displayName ?? (typeof user?.user_metadata?.full_name === "string" ? user.user_metadata.full_name : typeof user?.user_metadata?.name === "string" ? user.user_metadata.name : "สมาชิก HOBEE");
   const initial = displayName.trim().charAt(0).toUpperCase() || "H";
 
   const load = useCallback(async (isRefresh = false) => {
-    if (!user) { setSnapshot(null); setOrganizations([]); setLoading(false); setRefreshing(false); return; }
+    if (!user) { setSnapshot(null); setOrganizations([]); setProfile(null); setLoading(false); setRefreshing(false); return; }
     isRefresh ? setRefreshing(true) : setLoading(true);
-    try { const [nextSnapshot, nextOrganizations] = await Promise.all([loadMyHobeeSnapshot(user.id), loadMyOrganizations(user.id)]); setSnapshot(nextSnapshot); setOrganizations(nextOrganizations); }
+    try { const workspace = await loadMyHobeeIdentityWorkspace(user); setSnapshot(workspace.snapshot); setOrganizations(workspace.memberships); setProfile(workspace.profile); }
     catch { showToast("ยังโหลดข้อมูล My HOBEE ไม่สำเร็จ กรุณาลองใหม่", "error"); }
     finally { setLoading(false); setRefreshing(false); }
   }, [showToast, user]);

@@ -21,10 +21,6 @@ import type { EdgeInsets, Metrics, Rect } from "react-native-safe-area-context";
 import { trpc, createTRPCClient } from "@/lib/trpc";
 import { initManusRuntime, subscribeSafeAreaInsets } from "@/lib/_core/manus-runtime";
 import { CartProvider } from "@/contexts/cart-context";
-import { FoodCartProvider } from "../contexts/food-cart-context";
-import { FoodPreferencesProvider } from "../contexts/food-preferences-context";
-import { LearningLibraryProvider } from "../contexts/learning-library-context";
-import { CommunityPreferencesProvider } from "../contexts/community-preferences-context";
 import { LocaleProvider } from "@/contexts/locale-context";
 import { ToastProvider } from "@/contexts/toast-context";
 import { SupabaseAuthProvider } from "@/contexts/supabase-auth-context";
@@ -100,10 +96,6 @@ export default function RootLayout() {
               <NotificationBootstrap>
                 <ToastProvider>
                   <CartProvider>
-                  <FoodCartProvider>
-                  <FoodPreferencesProvider>
-                  <LearningLibraryProvider>
-                  <CommunityPreferencesProvider>
                 <Stack screenOptions={({ route }) => ({ headerShown: shouldShowBackHeader(route.name), header: () => <BackHeader routeName={route.name} /> })}>
                   <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                   <Stack.Screen name="auth" options={{ headerShown: false }} />
@@ -116,76 +108,6 @@ export default function RootLayout() {
                   <Stack.Screen name="my-hobee/notifications" options={{ headerShown: false }} />
                   <Stack.Screen name="my-hobee/notification-preferences" options={{ headerShown: false }} />
                   <Stack.Screen name="my-hobee/earnings" options={{ headerShown: false }} />
-                  <Stack.Screen name="my-hobee/workspaces" options={{ headerShown: false }} />
-                  <Stack.Screen name="workspace" options={{ headerShown: false }} />
-                  <Stack.Screen name="organization" options={{ headerShown: false }} />
-                  <Stack.Screen name="seller" options={{ headerShown: false }} />
-                  <Stack.Screen name="hospitality" options={{ headerShown: false }} />
-                  <Stack.Screen name="creative" options={{ headerShown: false }} />
-                  <Stack.Screen name="field-service" options={{ headerShown: false }} />
-                  <Stack.Screen name="employee" options={{ headerShown: false }} />
-                  <Stack.Screen name="support" options={{ headerShown: false }} />
-                  <Stack.Screen name="community" options={{ headerShown: false }} />
-                  <Stack.Screen name="community/search" options={{ headerShown: false }} />
-                  <Stack.Screen name="community/topics/[id]" options={{ headerShown: false }} />
-                  <Stack.Screen name="community/stories" options={{ headerShown: false }} />
-                  <Stack.Screen name="community/create" options={{ headerShown: false }} />
-                  <Stack.Screen name="community/clubs" options={{ headerShown: false }} />
-                  <Stack.Screen name="community/clubs/[id]" options={{ headerShown: false }} />
-                  <Stack.Screen name="community/clubs/create" options={{ headerShown: false }} />
-                  <Stack.Screen name="community/activities" options={{ headerShown: false }} />
-                  <Stack.Screen name="community/activities/[id]" options={{ headerShown: false }} />
-                  <Stack.Screen name="community/activities/create" options={{ headerShown: false }} />
-                  <Stack.Screen name="community/my-activities" options={{ headerShown: false }} />
-                  <Stack.Screen name="community/jobs" options={{ headerShown: false }} />
-                  <Stack.Screen name="community/jobs/[id]" options={{ headerShown: false }} />
-                  <Stack.Screen name="community/trips" options={{ headerShown: false }} />
-                  <Stack.Screen name="community/people/[id]" options={{ headerShown: false }} />
-                  <Stack.Screen name="community/profile" options={{ headerShown: false }} />
-                  <Stack.Screen name="community/profile/network" options={{ headerShown: false }} />
-                  <Stack.Screen name="community/profile/privacy" options={{ headerShown: false }} />
-                  <Stack.Screen name="community/moderation" options={{ headerShown: false }} />
-                  <Stack.Screen name="stores" options={{ headerShown: false }} />
-                  <Stack.Screen name="stores/[id]" options={{ headerShown: false }} />
-                  <Stack.Screen name="stores/saved" options={{ headerShown: false }} />
-                  <Stack.Screen name="stores/[id]/preorder" options={{ headerShown: false }} />
-                  <Stack.Screen name="stores/orders/[reference]" options={{ headerShown: false }} />
-                  <Stack.Screen name="stores/orders/[reference]/review" options={{ headerShown: false }} />
-                  <Stack.Screen name="travel/my-trips" options={{ headerShown: false }} />
-                  <Stack.Screen name="travel/bookings/[id]" options={{ headerShown: false }} />
-                  <Stack.Screen name="travel/review/[id]" options={{ headerShown: false }} />
-                  <Stack.Screen name="travel/visitor" options={{ headerShown: false }} />
-                  <Stack.Screen name="travel/search" options={{ headerShown: false }} />
-                  <Stack.Screen name="travel/safety" options={{ headerShown: false }} />
-                  <Stack.Screen name="travel/food/cart" options={{ headerShown: false }} />
-                  <Stack.Screen name="travel/food/review/[id]" options={{ headerShown: false }} />
-                  <Stack.Screen name="travel/food/reservation/[id]" options={{ headerShown: false }} />
-                  <Stack.Screen name="travel/food/reservation/success/[id]" options={{ headerShown: false }} />
-                  <Stack.Screen name="travel/food/queue/[id]" options={{ headerShown: false }} />
-                  <Stack.Screen name="travel/food/orders" options={{ headerShown: false }} />
-                  <Stack.Screen name="travel/food/orders/[reference]" options={{ headerShown: false }} />
-                  <Stack.Screen name="travel/food/reservations" options={{ headerShown: false }} />
-                  <Stack.Screen name="travel/food/saved" options={{ headerShown: false }} />
-                  <Stack.Screen name="travel/food/map" options={{ headerShown: false }} />
-                  <Stack.Screen name="travel/food/search" options={{ headerShown: false }} />
-                  <Stack.Screen name="travel/food/collections" options={{ headerShown: false }} />
-                  <Stack.Screen name="travel/food/safety" options={{ headerShown: false }} />
-                  <Stack.Screen name="restaurant-merchant" options={{ headerShown: false }} />
-                  <Stack.Screen name="learning/catalogue" options={{ headerShown: false }} />
-                  <Stack.Screen name="learning/search" options={{ headerShown: false }} />
-                  <Stack.Screen name="learning/category/[id]" options={{ headerShown: false }} />
-                  <Stack.Screen name="learning/membership" options={{ headerShown: false }} />
-                  <Stack.Screen name="learning/teacher/[id]" options={{ headerShown: false }} />
-                  <Stack.Screen name="learning/events" options={{ headerShown: false }} />
-                  <Stack.Screen name="learning/events/[id]" options={{ headerShown: false }} />
-                  <Stack.Screen name="learning/events/booking/[id]" options={{ headerShown: false }} />
-                  <Stack.Screen name="learning/events/success/[id]" options={{ headerShown: false }} />
-                  <Stack.Screen name="learning/events/ticket/[id]" options={{ headerShown: false }} />
-                  <Stack.Screen name="learning/calendar" options={{ headerShown: false }} />
-                  <Stack.Screen name="learning/live/[id]" options={{ headerShown: false }} />
-                  <Stack.Screen name="learning/sessions/[id]" options={{ headerShown: false }} />
-                  <Stack.Screen name="notification/[id]" options={{ headerShown: false }} />
-                  <Stack.Screen name="admin/workspace/[workspace]" options={{ headerShown: false }} />
                   <Stack.Screen name="admin/role-approvals" options={{ headerShown: false }} />
                   <Stack.Screen name="admin/after-sales" options={{ headerShown: false }} />
                   <Stack.Screen name="admin/after-sales/[id]" options={{ headerShown: false }} />
@@ -196,10 +118,6 @@ export default function RootLayout() {
                   <Stack.Screen name="claims/[id]" options={{ headerShown: false }} />
                 </Stack>
                 <StatusBar style="dark" translucent backgroundColor="#F6F6F4" />
-                  </CommunityPreferencesProvider>
-                  </LearningLibraryProvider>
-                  </FoodPreferencesProvider>
-                  </FoodCartProvider>
                   </CartProvider>
                 </ToastProvider>
               </NotificationBootstrap>

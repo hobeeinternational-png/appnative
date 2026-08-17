@@ -5,8 +5,6 @@ import { useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { ScreenContainer } from "@/components/screen-container";
-import { LearningCourseExtension } from "@/components/hobee/learning-course-extension";
-import { useLearningLibrary } from "@/contexts/learning-library-context";
 import { formatCourseDuration, getCourse } from "@/lib/learning-data";
 import { loadLearningProgress, saveLearningProgress, updateProgress, type LearningProgress } from "@/lib/learning-progress";
 
@@ -19,7 +17,6 @@ export default function LearningCourseDetail() {
   const [progress, setProgress] = useState<LearningProgress | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [saving, setSaving] = useState(false);
-  const { toggleCourseSaved, savedCourseIds, addRecent } = useLearningLibrary();
   const player = useVideoPlayer(course?.videoUrl ?? FALLBACK_VIDEO, (instance) => { instance.muted = true; instance.timeUpdateEventInterval = 5; });
 
   useEffect(() => {
@@ -29,7 +26,6 @@ export default function LearningCourseDetail() {
       if (stored?.lastEpisodeId) setSelectedEpisodeId(stored.lastEpisodeId);
     }).catch(() => undefined);
   }, [course?.id]);
-  useEffect(() => { if (course?.id) addRecent({ kind: "course", id: course.id }); }, [course?.id, addRecent]);
 
   const selectedEpisode = useMemo(() => course?.episodes.find((episode) => episode.id === selectedEpisodeId) ?? course?.episodes[0], [course, selectedEpisodeId]);
   if (!course || !selectedEpisode) return <MissingCourse />;
@@ -44,18 +40,14 @@ export default function LearningCourseDetail() {
 
   const togglePlayback = () => { if (isPlaying) player.pause(); else player.play(); setIsPlaying((value) => !value); };
   const selectEpisode = (episodeId: string) => { setSelectedEpisodeId(episodeId); player.pause(); setIsPlaying(false); void saveEpisodeProgress(episodeId, false); };
-  const selectedIndex = course.episodes.findIndex((episode) => episode.id === selectedEpisode.id);
-  const goPrevious = () => { if (selectedIndex > 0) selectEpisode(course.episodes[selectedIndex - 1].id); };
-  const goNext = () => { if (selectedIndex >= 0 && selectedIndex < course.episodes.length - 1) selectEpisode(course.episodes[selectedIndex + 1].id); };
 
   return (
     <ScreenContainer edges={["top", "left", "right", "bottom"]} containerClassName="bg-[#0C0D0D]" safeAreaClassName="bg-[#0C0D0D]">
       <View style={styles.screen}>
-        <View style={styles.header}><Pressable accessibilityRole="button" accessibilityLabel="กลับหน้า Learning" onPress={() => router.canGoBack() ? router.back() : router.replace("/learn")} style={({ pressed }) => [styles.backButton, pressed && styles.pressed]}><MaterialIcons name="arrow-back" size={24} color="#F7F5F0" /></Pressable><View style={styles.headerTitle}><Text numberOfLines={1} style={styles.headerTitleText}>HOBEE LEARNING</Text><Text style={styles.headerSubTitle}>Course player</Text></View><Pressable accessibilityRole="button" accessibilityLabel="บันทึกคอร์ส" onPress={() => toggleCourseSaved(course.id)} style={({ pressed }) => [styles.backButton, pressed && styles.pressed]}><MaterialIcons name={savedCourseIds.includes(course.id) ? "bookmark" : "bookmark-border"} size={22} color="#F7F5F0" /></Pressable></View>
+        <View style={styles.header}><Pressable accessibilityRole="button" accessibilityLabel="กลับหน้า Learning" onPress={() => router.back()} style={({ pressed }) => [styles.backButton, pressed && styles.pressed]}><MaterialIcons name="arrow-back" size={24} color="#F7F5F0" /></Pressable><View style={styles.headerTitle}><Text numberOfLines={1} style={styles.headerTitleText}>HOBEE LEARNING</Text><Text style={styles.headerSubTitle}>Course player</Text></View><Pressable accessibilityRole="button" accessibilityLabel="บันทึกคอร์ส" style={({ pressed }) => [styles.backButton, pressed && styles.pressed]}><MaterialIcons name="add" size={24} color="#F7F5F0" /></Pressable></View>
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
           <View style={styles.playerWrap}><VideoView style={styles.video} player={player} contentFit="cover" allowsFullscreen allowsPictureInPicture nativeControls={false} /><View pointerEvents="none" style={styles.videoShade} /><Pressable accessibilityRole="button" accessibilityLabel={isPlaying ? "พักวิดีโอ" : "เล่นวิดีโอ"} onPress={togglePlayback} style={({ pressed }) => [styles.playButton, pressed && styles.pressed]}><MaterialIcons name={isPlaying ? "pause" : "play-arrow"} size={36} color="#18150F" /></Pressable><View style={styles.videoLabel}><Text style={styles.videoLabelText}>กำลังเรียน • บทที่ {selectedEpisode.number}</Text></View></View>
           <View style={styles.courseInfo}><Text style={styles.courseCategory}>{course.category.toUpperCase()}</Text><Text style={styles.courseTitle}>{course.title}</Text><Text style={styles.courseDesc}>{course.shortDescription}</Text><View style={styles.courseMeta}><Text style={styles.courseMetaText}>★ {course.rating.toFixed(1)}</Text><Text style={styles.courseMetaText}>• {course.episodesCount} บทเรียน</Text><Text style={styles.courseMetaText}>• {formatCourseDuration(course.durationMinutes)}</Text></View><View style={styles.instructorRow}><Image source={course.image} style={styles.instructorImage} /><View><Text style={styles.instructorName}>{course.instructor}</Text><Text style={styles.instructorRole}>{course.instructorTitle}</Text></View></View></View>
-          <LearningCourseExtension courseId={course.id} lessonId={selectedEpisode.id} lessonTitle={selectedEpisode.title} hasPrevious={selectedIndex > 0} hasNext={selectedIndex < course.episodes.length - 1} onPrevious={goPrevious} onNext={goNext} />
           <View style={styles.controls}><Text style={styles.controlsTitle}>การรับชม</Text><View style={styles.controlRow}><ControlChip label="−10 วินาที" onPress={() => player.seekBy(-10)} /><ControlChip label="1.0x" onPress={() => { player.playbackRate = player.playbackRate === 1 ? 1.25 : 1; }} /><ControlChip label="คำบรรยาย TH" onPress={() => undefined} /><ControlChip label="ล็อกหน้าจอ" onPress={() => undefined} /></View></View>
           <View style={styles.lessonHeader}><View><Text style={styles.lessonTitle}>บทเรียนในคอร์ส</Text><Text style={styles.lessonSubTitle}>{progress?.completionPercentage ?? 0}% สำเร็จแล้ว</Text></View>{course.hasCertificate ? <View style={styles.certificateBadge}><MaterialIcons name="workspace-premium" size={15} color="#E5BE51" /><Text style={styles.certificateText}>มีใบรับรอง</Text></View> : null}</View>
           <View style={styles.episodeList}>{course.episodes.map((episode) => { const active = episode.id === selectedEpisode.id; const done = completed.has(episode.id); return <Pressable key={episode.id} accessibilityRole="button" accessibilityLabel={`เปิดบทเรียน ${episode.number} ${episode.title}`} onPress={() => selectEpisode(episode.id)} style={({ pressed }) => [styles.episodeRow, active && styles.episodeActive, pressed && styles.pressed]}><View style={[styles.episodeNumber, done && styles.episodeDone]}>{done ? <MaterialIcons name="check" size={16} color="#101712" /> : <Text style={styles.episodeNumberText}>{episode.number}</Text>}</View><View style={styles.episodeBody}><Text style={[styles.episodeTitle, active && styles.episodeTitleActive]}>{episode.title}</Text><Text style={styles.episodeDuration}>{episode.durationMinutes} นาที</Text></View><MaterialIcons name={active ? "pause-circle-outline" : "play-circle-outline"} size={24} color={active ? "#E0B747" : "#A8A6A0"} /></Pressable>; })}</View>
