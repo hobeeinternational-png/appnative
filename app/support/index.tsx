@@ -12,7 +12,7 @@ const HELP_TOPICS = [
   { icon: "local-shipping", title: "คำสั่งซื้อและการจัดส่ง", detail: "ติดตามสถานะ การรับสินค้า และขอความช่วยเหลือหลังการขาย", route: "/orders" },
   { icon: "support-agent", title: "คืนสินค้า คืนเงิน และเคส", detail: "เปิดเคสหรือติดตามคำขอที่ส่งไว้", route: "/claims" },
   { icon: "account-balance-wallet", title: "การชำระเงินและ Rewards", detail: "ดูข้อมูลการชำระเงิน คะแนน คูปอง และสิทธิประโยชน์", route: "/rewards" },
-  { icon: "person-outline", title: "บัญชีและความเป็นส่วนตัว", detail: "จัดการข้อมูลส่วนตัว การเข้าสู่ระบบ และสิทธิ์", route: "/account" },
+  { icon: "person-outline", title: "บัญชีและความเป็นส่วนตัว", detail: "จัดการข้อมูลส่วนตัว การเข้าสู่ระบบ และสิทธิ์", route: "/(tabs)/account" },
 ];
 
 export default function SupportCenterScreen() {

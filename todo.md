@@ -422,3 +422,11 @@
 - [x] เชื่อม Home Community category, shared navigation, safe back/deep links, notification allow-list และ non-duplicative entity routing
 - [x] รัน TypeScript และ regression suite พร้อมเพิ่ม coverage สำหรับ Community feed, search, stories, clubs, activities, moderation และ deep links
 - [x] บันทึก checkpoint และรายงาน HOBEE COMMUNITY HUB UI COMPLETE
+- [x] ยืนยัน checkpoint ae7c48aa, repository status, build และ preview ก่อน Final UI Audit
+- [x] จัดทำ Full Route Inventory ครบทุกโมดูล พร้อม entry point, gate, fallback และ deep-link status
+- [x] ตรวจ orphan, duplicate, deprecated screens และ dead routes/CTA พร้อมแก้เฉพาะช่องว่างขนาดเล็ก
+- [x] ตรวจ safe-back, Android/iOS navigation และ deep-link allow-list ทุกโมดูล
+- [x] ตรวจ auth/role/organization gates, UI states, offline, permissions, keyboard และ accessibility readiness
+- [x] ตรวจ presentation contracts, entity duplication และ backend integration readiness โดยไม่แก้ contracts เดิม
+- [x] เพิ่ม final audit regression coverage, รัน TypeScript และ regression suite
+- [x] จัดทำ Final UI Audit Report, readiness matrix และบันทึก checkpoint freeze
