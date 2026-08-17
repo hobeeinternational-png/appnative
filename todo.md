@@ -346,3 +346,27 @@
 - [x] รัน TypeScript และ regression suite พร้อมเพิ่ม coverage สำหรับ Travel hub, booking, My Trips และ planner contracts
 - [ ] บันทึก checkpoint และรายงาน HOBEE TRAVEL ECOSYSTEM — UI COMPLETE
 - [x] บันทึก checkpoint และรายงาน HOBEE TRAVEL ECOSYSTEM — UI COMPLETE
+- [ ] Audit Restaurant, Food Discovery, local pre-order, cart, orders, reservations, merchant routes และ visual baseline ที่มีอยู่
+- [x] Audit Restaurant, Food Discovery, local pre-order, cart, orders, reservations, merchant routes และ visual baseline ที่มีอยู่
+- [ ] ขยาย Food presentation contracts สำหรับ meal periods, categories, filters, menu options, fulfilment, reservation, queue, orders, collections และ merchant states
+- [x] ขยาย Food presentation contracts สำหรับ meal periods, categories, filters, menu options, fulfilment, reservation, queue, orders, collections และ merchant states
+- [ ] Refactor Restaurant/Food Hub พร้อม time-aware hero, categories, smart filters, map/list, collections, favorites และ search
+- [x] Refactor Restaurant/Food Hub พร้อม time-aware hero, categories, smart filters, map/list, collections, favorites และ search
+- [ ] ขยาย Restaurant Detail และ Full Menu ด้วย gallery, capabilities, menu options/add-ons, favourites, map/contact และ reviews
+- [x] ขยาย Restaurant Detail และ Full Menu ด้วย gallery, capabilities, menu options/add-ons, favourites, map/contact และ reviews
+- [ ] สร้าง Food Cart และ Review Order flow โดย reuse state/contracts ที่ปลอดภัยและแยกจาก ecommerce cart ตามความจำเป็น
+- [x] สร้าง Food Cart และ Review Order flow โดย reuse state/contracts ที่ปลอดภัยและแยกจาก ecommerce cart ตามความจำเป็น
+- [ ] สร้าง Dine-in reservation, booking success, queue/waitlist และ pickup/delivery fulfilment presentations
+- [x] สร้าง Dine-in reservation, booking success, queue/waitlist และ pickup/delivery fulfilment presentations
+- [ ] สร้าง My Food Orders, order detail/timelines, My Reservations, favorite menus/restaurants, recently viewed และ review flows
+- [x] สร้าง My Food Orders, order detail/timelines, My Reservations, favorite menus/restaurants, recently viewed และ review flows
+- [ ] สร้าง Food Collections, Restaurant Map, Food Search และ safety/empty/error/location permission boundaries
+- [x] สร้าง Food Collections, Restaurant Map, Food Search และ safety/empty/error/location permission boundaries
+- [ ] สร้าง merchant restaurant presentation สำหรับ menu, availability, reservations, queue, orders, reviews, staff และ analytics
+- [x] สร้าง merchant restaurant presentation สำหรับ menu, availability, reservations, queue, orders, reviews, staff และ analytics
+- [ ] เชื่อม Home/Food/Local Stores/Travel/Account, safe back/deep links, shared nav, location state และ non-duplicative entity routing
+- [x] เชื่อม Home/Food/Local Stores/Travel/Account, safe back/deep links, shared nav, location state และ non-duplicative entity routing
+- [ ] รัน TypeScript และ regression suite พร้อมเพิ่ม coverage สำหรับ Food discovery, menu, cart, reservation, queue, orders และ merchant contracts
+- [x] รัน TypeScript และ regression suite พร้อมเพิ่ม coverage สำหรับ Food discovery, menu, cart, reservation, queue, orders และ merchant contracts
+- [ ] บันทึก checkpoint และรายงาน HOBEE RESTAURANT & FOOD EXPERIENCE — UI COMPLETE
+- [x] บันทึก checkpoint และรายงาน HOBEE RESTAURANT & FOOD EXPERIENCE — UI COMPLETE

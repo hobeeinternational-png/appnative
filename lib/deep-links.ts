@@ -26,6 +26,10 @@ export function isAfterSalesNotificationRoute(route: unknown): route is string {
   return typeof route === "string" && (/^\/claims(?:\/[A-Za-z0-9_-]+)?$/.test(route) || route === "/admin/after-sales");
 }
 
+export function isFoodNotificationRoute(route: unknown): route is string {
+  return typeof route === "string" && /^\/travel\/food(?:\/(?:orders(?:\/[A-Za-z0-9_-]+)?|reservations|saved|cart))?$/.test(route);
+}
+
 export function isHobeeNotificationRoute(route: unknown): route is string {
-  return isOrderNotificationRoute(route) || isMyHobeeNotificationRoute(route) || isAfterSalesNotificationRoute(route);
+  return isOrderNotificationRoute(route) || isMyHobeeNotificationRoute(route) || isAfterSalesNotificationRoute(route) || isFoodNotificationRoute(route);
 }

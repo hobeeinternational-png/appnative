@@ -21,6 +21,8 @@ import type { EdgeInsets, Metrics, Rect } from "react-native-safe-area-context";
 import { trpc, createTRPCClient } from "@/lib/trpc";
 import { initManusRuntime, subscribeSafeAreaInsets } from "@/lib/_core/manus-runtime";
 import { CartProvider } from "@/contexts/cart-context";
+import { FoodCartProvider } from "../contexts/food-cart-context";
+import { FoodPreferencesProvider } from "../contexts/food-preferences-context";
 import { LocaleProvider } from "@/contexts/locale-context";
 import { ToastProvider } from "@/contexts/toast-context";
 import { SupabaseAuthProvider } from "@/contexts/supabase-auth-context";
@@ -96,6 +98,8 @@ export default function RootLayout() {
               <NotificationBootstrap>
                 <ToastProvider>
                   <CartProvider>
+                  <FoodCartProvider>
+                  <FoodPreferencesProvider>
                 <Stack screenOptions={({ route }) => ({ headerShown: shouldShowBackHeader(route.name), header: () => <BackHeader routeName={route.name} /> })}>
                   <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                   <Stack.Screen name="auth" options={{ headerShown: false }} />
@@ -129,6 +133,20 @@ export default function RootLayout() {
                   <Stack.Screen name="travel/visitor" options={{ headerShown: false }} />
                   <Stack.Screen name="travel/search" options={{ headerShown: false }} />
                   <Stack.Screen name="travel/safety" options={{ headerShown: false }} />
+                  <Stack.Screen name="travel/food/cart" options={{ headerShown: false }} />
+                  <Stack.Screen name="travel/food/review/[id]" options={{ headerShown: false }} />
+                  <Stack.Screen name="travel/food/reservation/[id]" options={{ headerShown: false }} />
+                  <Stack.Screen name="travel/food/reservation/success/[id]" options={{ headerShown: false }} />
+                  <Stack.Screen name="travel/food/queue/[id]" options={{ headerShown: false }} />
+                  <Stack.Screen name="travel/food/orders" options={{ headerShown: false }} />
+                  <Stack.Screen name="travel/food/orders/[reference]" options={{ headerShown: false }} />
+                  <Stack.Screen name="travel/food/reservations" options={{ headerShown: false }} />
+                  <Stack.Screen name="travel/food/saved" options={{ headerShown: false }} />
+                  <Stack.Screen name="travel/food/map" options={{ headerShown: false }} />
+                  <Stack.Screen name="travel/food/search" options={{ headerShown: false }} />
+                  <Stack.Screen name="travel/food/collections" options={{ headerShown: false }} />
+                  <Stack.Screen name="travel/food/safety" options={{ headerShown: false }} />
+                  <Stack.Screen name="restaurant-merchant" options={{ headerShown: false }} />
                   <Stack.Screen name="notification/[id]" options={{ headerShown: false }} />
                   <Stack.Screen name="admin/workspace/[workspace]" options={{ headerShown: false }} />
                   <Stack.Screen name="admin/role-approvals" options={{ headerShown: false }} />
@@ -141,6 +159,8 @@ export default function RootLayout() {
                   <Stack.Screen name="claims/[id]" options={{ headerShown: false }} />
                 </Stack>
                 <StatusBar style="dark" translucent backgroundColor="#F6F6F4" />
+                  </FoodPreferencesProvider>
+                  </FoodCartProvider>
                   </CartProvider>
                 </ToastProvider>
               </NotificationBootstrap>
