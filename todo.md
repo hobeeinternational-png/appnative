@@ -370,3 +370,13 @@
 - [x] รัน TypeScript และ regression suite พร้อมเพิ่ม coverage สำหรับ Food discovery, menu, cart, reservation, queue, orders และ merchant contracts
 - [ ] บันทึก checkpoint และรายงาน HOBEE RESTAURANT & FOOD EXPERIENCE — UI COMPLETE
 - [x] บันทึก checkpoint และรายงาน HOBEE RESTAURANT & FOOD EXPERIENCE — UI COMPLETE
+- [ ] Audit Learning routes, screens, shared components, navigation และ data layers ที่มีอยู่จริงโดยไม่แก้โค้ด
+- [x] Audit Learning routes, screens, shared components, navigation และ data layers ที่มีอยู่จริงโดยไม่แก้โค้ด
+- [ ] วิเคราะห์ Learning Home, course listing/detail, lesson/video experience, My Learning, business models, event และ 1-on-1 coverage
+- [x] วิเคราะห์ Learning Home, course listing/detail, lesson/video experience, My Learning, business models, event และ 1-on-1 coverage
+- [ ] วิเคราะห์ Teacher integration, navigation/deep-link safety, screen states, data architecture และ HOBEE design consistency
+- [x] วิเคราะห์ Teacher integration, navigation/deep-link safety, screen states, data architecture และ HOBEE design consistency
+- [ ] จัดทำ docs/learning-ui-audit.md พร้อม Current Routes, Final Gap Matrix, duplicate risk และ phased UI recommendations
+- [x] จัดทำ docs/learning-ui-audit.md พร้อม Current Routes, Final Gap Matrix, duplicate risk และ phased UI recommendations
+- [ ] ตรวจความถูกต้องของรายงานและส่งสรุป HOBEE LEARNING — CURRENT UI AUDIT
+- [x] ตรวจความถูกต้องของรายงานและส่งสรุป HOBEE LEARNING — CURRENT UI AUDIT
