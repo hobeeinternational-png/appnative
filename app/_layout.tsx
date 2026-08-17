@@ -23,6 +23,7 @@ import { initManusRuntime, subscribeSafeAreaInsets } from "@/lib/_core/manus-run
 import { CartProvider } from "@/contexts/cart-context";
 import { FoodCartProvider } from "../contexts/food-cart-context";
 import { FoodPreferencesProvider } from "../contexts/food-preferences-context";
+import { LearningLibraryProvider } from "../contexts/learning-library-context";
 import { LocaleProvider } from "@/contexts/locale-context";
 import { ToastProvider } from "@/contexts/toast-context";
 import { SupabaseAuthProvider } from "@/contexts/supabase-auth-context";
@@ -100,6 +101,7 @@ export default function RootLayout() {
                   <CartProvider>
                   <FoodCartProvider>
                   <FoodPreferencesProvider>
+                  <LearningLibraryProvider>
                 <Stack screenOptions={({ route }) => ({ headerShown: shouldShowBackHeader(route.name), header: () => <BackHeader routeName={route.name} /> })}>
                   <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                   <Stack.Screen name="auth" options={{ headerShown: false }} />
@@ -147,6 +149,19 @@ export default function RootLayout() {
                   <Stack.Screen name="travel/food/collections" options={{ headerShown: false }} />
                   <Stack.Screen name="travel/food/safety" options={{ headerShown: false }} />
                   <Stack.Screen name="restaurant-merchant" options={{ headerShown: false }} />
+                  <Stack.Screen name="learning/catalogue" options={{ headerShown: false }} />
+                  <Stack.Screen name="learning/search" options={{ headerShown: false }} />
+                  <Stack.Screen name="learning/category/[id]" options={{ headerShown: false }} />
+                  <Stack.Screen name="learning/membership" options={{ headerShown: false }} />
+                  <Stack.Screen name="learning/teacher/[id]" options={{ headerShown: false }} />
+                  <Stack.Screen name="learning/events" options={{ headerShown: false }} />
+                  <Stack.Screen name="learning/events/[id]" options={{ headerShown: false }} />
+                  <Stack.Screen name="learning/events/booking/[id]" options={{ headerShown: false }} />
+                  <Stack.Screen name="learning/events/success/[id]" options={{ headerShown: false }} />
+                  <Stack.Screen name="learning/events/ticket/[id]" options={{ headerShown: false }} />
+                  <Stack.Screen name="learning/calendar" options={{ headerShown: false }} />
+                  <Stack.Screen name="learning/live/[id]" options={{ headerShown: false }} />
+                  <Stack.Screen name="learning/sessions/[id]" options={{ headerShown: false }} />
                   <Stack.Screen name="notification/[id]" options={{ headerShown: false }} />
                   <Stack.Screen name="admin/workspace/[workspace]" options={{ headerShown: false }} />
                   <Stack.Screen name="admin/role-approvals" options={{ headerShown: false }} />
@@ -159,6 +174,7 @@ export default function RootLayout() {
                   <Stack.Screen name="claims/[id]" options={{ headerShown: false }} />
                 </Stack>
                 <StatusBar style="dark" translucent backgroundColor="#F6F6F4" />
+                  </LearningLibraryProvider>
                   </FoodPreferencesProvider>
                   </FoodCartProvider>
                   </CartProvider>

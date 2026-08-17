@@ -380,3 +380,23 @@
 - [x] จัดทำ docs/learning-ui-audit.md พร้อม Current Routes, Final Gap Matrix, duplicate risk และ phased UI recommendations
 - [ ] ตรวจความถูกต้องของรายงานและส่งสรุป HOBEE LEARNING — CURRENT UI AUDIT
 - [x] ตรวจความถูกต้องของรายงานและส่งสรุป HOBEE LEARNING — CURRENT UI AUDIT
+- [ ] ขยาย Learning presentation contracts สำหรับ catalogue, categories, access states, teachers, notes, bookmarks, memberships, events และ Teacher-to-Learner mapping
+- [x] ขยาย Learning presentation contracts สำหรับ catalogue, categories, access states, teachers, notes, bookmarks, memberships, events และ Teacher-to-Learner mapping
+- [ ] ต่อยอด Learning Home เดิมด้วย search, discovery rails, access groups, teachers, events, live, 1-on-1, recent และ saved content
+- [x] ต่อยอด Learning Home เดิมด้วย search, discovery rails, access groups, teachers, events, live, 1-on-1, recent และ saved content
+- [ ] ขยาย Course Detail และ Video Player เดิมด้วย metadata, access CTA, curriculum locks, next/previous, notes, bookmarks, resources และ playback options
+- [x] ขยาย Course Detail และ Video Player เดิมด้วย metadata, access CTA, curriculum locks, next/previous, notes, bookmarks, resources และ playback options
+- [ ] ต่อยอด My Learning ด้วย library tabs, derived progress, saved learning, certificates, event/session summaries และ local persistence
+- [x] ต่อยอด My Learning ด้วย library tabs, derived progress, saved learning, certificates, event/session summaries และ local persistence
+- [ ] สร้าง Learning Search, catalogue/filter and category discovery routes พร้อม loading, empty, error และ offline states
+- [x] สร้าง Learning Search, catalogue/filter and category discovery routes พร้อม loading, empty, error และ offline states
+- [ ] สร้าง Learning Membership และ Teacher Public Profile ที่ reuse Teacher workspace mapping โดยไม่ทำ payment transaction
+- [x] สร้าง Learning Membership และ Teacher Public Profile ที่ reuse Teacher workspace mapping โดยไม่ทำ payment transaction
+- [ ] สร้าง Seminar/Event, Live Class และ 1-on-1 presentation journeys พร้อม listing, detail, booking preview, success, ticket, calendar และ My Events
+- [x] สร้าง Seminar/Event, Live Class และ 1-on-1 presentation journeys พร้อม listing, detail, booking preview, success, ticket, calendar และ My Events
+- [ ] เชื่อม Teacher-to-Learner presentation bridge, safe back/deep links, shared navigation, access boundaries และ non-duplicative route integration
+- [x] เชื่อม Teacher-to-Learner presentation bridge, safe back/deep links, shared navigation, access boundaries และ non-duplicative route integration
+- [ ] รัน TypeScript และ regression suite พร้อมเพิ่ม coverage สำหรับ Learning discovery, access states, player, progress, events และ teacher mapping
+- [x] รัน TypeScript และ regression suite พร้อมเพิ่ม coverage สำหรับ Learning discovery, access states, player, progress, events และ teacher mapping
+- [ ] บันทึก checkpoint และรายงาน HOBEE LEARNING PLATFORM UI COMPLETE
+- [x] บันทึก checkpoint และรายงาน HOBEE LEARNING PLATFORM UI COMPLETE
