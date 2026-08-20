@@ -262,4 +262,4 @@
 - [x] จัดทำรายงาน Controlled Backend Wiring Phase 1, recovery-gap register, owner actions และ checkpoint baseline B
 - [x] ตรวจ Git status, remote, ignore rules และ diff ก่อนส่ง source ล่าสุดขึ้น GitHub
 - [x] รัน validation และ secret scan ก่อน commit GitHub
-- [ ] commit และ push source ล่าสุดขึ้น GitHub พร้อมยืนยัน remote commit
+- [x] commit และ push source ล่าสุดขึ้น GitHub พร้อมยืนยัน remote commit
