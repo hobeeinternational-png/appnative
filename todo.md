@@ -260,3 +260,6 @@
 - [x] ตรวจ QA branch, controlled seed safety, identity/profile/My HOBEE/admin hardening และ RLS matrix บน baseline B
 - [x] รัน TypeScript, lint และ regression suite พร้อมตั้ง baseline B ใหม่
 - [x] จัดทำรายงาน Controlled Backend Wiring Phase 1, recovery-gap register, owner actions และ checkpoint baseline B
+- [x] ตรวจ Git status, remote, ignore rules และ diff ก่อนส่ง source ล่าสุดขึ้น GitHub
+- [x] รัน validation และ secret scan ก่อน commit GitHub
+- [ ] commit และ push source ล่าสุดขึ้น GitHub พร้อมยืนยัน remote commit
