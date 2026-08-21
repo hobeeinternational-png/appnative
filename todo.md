@@ -260,3 +260,9 @@
 - [x] ตรวจ QA branch, controlled seed safety, identity/profile/My HOBEE/admin hardening และ RLS matrix บน baseline B
 - [x] รัน TypeScript, lint และ regression suite พร้อมตั้ง baseline B ใหม่
 - [x] จัดทำรายงาน Controlled Backend Wiring Phase 1, recovery-gap register, owner actions และ checkpoint baseline B
+- [x] สร้าง Migration Record และ inventory source/runtime/repository/Supabase/Vercel/domain ตาม Migration Playbook
+- [x] จัดทำ migration gap matrix, target architecture, rollback และ validation gates
+- [x] เตรียม Vercel/Supabase/provider runtime boundaries และ production-safe environment configuration
+- [x] ตรวจ GitHub/Supabase/Vercel readiness และจัดทำ owner action register สำหรับ deploy/cutover
+- [x] รัน static validation และจัดทำ HOBEE Mobile Migration Readiness Report
+- [x] บันทึก migration readiness checkpoint และรายงานงานที่รอ owner action

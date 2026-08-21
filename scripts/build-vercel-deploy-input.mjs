@@ -3,6 +3,11 @@ import { join, relative } from "node:path";
 
 const root = "/home/ubuntu/hobee-mobile/vercel-backend";
 const ignored = new Set(["docs"]);
+const teamId = process.env.VERCEL_TEAM_ID?.trim();
+
+if (!teamId) {
+  throw new Error("VERCEL_TEAM_ID is required to build a Vercel deployment input. Use the intended HOBEE owner team; do not use a hardcoded fallback.");
+}
 
 async function collect(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -18,4 +23,4 @@ async function collect(directory) {
 }
 
 const files = await collect(root);
-await writeFile("/tmp/hobee-vercel-deploy.json", JSON.stringify({ name: "hobee-backend", target: "preview", teamId: "team_NDlLRcFbnWLRyIlIuf1a2doi", files }, null, 2));
+await writeFile("/tmp/hobee-vercel-deploy.json", JSON.stringify({ name: "hobee-backend", target: "preview", teamId, files }, null, 2));
