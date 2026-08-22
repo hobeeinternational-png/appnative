@@ -268,7 +268,7 @@
 - [x] บันทึก migration readiness checkpoint และรายงานงานที่รอ owner action
 - [x] ตรวจ Git status, remote, diff และ ignore rules ก่อนส่ง Migration Readiness source ขึ้น GitHub
 - [x] รัน validation และ secret scan ก่อน commit Migration Readiness source
-- [ ] commit และ push Migration Readiness source ขึ้น GitHub main พร้อมยืนยัน remote SHA
+- [x] commit และ push Migration Readiness source ขึ้น GitHub main พร้อมยืนยัน remote SHA
 - [x] ตรวจ Git status, remote, ignore rules และ diff ก่อนส่ง source ล่าสุดขึ้น GitHub
 - [x] รัน validation และ secret scan ก่อน commit GitHub
 - [x] commit และ push source ล่าสุดขึ้น GitHub พร้อมยืนยัน remote commit
