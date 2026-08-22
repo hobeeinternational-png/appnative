@@ -266,3 +266,6 @@
 - [x] ตรวจ GitHub/Supabase/Vercel readiness และจัดทำ owner action register สำหรับ deploy/cutover
 - [x] รัน static validation และจัดทำ HOBEE Mobile Migration Readiness Report
 - [x] บันทึก migration readiness checkpoint และรายงานงานที่รอ owner action
+- [x] ตรวจ Git status, remote, diff และ ignore rules ก่อนส่ง Migration Readiness source ขึ้น GitHub
+- [x] รัน validation และ secret scan ก่อน commit Migration Readiness source
+- [ ] commit และ push Migration Readiness source ขึ้น GitHub main พร้อมยืนยัน remote SHA
